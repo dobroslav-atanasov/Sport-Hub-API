@@ -396,3 +396,9 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+
+/src/Data/SportData.Data/Migrations
+/src/Web/SportData.WebAPI/appsettings.json
+/src/Applications/SportData.Converters/appsettings.json
+/src/Applications/SportData.Crawlers/appsettings.json
