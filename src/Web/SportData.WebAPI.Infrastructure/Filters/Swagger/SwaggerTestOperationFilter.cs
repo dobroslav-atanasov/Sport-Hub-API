@@ -9,16 +9,12 @@ public class SwaggerTestOperationFilter : IOperationFilter
 {
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
-        if (operation.Parameters == null)
-        {
-            operation.Parameters = new List<OpenApiParameter>();
-        }
+        operation.Parameters ??= new List<OpenApiParameter>();
 
         ;
 
-        var descriptor = context.ApiDescription.ActionDescriptor as ControllerActionDescriptor;
 
-        if (descriptor != null && descriptor.ControllerName.StartsWith("Weather"))
+        if (context.ApiDescription.ActionDescriptor is ControllerActionDescriptor descriptor && descriptor.ControllerName.StartsWith("Weather"))
         {
             operation.Parameters.Add(new OpenApiParameter()
             {
