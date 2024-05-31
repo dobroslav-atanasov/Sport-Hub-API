@@ -14,7 +14,7 @@ public class MD5Hash : IMD5Hash
         var hashBytes = md5.ComputeHash(data);
 
         var sb = new StringBuilder();
-        for (int i = 0; i < hashBytes.Length; i++)
+        for (var i = 0; i < hashBytes.Length; i++)
         {
             sb.Append(hashBytes[i].ToString("X2"));
         }

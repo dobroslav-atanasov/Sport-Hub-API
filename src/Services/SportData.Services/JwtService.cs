@@ -95,7 +95,7 @@ public class JwtService : IJwtService
                 ValidAudience = this.configuration[GlobalConstants.JWT_AUDIENCE],
                 IssuerSigningKey = key,
                 ValidateLifetime = false
-            }, out SecurityToken validatedToken);
+            }, out var validatedToken);
 
             return claimsPrincipal;
         }

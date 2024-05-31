@@ -75,7 +75,7 @@ public class HttpService : IHttpService
             Content = await response.Content.ReadAsStringAsync(),
         };
 
-        if (httpModel.MimeType != null && httpModel.MimeType == "text/html")
+        if (httpModel.MimeType is not null and "text/html")
         {
             var htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(httpModel.Content);

@@ -81,15 +81,15 @@ public class DateService : IDateService
                         break;
                 }
 
-                if (DateTime.TryParseExact(startDate, formats, null, DateTimeStyles.None, out DateTime startDateResult)
-                    && DateTime.TryParseExact(endDate, formats, null, DateTimeStyles.None, out DateTime endDateResult))
+                if (DateTime.TryParseExact(startDate, formats, null, DateTimeStyles.None, out var startDateResult)
+                    && DateTime.TryParseExact(endDate, formats, null, DateTimeStyles.None, out var endDateResult))
                 {
                     dateModel.From = startDateResult;
                     dateModel.To = endDateResult;
                     break;
                 }
 
-                if (DateTime.TryParseExact(startDate, formats, null, DateTimeStyles.None, out DateTime startDateTimeResult))
+                if (DateTime.TryParseExact(startDate, formats, null, DateTimeStyles.None, out var startDateTimeResult))
                 {
                     dateModel.From = startDateTimeResult;
                     break;
@@ -166,7 +166,7 @@ public class DateService : IDateService
                     "s"
                 };
 
-                if (TimeSpan.TryParseExact(match.Groups[0].Value, formats, null, out TimeSpan timeResult))
+                if (TimeSpan.TryParseExact(match.Groups[0].Value, formats, null, out var timeResult))
                 {
                     return timeResult;
                 }

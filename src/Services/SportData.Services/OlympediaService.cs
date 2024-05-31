@@ -23,7 +23,7 @@ public class OlympediaService : IOlympediaService
     {
         if (string.IsNullOrEmpty(text))
         {
-            return new List<int>();
+            return [];
         }
 
         var clubs = this.regExpService
@@ -56,7 +56,7 @@ public class OlympediaService : IOlympediaService
     {
         if (string.IsNullOrEmpty(text))
         {
-            return new List<AthleteModel>();
+            return [];
         }
 
         var numbers = this.regExpService
@@ -180,7 +180,7 @@ public class OlympediaService : IOlympediaService
     {
         if (string.IsNullOrEmpty(text))
         {
-            return new List<int>();
+            return [];
         }
 
         var venues = this.regExpService
@@ -486,7 +486,7 @@ public class OlympediaService : IOlympediaService
     {
         var indexes = new Dictionary<string, int>();
 
-        for (int i = 0; i < headers.Count; i++)
+        for (var i = 0; i < headers.Count; i++)
         {
             var key = string.Empty;
 
@@ -4180,7 +4180,7 @@ public class OlympediaService : IOlympediaService
     {
         var indexes = new Dictionary<string, int>();
 
-        for (int i = 0; i < headers.Count; i++)
+        for (var i = 0; i < headers.Count; i++)
         {
             var header = headers[i].ToLower();
             switch (header)
