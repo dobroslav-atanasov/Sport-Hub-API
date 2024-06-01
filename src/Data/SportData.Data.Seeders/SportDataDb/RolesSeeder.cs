@@ -15,10 +15,10 @@ public class RolesSeeder : ISeeder
     {
         var roleManager = services.GetService<RoleManager<Role>>();
 
-        await SeedRoleAsync(roleManager, Roles.SUPERADMIN);
-        await SeedRoleAsync(roleManager, Roles.ADMIN);
-        await SeedRoleAsync(roleManager, Roles.EDITOR);
-        await SeedRoleAsync(roleManager, Roles.USER);
+        await this.SeedRoleAsync(roleManager, Roles.SUPERADMIN);
+        await this.SeedRoleAsync(roleManager, Roles.ADMIN);
+        await this.SeedRoleAsync(roleManager, Roles.EDITOR);
+        await this.SeedRoleAsync(roleManager, Roles.USER);
     }
 
     private async Task SeedRoleAsync(RoleManager<Role> roleManager, string roleName)
