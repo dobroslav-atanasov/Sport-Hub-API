@@ -74,6 +74,6 @@ public class Participation : BaseDeletableEntity<Guid>, IEquatable<Participation
 
     public override bool Equals(object obj)
     {
-        return (obj is Participation && this.Equals((Participation)obj));
+        return obj is Participation && this.Equals((Participation)obj);
     }
 }

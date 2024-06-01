@@ -163,7 +163,7 @@ public class Athlete : BaseDeletableEntity<Guid>, IEquatable<Athlete>
             equals = false;
         }
 
-        if (this.Description != Description)
+        if (this.Description != this.Description)
         {
             other.Description = this.Description;
             equals = false;

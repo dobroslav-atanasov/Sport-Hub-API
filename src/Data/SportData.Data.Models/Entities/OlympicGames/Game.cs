@@ -164,6 +164,6 @@ public class Game : BaseDeletableEntity<int>, IEquatable<Game>
 
     public override bool Equals(object obj)
     {
-        return (obj is Game && this.Equals((Game)obj));
+        return obj is Game && this.Equals((Game)obj);
     }
 }

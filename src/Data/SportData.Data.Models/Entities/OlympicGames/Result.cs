@@ -39,6 +39,6 @@ public class Result : BaseDeletableEntity<Guid>, IEquatable<Result>
 
     public override bool Equals(object obj)
     {
-        return (obj is Result && this.Equals((Result)obj));
+        return obj is Result && this.Equals((Result)obj);
     }
 }

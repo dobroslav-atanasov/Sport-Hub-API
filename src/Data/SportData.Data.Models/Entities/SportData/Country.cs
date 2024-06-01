@@ -58,81 +58,81 @@ public class Country : BaseDeletableEntity<int>, IUpdatable<Country>
     {
         var isUpdated = false;
 
-        if (Name != other.Name)
+        if (this.Name != other.Name)
         {
-            Name = other.Name;
+            this.Name = other.Name;
             isUpdated = true;
         }
 
-        if (OfficialName != other.OfficialName)
+        if (this.OfficialName != other.OfficialName)
         {
-            OfficialName = other.OfficialName;
+            this.OfficialName = other.OfficialName;
             isUpdated = true;
         }
 
-        if (IsIndependent != other.IsIndependent)
+        if (this.IsIndependent != other.IsIndependent)
         {
-            IsIndependent = other.IsIndependent;
+            this.IsIndependent = other.IsIndependent;
             isUpdated = true;
         }
 
-        if (Capital != other.Capital)
+        if (this.Capital != other.Capital)
         {
-            Capital = other.Capital;
+            this.Capital = other.Capital;
             isUpdated = true;
         }
 
-        if (Continent != other.Continent)
+        if (this.Continent != other.Continent)
         {
-            Continent = other.Continent;
+            this.Continent = other.Continent;
             isUpdated = true;
         }
 
-        if (MemberOf != other.MemberOf)
+        if (this.MemberOf != other.MemberOf)
         {
-            MemberOf = other.MemberOf;
+            this.MemberOf = other.MemberOf;
             isUpdated = true;
         }
 
-        if (Population != other.Population)
+        if (this.Population != other.Population)
         {
-            Population = other.Population;
+            this.Population = other.Population;
             isUpdated = true;
         }
 
-        if (TotalArea != other.TotalArea)
+        if (this.TotalArea != other.TotalArea)
         {
-            TotalArea = other.TotalArea;
+            this.TotalArea = other.TotalArea;
             isUpdated = true;
         }
 
-        if (HighestPointPlace != other.HighestPointPlace)
+        if (this.HighestPointPlace != other.HighestPointPlace)
         {
-            HighestPointPlace = other.HighestPointPlace;
+            this.HighestPointPlace = other.HighestPointPlace;
             isUpdated = true;
         }
 
-        if (HighestPoint != other.HighestPoint)
+        if (this.HighestPoint != other.HighestPoint)
         {
-            HighestPoint = other.HighestPoint;
+            this.HighestPoint = other.HighestPoint;
             isUpdated = true;
         }
 
-        if (LowestPointPlace != other.LowestPointPlace)
+        if (this.LowestPointPlace != other.LowestPointPlace)
         {
-            LowestPointPlace = other.LowestPointPlace;
+            this.LowestPointPlace = other.LowestPointPlace;
             isUpdated = true;
         }
 
-        if (LowestPoint != other.LowestPoint)
+        if (this.LowestPoint != other.LowestPoint)
         {
-            LowestPoint = other.LowestPoint;
+            this.LowestPoint = other.LowestPoint;
             isUpdated = true;
         }
 
-        if (Flag != other.Flag)
+        if (this.Flag != other.Flag)
         {
-            Flag = other.Flag;
+            this.Flag = other.Flag;
             isUpdated = true;
         }
 
