@@ -126,6 +126,8 @@ services.AddScoped<CurlingConverter>();
 services.AddScoped<CyclingConverter>();
 services.AddScoped<EquestrianConverter>();
 services.AddScoped<FencingConverter>();
+services.AddScoped<SkatingConverter>();
+services.AddScoped<FootballConverter>();
 
 var serviceProvider = services.BuildServiceProvider();
 
