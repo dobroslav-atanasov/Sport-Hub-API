@@ -202,5 +202,18 @@ public class OlympicGamesProfile : Profile
            .ForPath(x => x.Team2.Points, opt => opt.MapFrom(y => y.Team2.Points))
            .ForPath(x => x.Team2.Seed, opt => opt.MapFrom(y => y.Team2.Seed))
            .ReverseMap();
+
+        this.CreateMap<MatchModel, TeamMatch<Football>>()
+           .ForPath(x => x.Team1.Id, opt => opt.MapFrom(y => y.Team1.Id))
+           .ForPath(x => x.Team1.Name, opt => opt.MapFrom(y => y.Team1.Name))
+           .ForPath(x => x.Team1.NOC, opt => opt.MapFrom(y => y.Team1.NOC))
+           .ForPath(x => x.Team1.MatchResult, opt => opt.MapFrom(y => y.Team1.MatchResult))
+           .ForPath(x => x.Team1.Goals, opt => opt.MapFrom(y => y.Team1.Points))
+           .ForPath(x => x.Team2.Id, opt => opt.MapFrom(y => y.Team2.Id))
+           .ForPath(x => x.Team2.Name, opt => opt.MapFrom(y => y.Team2.Name))
+           .ForPath(x => x.Team2.NOC, opt => opt.MapFrom(y => y.Team2.NOC))
+           .ForPath(x => x.Team2.MatchResult, opt => opt.MapFrom(y => y.Team2.MatchResult))
+           .ForPath(x => x.Team2.Goals, opt => opt.MapFrom(y => y.Team2.Points))
+           .ReverseMap();
     }
 }
