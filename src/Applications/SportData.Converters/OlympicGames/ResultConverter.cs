@@ -38,6 +38,8 @@ public class ResultConverter : BaseOlympediaConverter
     private readonly CyclingConverter cyclingConverter;
     private readonly EquestrianConverter equestrianConverter;
     private readonly FencingConverter fencingConverter;
+    private readonly SkatingConverter skatingConverter;
+    private readonly FootballConverter footballConverter;
 
     public ResultConverter(ILogger<BaseConverter> logger, ICrawlersService crawlersService, ILogsService logsService, IGroupsService groupsService, IZipService zipService,
         IRegExpService regExpService, INormalizeService normalizeService, IOlympediaService olympediaService, IDataCacheService dataCacheService,
@@ -45,7 +47,7 @@ public class ResultConverter : BaseOlympediaConverter
         AthleticsConverter athleticsConverter, AquaticsConverter aquaticsConverter, BadmintonConverter badmintonConverter, BaseballSoftballConverter baseballSoftballConverter,
         OldSportsConverter oldSportsConverter, VolleyballConverter volleyballConverter, BiathlonConverter biathlonConverter, BobsleighConverter bobsleighConverter,
         BoxingConverter boxingConverter, CanoeConverter canoeConverter, CurlingConverter curlingConverter, CyclingConverter cyclingConverter, EquestrianConverter equestrianConverter,
-        FencingConverter fencingConverter)
+        FencingConverter fencingConverter, SkatingConverter skatingConverter, FootballConverter footballConverter)
         : base(logger, crawlersService, logsService, groupsService, zipService, regExpService, normalizeService, olympediaService, dataCacheService)
     {
         this.dateService = dateService;
@@ -67,6 +69,8 @@ public class ResultConverter : BaseOlympediaConverter
         this.cyclingConverter = cyclingConverter;
         this.equestrianConverter = equestrianConverter;
         this.fencingConverter = fencingConverter;
+        this.skatingConverter = skatingConverter;
+        this.footballConverter = footballConverter;
     }
 
     protected override async Task ProcessGroupAsync(Group group)
@@ -104,76 +108,82 @@ public class ResultConverter : BaseOlympediaConverter
 
                     switch (disciplineCache.Name)
                     {
-                        //case DisciplineConstants.BASKETBALL_3X3:
-                        //case DisciplineConstants.BASKETBALL:
-                        //    await this.basketballConverter.ProcessAsync(options);
-                        //    break;
-                        //case DisciplineConstants.ALPINE_SKIING:
-                        //case DisciplineConstants.CROSS_COUNTRY_SKIING:
-                        //    await this.skiingConverter.ProcessAsync(options);
-                        //    break;
-                        //case DisciplineConstants.ARCHERY:
-                        //    await this.archeryConverter.ProcessAsync(options);
-                        //    break;
-                        //case DisciplineConstants.ARTISTIC_GYMNASTICS:
-                        //    await this.gymnasticsConverter.ProcessAsync(options);
-                        //    break;
-                        //case DisciplineConstants.ARTISTIC_SWIMMING:
-                        //case DisciplineConstants.DIVING:
-                        //    await this.aquaticsConverter.ProcessAsync(options);
-                        //    break;
-                        //case DisciplineConstants.ATHLETICS:
-                        //    await this.athleticsConverter.ProcessAsync(options);
-                        //    break;
-                        //case DisciplineConstants.BADMINTON:
-                        //    await this.badmintonConverter.ProcessAsync(options);
-                        //    break;
-                        //case DisciplineConstants.BASEBALL:
-                        //case DisciplineConstants.SOFTBALL:
-                        //    await this.baseballSoftballConverter.ProcessAsync(options);
-                        //    break;
-                        //case DisciplineConstants.BASQUE_PELOTA:
-                        //case DisciplineConstants.CRICKET:
-                        //case DisciplineConstants.CROQUET: // TODO
-                        //    await this.oldSportsConverter.ProcessAsync(options);
-                        //    break;
-                        //case DisciplineConstants.BEACH_VOLLEYBALL:
-                        //case DisciplineConstants.VOLLEYBALL:
-                        //    await this.volleyballConverter.ProcessAsync(options);
-                        //    break;
-                        //case DisciplineConstants.BIATHLON:
-                        //    await this.biathlonConverter.ProcessAsync(options);
-                        //    break;
-                        //case DisciplineConstants.BOBSLEIGH:
-                        //case DisciplineConstants.SKELETON:
-                        //    await this.bobsleighConverter.ProcessAsync(options);
-                        //    break;
-                        //case DisciplineConstants.BOXING:
-                        //    await this.boxingConverter.ProcessAsync(options);
-                        //    break;
-                        //case DisciplineConstants.CANOE_SLALOM:
-                        //case DisciplineConstants.CANOE_SPRINT:
-                        //    await this.canoeConverter.ProcessAsync(options);
-                        //    break;
-                        //case DisciplineConstants.CURLING:
-                        //    await this.curlingConverter.ProcessAsync(options);
-                        //    break;
-                        //case DisciplineConstants.CYCLING_BMX_FREESTYLE:
-                        //case DisciplineConstants.CYCLING_BMX_RACING:
-                        //case DisciplineConstants.CYCLING_MOUNTAIN_BIKE:
-                        //case DisciplineConstants.CYCLING_ROAD:
-                        //case DisciplineConstants.CYCLING_TRACK: // TODO
-                        //    await this.cyclingConverter.ProcessAsync(options);
-                        //    break;
-                        //case DisciplineConstants.EQUESTRIAN_DRESSAGE: // TODO
-                        //case DisciplineConstants.EQUESTRIAN_DRIVING:  // TODO
-                        //case DisciplineConstants.EQUESTRIAN_EVENTING: // TODO
-                        //case DisciplineConstants.EQUESTRIAN_JUMPING:  // TODO
-                        //case DisciplineConstants.EQUESTRIAN_VAULTING: // TODO
-                        //    await this.equestrianConverter.ProcessAsync(options);
-                        //    break;
+                        case DisciplineConstants.BASKETBALL_3X3:
+                        case DisciplineConstants.BASKETBALL:
+                            await this.basketballConverter.ProcessAsync(options);
+                            break;
+                        case DisciplineConstants.ALPINE_SKIING:
+                        case DisciplineConstants.CROSS_COUNTRY_SKIING:
+                            await this.skiingConverter.ProcessAsync(options);
+                            break;
+                        case DisciplineConstants.ARCHERY:
+                            await this.archeryConverter.ProcessAsync(options);
+                            break;
+                        case DisciplineConstants.ARTISTIC_GYMNASTICS:
+                            await this.gymnasticsConverter.ProcessAsync(options);
+                            break;
+                        case DisciplineConstants.ARTISTIC_SWIMMING:
+                        case DisciplineConstants.DIVING:
+                            await this.aquaticsConverter.ProcessAsync(options);
+                            break;
+                        case DisciplineConstants.ATHLETICS:
+                            await this.athleticsConverter.ProcessAsync(options);
+                            break;
+                        case DisciplineConstants.BADMINTON:
+                            await this.badmintonConverter.ProcessAsync(options);
+                            break;
+                        case DisciplineConstants.BASEBALL:
+                        case DisciplineConstants.SOFTBALL:
+                            await this.baseballSoftballConverter.ProcessAsync(options);
+                            break;
+                        case DisciplineConstants.BASQUE_PELOTA:
+                        case DisciplineConstants.CRICKET:
+                        case DisciplineConstants.CROQUET: // TODO
+                            await this.oldSportsConverter.ProcessAsync(options);
+                            break;
+                        case DisciplineConstants.BEACH_VOLLEYBALL:
+                        case DisciplineConstants.VOLLEYBALL:
+                            await this.volleyballConverter.ProcessAsync(options);
+                            break;
+                        case DisciplineConstants.BIATHLON:
+                            await this.biathlonConverter.ProcessAsync(options);
+                            break;
+                        case DisciplineConstants.BOBSLEIGH:
+                        case DisciplineConstants.SKELETON:
+                            await this.bobsleighConverter.ProcessAsync(options);
+                            break;
+                        case DisciplineConstants.BOXING:
+                            await this.boxingConverter.ProcessAsync(options);
+                            break;
+                        case DisciplineConstants.CANOE_SLALOM:
+                        case DisciplineConstants.CANOE_SPRINT:
+                            await this.canoeConverter.ProcessAsync(options);
+                            break;
+                        case DisciplineConstants.CURLING:
+                            await this.curlingConverter.ProcessAsync(options);
+                            break;
+                        case DisciplineConstants.CYCLING_BMX_FREESTYLE:
+                        case DisciplineConstants.CYCLING_BMX_RACING:
+                        case DisciplineConstants.CYCLING_MOUNTAIN_BIKE:
+                        case DisciplineConstants.CYCLING_ROAD:
+                        case DisciplineConstants.CYCLING_TRACK: // TODO
+                            await this.cyclingConverter.ProcessAsync(options);
+                            break;
+                        case DisciplineConstants.EQUESTRIAN_DRESSAGE: // TODO
+                        case DisciplineConstants.EQUESTRIAN_DRIVING:  // TODO
+                        case DisciplineConstants.EQUESTRIAN_EVENTING: // TODO
+                        case DisciplineConstants.EQUESTRIAN_JUMPING:  // TODO
+                        case DisciplineConstants.EQUESTRIAN_VAULTING: // TODO
+                            await this.equestrianConverter.ProcessAsync(options);
+                            break;
                         case DisciplineConstants.FENCING:
                             await this.fencingConverter.ProcessAsync(options);
+                            break;
+                        case DisciplineConstants.FIGURE_SKATING:
+                            await this.skatingConverter.ProcessAsync(options); // TODO
+                            break;
+                        case DisciplineConstants.FOOTBALL:
+                            await this.footballConverter.ProcessAsync(options);
                             break;
                     }
                 }
@@ -244,7 +254,7 @@ public class ResultConverter : BaseOlympediaConverter
             }
         }
 
-        for (int i = 1; i < models.Count; i++)
+        for (var i = 1; i < models.Count; i++)
         {
             var pattern = $"({models[i].NameHtml.Replace("(", @"\(").Replace(")", @"\)").Replace("/", @"\/")})";
             if (i != models.Count - 1)
@@ -298,7 +308,7 @@ public class ResultConverter : BaseOlympediaConverter
                 if (models[i].Type == RoundTypeEnum.PreliminaryRound && (models[i].SubType == RoundTypeEnum.Group || models[i].SubType == RoundTypeEnum.Pool || models[i].SubType == RoundTypeEnum.Heat))
                 {
                     RoundDataModel previousRound = null;
-                    for (int z = i - 1; z >= 0; z--)
+                    for (var z = i - 1; z >= 0; z--)
                     {
                         if ((models[z].Type != RoundTypeEnum.PreliminaryRound && models[z].SubType != RoundTypeEnum.Group && models[z].SubType != RoundTypeEnum.Pool && models[z].SubType != RoundTypeEnum.Heat) || models[z].Type == RoundTypeEnum.PreliminaryRound)
                         {

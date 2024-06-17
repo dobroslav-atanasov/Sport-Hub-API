@@ -38,7 +38,7 @@ public class NOCConverter : BaseOlympediaConverter
                 var name = match.Groups[1].Value.Decode().Trim();
                 var code = match.Groups[2].Value.Decode().Trim().ToUpper();
 
-                if (code != null && code != "UNK" && code != "CRT")
+                if (code is not null and not "UNK" and not "CRT")
                 {
                     var description = this.RegExpService.CutHtml(document
                         .DocumentNode
@@ -141,8 +141,8 @@ public class NOCConverter : BaseOlympediaConverter
         var tuple = Tuple.Create<int?, int?>(null, null);
         if (match != null)
         {
-            int.TryParse(match.Groups[1].Value, out int from);
-            int.TryParse(match.Groups[2].Value, out int to);
+            int.TryParse(match.Groups[1].Value, out var from);
+            int.TryParse(match.Groups[2].Value, out var to);
 
             tuple = Tuple.Create<int?, int?>(from == 0 ? null : from, to == 0 ? null : to);
         }
