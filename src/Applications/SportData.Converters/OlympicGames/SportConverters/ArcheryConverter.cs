@@ -166,11 +166,11 @@ public class ArcheryConverter : BaseSportConverter
         {
             archery.Meters90 = this.GetInt(roundData.Indexes, ConverterConstants.Points, data);
         }
-        else if (info == "Part #1" || info == "Ranking Round, Part #1")
+        else if (info is "Part #1" or "Ranking Round, Part #1")
         {
             archery.Part1 = this.GetInt(roundData.Indexes, ConverterConstants.Points, data);
         }
-        else if (info == "Part #2" || info == "Ranking Round, Part #2")
+        else if (info is "Part #2" or "Ranking Round, Part #2")
         {
             archery.Part2 = this.GetInt(roundData.Indexes, ConverterConstants.Points, data);
         }
@@ -208,7 +208,7 @@ public class ArcheryConverter : BaseSportConverter
                 var firstTable = document.Rounds.FirstOrDefault();
                 if (firstTable != null)
                 {
-                    for (int i = 1; i < firstTable.Rows.Count; i++)
+                    for (var i = 1; i < firstTable.Rows.Count; i++)
                     {
                         var firstTableData = firstTable.Rows[i].Elements("td").ToList();
                         var record = this.OlympediaService.FindRecord(firstTable.Rows[i].OuterHtml);
@@ -259,8 +259,8 @@ public class ArcheryConverter : BaseSportConverter
                                 var points2 = secondTableData[1]?.InnerText.Replace("–", string.Empty);
                                 if (!string.IsNullOrEmpty(points1) && !string.IsNullOrEmpty(points2))
                                 {
-                                    match.Athlete1.Arrows.Add(new Arrow { Number = arrowNumber, Points = (!string.IsNullOrEmpty(points1) ? points1 : null) });
-                                    match.Athlete2.Arrows.Add(new Arrow { Number = arrowNumber, Points = (!string.IsNullOrEmpty(points2) ? points2 : null) });
+                                    match.Athlete1.Arrows.Add(new Arrow { Number = arrowNumber, Points = !string.IsNullOrEmpty(points1) ? points1 : null });
+                                    match.Athlete2.Arrows.Add(new Arrow { Number = arrowNumber, Points = !string.IsNullOrEmpty(points2) ? points2 : null });
                                 }
                             }
                             else
@@ -431,7 +431,7 @@ public class ArcheryConverter : BaseSportConverter
                 var firstTable = document.Rounds.FirstOrDefault();
                 if (firstTable != null)
                 {
-                    for (int i = 1; i < firstTable.Rows.Count; i++)
+                    for (var i = 1; i < firstTable.Rows.Count; i++)
                     {
                         var firstTableData = firstTable.Rows[i].Elements("td").ToList();
                         var record = this.OlympediaService.FindRecord(firstTable.Rows[i].OuterHtml);
@@ -500,7 +500,7 @@ public class ArcheryConverter : BaseSportConverter
                                 var points = this.GetString(secondTable.Indexes, $"Arrow{arrowNumber}", secondTableData);
                                 if (!string.IsNullOrEmpty(points))
                                 {
-                                    athlete.Arrows.Add(new Arrow { Number = arrowNumber, Points = (!string.IsNullOrEmpty(points) ? points : null) });
+                                    athlete.Arrows.Add(new Arrow { Number = arrowNumber, Points = !string.IsNullOrEmpty(points) ? points : null });
                                 }
                             }
 
@@ -544,7 +544,7 @@ public class ArcheryConverter : BaseSportConverter
                                 var points = this.GetString(secondTable.Indexes, $"Arrow{arrowNumber}", thirdTableData);
                                 if (!string.IsNullOrEmpty(points))
                                 {
-                                    athlete.Arrows.Add(new Arrow { Number = arrowNumber, Points = (!string.IsNullOrEmpty(points) ? points : null) });
+                                    athlete.Arrows.Add(new Arrow { Number = arrowNumber, Points = !string.IsNullOrEmpty(points) ? points : null });
                                 }
                             }
 
