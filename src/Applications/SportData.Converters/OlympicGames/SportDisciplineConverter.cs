@@ -43,7 +43,7 @@ public class SportDisciplineConverter : BaseOlympediaConverter
                 {
                     var elements = line.Elements("td").ToList();
                     var name = elements[2].InnerText.Trim();
-                    if (name != "Air Sports" && name != "Mountaineering and Climbing" && name != "Art Competitions")
+                    if (name is not "Air Sports" and not "Mountaineering and Climbing" and not "Art Competitions")
                     {
                         var olympicGameTypeEnum = elements[3].InnerText.Trim().ToEnum<OlympicGameTypeEnum>();
                         //var olympicGameType = this.dataCacheService.OlympicGameTypes.FirstOrDefault(x => x.Name.Equals(elements[3].InnerText.Trim(), StringComparison.CurrentCultureIgnoreCase));
