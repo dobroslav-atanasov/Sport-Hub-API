@@ -458,23 +458,23 @@ public class SkiingConverter : BaseSportConverter
             else
             {
                 var athlete = round.Athletes.FirstOrDefault(x => x.Code == athleteModel.Code);
-                if (info == "Downhill" || info == "Downhill1")
+                if (info is "Downhill" or "Downhill1")
                 {
                     athlete.Downhill = this.GetTime(roundData.Indexes, ConverterConstants.Time, data);
                     athlete.DownhillPoints = this.GetDouble(roundData.Indexes, ConverterConstants.Points, data);
                 }
-                else if (info == "Slalom" || info == "Slalom1")
+                else if (info is "Slalom" or "Slalom1")
                 {
                     athlete.Slalom = this.GetTime(roundData.Indexes, ConverterConstants.Time, data);
                     athlete.Run1 = this.GetTime(roundData.Indexes, ConverterConstants.Run1, data);
                     athlete.Run2 = this.GetTime(roundData.Indexes, ConverterConstants.Run2, data);
                     athlete.SlalomPoints = this.GetDouble(roundData.Indexes, ConverterConstants.Points, data);
                 }
-                else if (info == "Run #1" || info == "Run #11")
+                else if (info is "Run #1" or "Run #11")
                 {
                     athlete.Run1 = this.GetTime(roundData.Indexes, ConverterConstants.Time, data);
                 }
-                else if (info == "Run #2" || info == "Run #21")
+                else if (info is "Run #2" or "Run #21")
                 {
                     athlete.Run2 = this.GetTime(roundData.Indexes, ConverterConstants.Time, data);
                 }

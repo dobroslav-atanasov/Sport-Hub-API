@@ -66,15 +66,15 @@ public class VolleyballConverter : BaseSportConverter
                 EventId = options.Event.Id,
                 IsTeam = options.Event.IsTeamEvent,
                 IsDoubles = true,
-                HomeName = year == 1996 || year == 2004 || year == 2020 ? data[2].OuterHtml : data[3].OuterHtml,
-                HomeNOC = year == 1996 || year == 2004 || year == 2020 ? data[3].OuterHtml : data[4].OuterHtml,
-                Result = year == 1996 || year == 2004 || year == 2020 ? data[4].OuterHtml : data[5].OuterHtml,
-                AwayName = year == 1996 || year == 2004 || year == 2020 ? data[5].OuterHtml : data[6].OuterHtml,
-                AwayNOC = year == 1996 || year == 2004 || year == 2020 ? data[6].OuterHtml : data[7].OuterHtml,
+                HomeName = year is 1996 or 2004 or 2020 ? data[2].OuterHtml : data[3].OuterHtml,
+                HomeNOC = year is 1996 or 2004 or 2020 ? data[3].OuterHtml : data[4].OuterHtml,
+                Result = year is 1996 or 2004 or 2020 ? data[4].OuterHtml : data[5].OuterHtml,
+                AwayName = year is 1996 or 2004 or 2020 ? data[5].OuterHtml : data[6].OuterHtml,
+                AwayNOC = year is 1996 or 2004 or 2020 ? data[6].OuterHtml : data[7].OuterHtml,
                 AnyParts = true,
                 RoundType = roundData.Type,
                 RoundSubType = roundData.SubType,
-                Location = year == 1996 || year == 2004 || year == 2020 ? null : data[2].InnerText,
+                Location = year is 1996 or 2004 or 2020 ? null : data[2].InnerText,
             };
             var matchModel = await this.GetMatchAsync(matchInputModel);
 
