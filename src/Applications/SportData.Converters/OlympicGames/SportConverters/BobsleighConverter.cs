@@ -75,7 +75,7 @@ public class BobsleighConverter : BaseSportConverter
                 break;
         }
 
-        for (int i = 1; i < roundData.Rows.Count; i++)
+        for (var i = 1; i < roundData.Rows.Count; i++)
         {
             var row = roundData.Rows[i];
             var data = row.Elements("td").ToList();
@@ -128,7 +128,7 @@ public class BobsleighConverter : BaseSportConverter
 
     private async Task SetBobsleighTeamsAsync(Round<Bobsleigh> round, RoundDataModel roundData, Guid eventId, bool isTeamEvent)
     {
-        for (int i = 1; i < roundData.Rows.Count; i++)
+        for (var i = 1; i < roundData.Rows.Count; i++)
         {
             var row = roundData.Rows[i];
             var data = row.Elements("td").ToList();
