@@ -115,40 +115,44 @@ public abstract class BaseSportConverter
             {
                 ;
             }
-
-            match.Team1.Id = homeTeam.Id;
-            match.Team1.Name = homeTeam.Name;
-            match.Team1.NOC = homeTeamNOCCode;
-            match.Team1.Seed = this.OlympediaService.FindSeedNumber(input.HomeName);
-
-            if (match.Decision == DecisionType.None)
+            else
             {
-                var awayTeamNOCCode = this.OlympediaService.FindNOCCode(input.AwayNOC);
-                if (awayTeamNOCCode != null)
+                match.Team1.Id = homeTeam.Id;
+                match.Team1.Name = homeTeam.Name;
+                match.Team1.NOC = homeTeamNOCCode;
+                match.Team1.Seed = this.OlympediaService.FindSeedNumber(input.HomeName);
+
+                if (match.Decision == DecisionType.None)
                 {
-                    var awayTeamNOC = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == awayTeamNOCCode);
-                    Team awayTeam = null;
-                    if (input.IsDoubles)
+                    var awayTeamNOCCode = this.OlympediaService.FindNOCCode(input.AwayNOC);
+                    if (awayTeamNOCCode != null)
                     {
-                        var athleteModels = this.OlympediaService.FindAthletes(input.AwayName);
-                        var participant = await this.ParticipationRepository.GetAsync(x => x.Code == athleteModels.FirstOrDefault().Code && x.EventId == input.EventId);
-                        awayTeam = await this.TeamRepository.GetAsync(x => x.NOCId == awayTeamNOC.Id && x.Squads.Any(x => x.ParticipationId == participant.Id));
-                    }
-                    else
-                    {
-                        awayTeam = await this.TeamRepository.GetAsync(x => x.NOCId == awayTeamNOC.Id && x.EventId == input.EventId);
-                        //awayTeam ??= await this.TeamRepository.GetAsync(x => x.NOCId == awayTeamNOC.Id && x.EventId == input.EventId && x.Name == input.AwayName);
-                    }
+                        var awayTeamNOC = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == awayTeamNOCCode);
+                        Team awayTeam = null;
+                        if (input.IsDoubles)
+                        {
+                            var athleteModels = this.OlympediaService.FindAthletes(input.AwayName);
+                            var participant = await this.ParticipationRepository.GetAsync(x => x.Code == athleteModels.FirstOrDefault().Code && x.EventId == input.EventId);
+                            awayTeam = await this.TeamRepository.GetAsync(x => x.NOCId == awayTeamNOC.Id && x.Squads.Any(x => x.ParticipationId == participant.Id));
+                        }
+                        else
+                        {
+                            awayTeam = await this.TeamRepository.GetAsync(x => x.NOCId == awayTeamNOC.Id && x.EventId == input.EventId);
+                            //awayTeam ??= await this.TeamRepository.GetAsync(x => x.NOCId == awayTeamNOC.Id && x.EventId == input.EventId && x.Name == input.AwayName);
+                        }
 
-                    if (awayTeam == null)
-                    {
-                        ;
+                        if (awayTeam == null)
+                        {
+                            ;
+                        }
+                        else
+                        {
+                            match.Team2.Id = awayTeam.Id;
+                            match.Team2.Name = awayTeam.Name;
+                            match.Team2.NOC = awayTeamNOCCode;
+                            match.Team2.Seed = this.OlympediaService.FindSeedNumber(input.AwayName);
+                        }
                     }
-
-                    match.Team2.Id = awayTeam.Id;
-                    match.Team2.Name = awayTeam.Name;
-                    match.Team2.NOC = awayTeamNOCCode;
-                    match.Team2.Seed = this.OlympediaService.FindSeedNumber(input.AwayName);
                 }
             }
         }
@@ -157,30 +161,36 @@ public abstract class BaseSportConverter
             var homeAthleteModel = this.OlympediaService.FindAthlete(input.HomeName);
             var homeAthleteNOCCode = this.OlympediaService.FindNOCCode(input.HomeNOC);
             var homeAthleteNOC = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == homeAthleteNOCCode);
-            var homeAthlete = await this.ParticipationRepository.GetAsync(x => x.Code == homeAthleteModel.Code && x.EventId == input.EventId);
-            homeAthlete ??= await this.ParticipationRepository.GetAsync(x => x.Code == homeAthleteModel.Code && x.EventId == input.EventId && x.NOCId == homeAthleteNOC.Id);
-
-            match.Team1.Id = homeAthlete.Id;
-            match.Team1.Name = homeAthleteModel.Name;
-            match.Team1.NOC = homeAthleteNOCCode;
-            match.Team1.Code = homeAthleteModel.Code;
-            match.Team1.Seed = this.OlympediaService.FindSeedNumber(input.HomeName);
-
-            if (match.Decision == DecisionType.None)
+            if (homeAthleteModel != null)
             {
-                var awayAthleteModel = this.OlympediaService.FindAthlete(input.AwayName);
-                var awayAthleteNOCCode = this.OlympediaService.FindNOCCode(input.AwayNOC);
-                if (awayAthleteModel != null && awayAthleteNOCCode != null)
-                {
-                    var awayAthleteNOC = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == awayAthleteNOCCode);
-                    var awayAthlete = await this.ParticipationRepository.GetAsync(x => x.Code == awayAthleteModel.Code && x.EventId == input.EventId);
-                    awayAthlete ??= await this.ParticipationRepository.GetAsync(x => x.Code == awayAthleteModel.Code && x.EventId == input.EventId && x.NOCId == awayAthleteNOC.Id);
+                var homeAthlete = await this.ParticipationRepository.GetAsync(x => x.Code == homeAthleteModel.Code && x.EventId == input.EventId);
+                homeAthlete ??= await this.ParticipationRepository.GetAsync(x => x.Code == homeAthleteModel.Code && x.EventId == input.EventId && x.NOCId == homeAthleteNOC.Id);
 
-                    match.Team2.Id = awayAthlete.Id;
-                    match.Team2.Name = awayAthleteModel.Name;
-                    match.Team2.NOC = awayAthleteNOCCode;
-                    match.Team2.Code = awayAthleteModel.Code;
-                    match.Team2.Seed = this.OlympediaService.FindSeedNumber(input.AwayName);
+                match.Team1.Id = homeAthlete.Id;
+                match.Team1.Name = homeAthleteModel.Name;
+                match.Team1.NOC = homeAthleteNOCCode;
+                match.Team1.Code = homeAthleteModel.Code;
+                match.Team1.Seed = this.OlympediaService.FindSeedNumber(input.HomeName);
+
+                if (match.Decision == DecisionType.None)
+                {
+                    var awayAthleteModel = this.OlympediaService.FindAthlete(input.AwayName);
+                    var awayAthleteNOCCode = this.OlympediaService.FindNOCCode(input.AwayNOC);
+                    if (awayAthleteModel != null && awayAthleteNOCCode != null)
+                    {
+                        var awayAthleteNOC = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == awayAthleteNOCCode);
+                        var awayAthlete = await this.ParticipationRepository.GetAsync(x => x.Code == awayAthleteModel.Code && x.EventId == input.EventId);
+                        awayAthlete ??= await this.ParticipationRepository.GetAsync(x => x.Code == awayAthleteModel.Code && x.EventId == input.EventId && x.NOCId == awayAthleteNOC.Id);
+
+                        if (awayAthlete != null)
+                        {
+                            match.Team2.Id = awayAthlete.Id;
+                            match.Team2.Name = awayAthleteModel.Name;
+                            match.Team2.NOC = awayAthleteNOCCode;
+                            match.Team2.Code = awayAthleteModel.Code;
+                            match.Team2.Seed = this.OlympediaService.FindSeedNumber(input.AwayName);
+                        }
+                    }
                 }
             }
         }
@@ -213,7 +223,7 @@ public abstract class BaseSportConverter
                     isDone = true;
                 }
 
-                for (int i = 0; i < 5; i++)
+                for (var i = 0; i < 5; i++)
                 {
                     var team1Points = match.Team1.Parts.ElementAtOrDefault(i);
                     var team2Points = match.Team2.Parts.ElementAtOrDefault(i);
@@ -341,17 +351,17 @@ public abstract class BaseSportConverter
 
     protected int? GetInt(Dictionary<string, int> indexes, string name, List<HtmlNode> nodes)
     {
-        return indexes.TryGetValue(name, out int value) ? this.RegExpService.MatchInt(nodes[value].InnerText) : null;
+        return indexes.TryGetValue(name, out var value) ? this.RegExpService.MatchInt(nodes[value].InnerText) : null;
     }
 
     protected double? GetDouble(Dictionary<string, int> indexes, string name, List<HtmlNode> nodes)
     {
-        return indexes.TryGetValue(name, out int value) ? this.RegExpService.MatchDouble(nodes[value].InnerText) : null;
+        return indexes.TryGetValue(name, out var value) ? this.RegExpService.MatchDouble(nodes[value].InnerText) : null;
     }
 
     protected string GetString(Dictionary<string, int> indexes, string name, List<HtmlNode> nodes)
     {
-        var data = indexes.TryGetValue(name, out int value) ? nodes[value].InnerText : null;
+        var data = indexes.TryGetValue(name, out var value) ? nodes[value].InnerText : null;
         if (string.IsNullOrEmpty(data))
         {
             return null;
@@ -362,7 +372,7 @@ public abstract class BaseSportConverter
 
     protected TimeSpan? GetTime(Dictionary<string, int> indexes, string name, List<HtmlNode> nodes)
     {
-        return indexes.TryGetValue(name, out int value) ? this.DateService.ParseTime(nodes[value].InnerText) : null;
+        return indexes.TryGetValue(name, out var value) ? this.DateService.ParseTime(nodes[value].InnerText) : null;
     }
 
     protected async Task ProcessJsonAsync<TModel>(List<Round<TModel>> rounds, Options options)
