@@ -52,15 +52,15 @@ public class BaseballSoftballConverter : BaseSportConverter
                 Year = options.Game.Year,
                 EventId = options.Event.Id,
                 IsTeam = options.Event.IsTeamEvent,
-                HomeName = options.Game.Year != 2004 && options.Game.Year != 2008 ? data[2].OuterHtml : data[3].OuterHtml,
-                HomeNOC = options.Game.Year != 2004 && options.Game.Year != 2008 ? data[3].OuterHtml : data[4].OuterHtml,
-                Result = options.Game.Year != 2004 && options.Game.Year != 2008 ? data[4].OuterHtml : data[5].OuterHtml,
-                AwayName = options.Game.Year != 2004 && options.Game.Year != 2008 ? data[5].OuterHtml : data[6].OuterHtml,
-                AwayNOC = options.Game.Year != 2004 && options.Game.Year != 2008 ? data[6].OuterHtml : data[7].OuterHtml,
+                HomeName = options.Game.Year is not 2004 and not 2008 ? data[2].OuterHtml : data[3].OuterHtml,
+                HomeNOC = options.Game.Year is not 2004 and not 2008 ? data[3].OuterHtml : data[4].OuterHtml,
+                Result = options.Game.Year is not 2004 and not 2008 ? data[4].OuterHtml : data[5].OuterHtml,
+                AwayName = options.Game.Year is not 2004 and not 2008 ? data[5].OuterHtml : data[6].OuterHtml,
+                AwayNOC = options.Game.Year is not 2004 and not 2008 ? data[6].OuterHtml : data[7].OuterHtml,
                 AnyParts = false,
                 RoundType = roundData.Type,
                 RoundSubType = roundData.SubType,
-                Location = options.Game.Year != 2004 && options.Game.Year != 2008 ? null : data[2].InnerText,
+                Location = options.Game.Year is not 2004 and not 2008 ? null : data[2].InnerText,
             };
             var matchModel = await this.GetMatchAsync(matchInputModel);
             var match = this.Mapper.Map<TeamMatch<Baseball>>(matchModel);
