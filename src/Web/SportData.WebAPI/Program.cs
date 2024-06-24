@@ -198,7 +198,6 @@ public class Program
         services.AddScoped<ICrawlersService, CrawlersService>();
         services.AddScoped<IGroupsService, GroupsService>();
         services.AddScoped<ILogsService, LogsService>();
-        services.AddScoped<Services.Data.SportDataDb.Interfaces.ICountriesService, Services.Data.SportDataDb.CountriesService>();
         services.AddScoped<Services.Data.SportDataDb.Interfaces.IUsersService, Services.Data.SportDataDb.UsersService>();
     }
 }
