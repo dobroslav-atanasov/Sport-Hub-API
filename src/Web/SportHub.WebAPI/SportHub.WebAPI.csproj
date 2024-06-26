@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <InvariantGlobalization>false</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Asp.Versioning.Http" Version="8.0.0" />
+    <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="8.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\SportHub.Common.Exceptions\SportHub.Common.Exceptions.csproj" />
+    <ProjectReference Include="..\..\Data\SportHub.Data.Seeders\SportHub.Data.Seeders.csproj" />
+    <ProjectReference Include="..\..\Data\SportHub.Data.ViewModels\SportHub.Data.ViewModels.csproj" />
+    <ProjectReference Include="..\..\Services\SportHub.Services.Data\SportHub.Services.Data.csproj" />
+    <ProjectReference Include="..\..\Services\SportHub.Services\SportHub.Services.csproj" />
+    <ProjectReference Include="..\SportHub.WebAPI.Infrastructure\SportHub.WebAPI.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

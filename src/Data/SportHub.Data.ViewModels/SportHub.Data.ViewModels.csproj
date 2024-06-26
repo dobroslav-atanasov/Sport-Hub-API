@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Services\SportHub.Services.Mapper\SportHub.Services.Mapper.csproj" />
+    <ProjectReference Include="..\SportHub.Data.Models\SportHub.Data.Models.csproj" />
+  </ItemGroup>
+
+</Project>

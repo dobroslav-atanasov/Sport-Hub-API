@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.57" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.2.0" />
+    <PackageReference Include="SharpZipLib" Version="1.4.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\SportHub.Common.Constants\SportHub.Common.Constants.csproj" />
+    <ProjectReference Include="..\..\Common\SportHub.Common.Exceptions\SportHub.Common.Exceptions.csproj" />
+    <ProjectReference Include="..\..\Common\SportHub.Common.Extensions\SportHub.Common.Extensions.csproj" />
+    <ProjectReference Include="..\..\Data\SportHub.Data.Models\SportHub.Data.Models.csproj" />
+  </ItemGroup>
+
+</Project>
