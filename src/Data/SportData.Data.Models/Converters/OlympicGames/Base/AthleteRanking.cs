@@ -1,6 +1,0 @@
-﻿namespace SportData.Data.Models.Converters.OlympicGames.Base;
-
-public class AthleteRanking : BaseRanking
-{
-    public int Code { get; set; }
-}
