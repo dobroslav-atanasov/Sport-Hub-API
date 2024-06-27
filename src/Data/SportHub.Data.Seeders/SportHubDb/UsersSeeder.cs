@@ -16,10 +16,10 @@ public class UsersSeeder : ISeeder
     {
         var userManager = services.GetService<UserManager<User>>();
 
-        await this.SeedUserAsync(userManager, "dobriSuperadmin", "1234", "dobriSuperadmin@sportData.com", [Roles.SUPERADMIN, Roles.ADMIN, Roles.EDITOR, Roles.USER]);
-        await this.SeedUserAsync(userManager, "dobriAdmin", "1234", "dobriAdmin@sportData.com", [Roles.ADMIN, Roles.EDITOR, Roles.USER]);
-        await this.SeedUserAsync(userManager, "dobriEditor", "1234", "dobriEditor@sportData.com", [Roles.EDITOR, Roles.USER]);
-        await this.SeedUserAsync(userManager, "dobriUser", "1234", "dobriUser@sportData.com", [Roles.USER]);
+        await this.SeedUserAsync(userManager, "dobriSuperadmin", "Password1!", "dobriSuperadmin@sportData.com", [Roles.SUPERADMIN, Roles.ADMIN, Roles.EDITOR, Roles.USER]);
+        await this.SeedUserAsync(userManager, "dobriAdmin", "P@ssw0rd1!", "dobriAdmin@sportData.com", [Roles.ADMIN, Roles.EDITOR, Roles.USER]);
+        await this.SeedUserAsync(userManager, "dobriEditor", "Password1!", "dobriEditor@sportData.com", [Roles.EDITOR, Roles.USER]);
+        await this.SeedUserAsync(userManager, "dobriUser", "Password1!", "dobriUser@sportData.com", [Roles.USER]);
     }
 
     private async Task SeedUserAsync(UserManager<User> userManager, string username, string password, string email, List<string> roles)

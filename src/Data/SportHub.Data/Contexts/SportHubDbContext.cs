@@ -13,8 +13,6 @@ public class SportHubDbContext : IdentityDbContext<User, Role, string>
     {
     }
 
-    public virtual DbSet<Country> Countries { get; set; }
-
     public override int SaveChanges()
     {
         return this.SaveChanges(true);
