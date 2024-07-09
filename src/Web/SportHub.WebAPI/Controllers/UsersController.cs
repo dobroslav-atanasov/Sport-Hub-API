@@ -27,7 +27,7 @@ public class UsersController : BaseController
         var userExist = await this.userManager.FindByNameAsync(input.Username);
         if (userExist != null)
         {
-            return this.BadRequest(new { Message = "User already exists!" });
+            return this.BadRequest(new { Message = MessageConstants.USER_ALREADY_EXIST });
         }
 
         var user = new User
@@ -45,7 +45,7 @@ public class UsersController : BaseController
 
         await this.userManager.AddToRoleAsync(user, Roles.USER);
 
-        return this.Ok(new { Message = "User created successfully!" });
+        return this.Ok(new { Message = MessageConstants.USER_CREATED_SUCCESSFULLY });
     }
 
     [HttpGet]
