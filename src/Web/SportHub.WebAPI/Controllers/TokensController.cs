@@ -45,16 +45,17 @@ public class TokensController : BaseController
             return this.Ok(token);
         }
 
-        return this.Unauthorized(new { Message = "Invalid username or password!" });
+        return this.Unauthorized(new { Message = MessageConstants.INVALID_USERNAME_OR_PASSWORD });
     }
 
     [HttpPost(RouteConstants.TOKENS_CREATE_REFRESH_TOKEN)]
     [AllowAnonymous]
     public async Task<IActionResult> CreateRefreshToken(TokenModel input)
     {
+
         if (input == null)
         {
-            return this.BadRequest(new { Message = "Invalid token!" });
+            return this.BadRequest(new { Message = MessageConstants.INVALID_TOKEN });
         }
 
         //var principal = this.jwtService.ValidateToken(input.AccessToken);
@@ -68,7 +69,7 @@ public class TokensController : BaseController
         var user = await this.userManager.FindByNameAsync(input.Username);
         if (user == null || user.RefreshToken != input.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
         {
-            return this.BadRequest(new { Message = "Invalid access token or refresh token!" });
+            return this.BadRequest(new { Message = MessageConstants.INVALID_ACCESS_TOKEN_OR_REFRESH_TOKEN });
         }
 
         var roles = await this.userManager.GetRolesAsync(user);
@@ -95,13 +96,13 @@ public class TokensController : BaseController
         var user = await this.userManager.FindByNameAsync(username);
         if (user == null)
         {
-            return this.BadRequest(new { Message = "Invalid username!" });
+            return this.BadRequest(new { Message = MessageConstants.INVALID_USERNAME });
         }
 
         user.RefreshToken = null;
         await this.userManager.UpdateAsync(user);
 
-        return this.Ok(new { Message = $"Refresh token of user: {username} was revoked." });
+        return this.Ok(new { Message = MessageConstants.REFRESH_TOKEN_REVOKED });
     }
 
     [HttpPost(RouteConstants.TOKENS_DELETE_REFRESH_TOKENS)]
@@ -116,6 +117,6 @@ public class TokensController : BaseController
             await this.userManager.UpdateAsync(user);
         }
 
-        return this.Ok(new { Message = $"Refresh token revoked for all users." });
+        return this.Ok(new { Message = MessageConstants.REFRESH_TOKEN_REVOKED_ALL_USERS });
     }
 }
