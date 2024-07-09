@@ -10,6 +10,7 @@ public static class GlobalConstants
     public const string CRAWLER_STORAGE_CONNECTION_STRING = "CrawlerStorageConnectionString";
     public const string OLYMPIC_GAMES_CONNECTION_STRING = "OlympicGamesConnectionString";
     public const string SPORT_DATA_CONNECTION_STRING = "SportHubConnectionString";
+    public const string OG_NEW_CONNECTION_STRING = "OGNewConnectionString";
 
     public const string AUTOMAPPER_MODELS_ASSEMBLY = "SportHub.Data.Models";
     public const string AUTOMAPPER_VIEW_MODELS_ASSEMBLY = "SportHub.Data.ViewModels";
