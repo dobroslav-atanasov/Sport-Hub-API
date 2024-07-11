@@ -16,8 +16,4 @@
     <ProjectReference Include="..\SportHub.Data.Common\SportHub.Data.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Enumerations\OlympicGames\" />
-  </ItemGroup>
-
 </Project>
