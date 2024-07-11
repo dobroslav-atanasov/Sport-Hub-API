@@ -1,6 +1,7 @@
 ﻿namespace SportHub.Data.Models.Cache;
 
 using SportHub.Data.Models.Entities.OlympicGames;
+using SportHub.Data.Models.Enumerations.OlympicGames;
 using SportHub.Services.Mapper.Interfaces;
 
 public class GameCache : IMapFrom<Game>
@@ -9,7 +10,7 @@ public class GameCache : IMapFrom<Game>
 
     public int Year { get; set; }
 
-    public int OlympicGameTypeId { get; set; }
+    public GameTypeEnum Type { get; set; }
 
     public DateTime? OpeningDate { get; set; }
 

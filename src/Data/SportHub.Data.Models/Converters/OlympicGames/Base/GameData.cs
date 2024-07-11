@@ -1,6 +1,6 @@
 ﻿namespace SportHub.Data.Models.Converters.OlympicGames.Base;
 
-using SportHub.Data.Models.Entities.OlympicGames.Enumerations;
+using SportHub.Data.Models.Enumerations.OlympicGames;
 
 public class GameData
 {
@@ -8,5 +8,5 @@ public class GameData
 
     public int Year { get; set; }
 
-    public OlympicGameTypeEnum OlympicGameType { get; set; }
+    public GameTypeEnum Type { get; set; }
 }
