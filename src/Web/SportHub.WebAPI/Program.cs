@@ -24,6 +24,10 @@ using SportHub.Data.Seeders.SportHubDb;
 using SportHub.Services;
 using SportHub.Services.Data.CrawlerStorageDb;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
+using SportHub.Services.Data.OlympicGamesDb;
+using SportHub.Services.Data.OlympicGamesDb.Interfaces;
+using SportHub.Services.Data.SportHubDb;
+using SportHub.Services.Data.SportHubDb.Interfaces;
 using SportHub.Services.Interfaces;
 using SportHub.Services.Mapper;
 using SportHub.WebAPI.Infrastructure.Exceptions;
@@ -89,10 +93,6 @@ public class Program
             .AddEntityFrameworkStores<SportHubDbContext>()
             .AddDefaultTokenProviders();
 
-        // Automapper
-        MapperConfig.RegisterMapper(Assembly.Load(GlobalConstants.AUTOMAPPER_MODELS_ASSEMBLY));
-
-
         // Databases options
         var crawlerStorageDbOptions = new DbContextOptionsBuilder<CrawlerStorageDbContext>()
             .UseSqlServer(configuration.GetConnectionString(GlobalConstants.CRAWLER_STORAGE_CONNECTION_STRING))
@@ -111,6 +111,15 @@ public class Program
             options.UseSqlServer(configuration.GetConnectionString(GlobalConstants.SPORT_DATA_CONNECTION_STRING));
         });
 
+        services.AddDbContext<OlympicGamesDbContext>(options =>
+        {
+            options.UseSqlServer(configuration.GetConnectionString(GlobalConstants.OLYMPIC_GAMES_CONNECTION_STRING));
+            options.UseLazyLoadingProxies();
+        });
+
+        // Automapper
+        MapperConfig.RegisterMapper(Assembly.Load(GlobalConstants.AUTOMAPPER_MODELS_ASSEMBLY), Assembly.Load(GlobalConstants.AUTOMAPPER_VIEW_MODELS_ASSEMBLY));
+
         // API Version
         services.AddApiVersioning(options =>
         {
@@ -126,6 +135,7 @@ public class Program
 
         // Repositories
         services.AddScoped(typeof(SportHubRepository<>));
+        services.AddScoped(typeof(OlympicGamesRepository<>));
 
         // Middlewares
         services.AddTransient<JwtMiddleware>();
@@ -178,6 +188,10 @@ public class Program
 
         app.MapControllers().RequireAuthorization();
 
+        app.MapAreaControllerRoute(name: "OlympicGames", areaName: "OlympicGames", pattern: "{area:exists}/{controller=Games}/{action=Get}/{id?}");
+
+        app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
+
         app.Run();
     }
 
@@ -198,6 +212,8 @@ public class Program
         services.AddScoped<ICrawlersService, CrawlersService>();
         services.AddScoped<IGroupsService, GroupsService>();
         services.AddScoped<ILogsService, LogsService>();
-        services.AddScoped<Services.Data.SportHubDb.Interfaces.IUsersService, Services.Data.SportHubDb.UsersService>();
+        services.AddScoped<IUsersService, UsersService>();
+        services.AddScoped<IGamesService, GamesService>();
+        services.AddScoped<ISportsService, SportsService>();
     }
 }

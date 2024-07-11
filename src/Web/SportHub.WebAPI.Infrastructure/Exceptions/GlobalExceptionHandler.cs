@@ -23,7 +23,7 @@ public class GlobalExceptionHandler : IExceptionHandler
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
         var traceId = Guid.NewGuid();
-        this.logger.LogError($"Error occure while processing the request, TraceId : {traceId}, Message : {exception.Message}, StackTrace: {exception.StackTrace}");
+        this.logger.LogError($"Error occure while processing the request, TraceId: {traceId}, Message: {exception}, StackTrace: {exception.StackTrace}");
 
         var problemDetails = new ProblemDetails
         {
