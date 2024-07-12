@@ -33,115 +33,108 @@ public class AthleteConverter : BaseOlympediaConverter
 
     protected override async Task ProcessGroupAsync(Group group)
     {
-        try
+        await Console.Out.WriteLineAsync($"{this.count++}");
+        var document = this.CreateHtmlDocument(group.Documents.Single());
+        var code = int.Parse(new Uri(group.Documents.Single().Url).Segments.Last());
+        var name = document.DocumentNode.SelectSingleNode("//h1").InnerText.Trim();
+        var typeMatch = this.RegExpService.Match(document.ParsedText, @"<tr>\s*<th>Roles<\/th>\s*<td>(.*?)<\/td><\/tr>");
+        var genderMatch = this.RegExpService.Match(document.ParsedText, @"<tr>\s*<th>Sex<\/th>\s*<td>(Male|Female)<\/td><\/tr>");
+        var gender = this.MapGenderEnum(genderMatch.Groups[1].Value);
+        var bornMatch = this.RegExpService.Match(document.ParsedText, @"<tr>\s*<th>Born<\/th>\s*<td>(.*?)<\/td><\/tr>");
+        var diedMatch = this.RegExpService.Match(document.ParsedText, @"<tr>\s*<th>Died<\/th>\s*<td>(.*?)<\/td><\/tr>");
+        var roles = this.GetAthleteRoles(typeMatch.Groups[1].Value);
+        var bornPlace = this.ExtractCityAndCountry(bornMatch);
+        var diedPlace = this.ExtractCityAndCountry(diedMatch);
+        var clubs = await this.GetClubsAsync(document.ParsedText);
+
+        var athlete = new Athlete
         {
-            await Console.Out.WriteLineAsync($"{this.count++}");
-            var document = this.CreateHtmlDocument(group.Documents.Single());
-            var code = int.Parse(new Uri(group.Documents.Single().Url).Segments.Last());
-            var name = document.DocumentNode.SelectSingleNode("//h1").InnerText.Trim();
-            var typeMatch = this.RegExpService.Match(document.ParsedText, @"<tr>\s*<th>Roles<\/th>\s*<td>(.*?)<\/td><\/tr>");
-            var genderMatch = this.RegExpService.Match(document.ParsedText, @"<tr>\s*<th>Sex<\/th>\s*<td>(Male|Female)<\/td><\/tr>");
-            var gender = this.MapGenderEnum(genderMatch.Groups[1].Value);
-            var bornMatch = this.RegExpService.Match(document.ParsedText, @"<tr>\s*<th>Born<\/th>\s*<td>(.*?)<\/td><\/tr>");
-            var diedMatch = this.RegExpService.Match(document.ParsedText, @"<tr>\s*<th>Died<\/th>\s*<td>(.*?)<\/td><\/tr>");
-            var roles = this.GetAthleteRoles(typeMatch.Groups[1].Value);
-            var bornPlace = this.ExtractCityAndCountry(bornMatch);
-            var diedPlace = this.ExtractCityAndCountry(diedMatch);
-            var clubs = await this.GetClubsAsync(document.ParsedText);
+            Code = code,
+            GenderId = (int)gender,
+            Name = name,
 
-            var athlete = new Athlete
-            {
-                Code = code,
-                GenderId = (int)gender,
-                Name = name,
+            TranslateName = this.NormalizeService.ReplaceNonEnglishLetters(name),
+            FullName = this.RegExpService.MatchFirstGroup(document.ParsedText, @"<tr>\s*<th>Full name<\/th>\s*<td>(.*?)<\/td><\/tr>")?.Replace("•", " "),
+            OriginalName = this.RegExpService.MatchFirstGroup(document.ParsedText, @"<tr>\s*<th>Original name<\/th>\s*<td>(.*?)<\/td><\/tr>")?.Replace("•", " "),
+            Citizenship = this.ExtractCitizenship(document.ParsedText),
+            BirthDate = bornMatch != null ? this.dateService.ParseDate(bornMatch.Groups[1].Value).From : null,
+            BirthCity = bornPlace.Item1,
+            BirthCountry = bornPlace.Item2,
+            DiedDate = diedMatch != null ? this.dateService.ParseDate(diedMatch.Groups[1].Value).From : null,
+            DiedCity = diedPlace.Item1,
+            DiedCountry = diedPlace.Item2,
+            Description = this.RegExpService.CutHtml(this.RegExpService.MatchFirstGroup(document.ParsedText, @"<div class=(?:""|')description(?:""|')>(.*?)<\/div>")),
+            Roles = roles.Select(x => new Role { AthleteTypeId = (int)x }).ToList(),
+            AthletesClubs = clubs.Select(x => new AthleteClub { ClubId = x.Id }).ToList(),
+        };
 
-                TranslateName = this.NormalizeService.ReplaceNonEnglishLetters(name),
-                FullName = this.RegExpService.MatchFirstGroup(document.ParsedText, @"<tr>\s*<th>Full name<\/th>\s*<td>(.*?)<\/td><\/tr>")?.Replace("•", " "),
-                OriginalName = this.RegExpService.MatchFirstGroup(document.ParsedText, @"<tr>\s*<th>Original name<\/th>\s*<td>(.*?)<\/td><\/tr>")?.Replace("•", " "),
-                Citizenship = this.ExtractCitizenship(document.ParsedText),
-                BirthDate = bornMatch != null ? this.dateService.ParseDate(bornMatch.Groups[1].Value).From : null,
-                BirthCity = bornPlace.Item1,
-                BirthCountry = bornPlace.Item2,
-                DiedDate = diedMatch != null ? this.dateService.ParseDate(diedMatch.Groups[1].Value).From : null,
-                DiedCity = diedPlace.Item1,
-                DiedCountry = diedPlace.Item2,
-                Description = this.RegExpService.CutHtml(this.RegExpService.MatchFirstGroup(document.ParsedText, @"<div class=(?:""|')description(?:""|')>(.*?)<\/div>")),
-                Roles = roles.Select(x => new Role { AthleteTypeId = (int)x }).ToList(),
-                AthletesClubs = clubs.Select(x => new AthleteClub { ClubId = x.Id }).ToList(),
-            };
-
-            var measurmentsMatch = this.RegExpService.Match(document.ParsedText, @"<tr>\s*<th>Measurements<\/th>\s*<td>(.*?)<\/td><\/tr>");
-            if (measurmentsMatch != null)
-            {
-                var heightMatch = this.RegExpService.Match(measurmentsMatch.Groups[1].Value, @"([\d]+)\s*cm");
-                if (heightMatch != null)
-                {
-                    athlete.HeightInCentimeters = int.Parse(heightMatch.Groups[1].Value);
-                    athlete.HeightInInches = athlete.HeightInCentimeters / GlobalConstants.INCHES;
-                }
-
-                var weightMatch = this.RegExpService.Match(measurmentsMatch.Groups[1].Value, @"([\d]+)\s*kg");
-                if (weightMatch != null)
-                {
-                    athlete.WeightInKilograms = int.Parse(weightMatch.Groups[1].Value);
-                    athlete.WeightInPounds = (int)(athlete.WeightInKilograms * GlobalConstants.POUNDS);
-                }
-            }
-
-            var dbAthlete = await this.athletesService.GetAsync(x => x.Code == code);
-            if (dbAthlete != null)
-            {
-                var equals = athlete.Equals(dbAthlete);
-                if (!equals)
-                {
-                    this.athletesService.Update(dbAthlete);
-                }
-            }
-            else
-            {
-                dbAthlete = await this.athletesService.AddAsync(athlete);
-            }
-
-            //var dbAthlete = await this.athleteRepository.GetAsync(x => x.Code == code);
-            //if (dbAthlete != null)
-            //{
-            //    var equals = athlete.Equals(dbAthlete);
-            //    if (!equals)
-            //    {
-            //        this.athleteRepository.Update(dbAthlete);
-            //        await this.athleteRepository.SaveChangesAsync();
-            //    }
-            //}
-            //else
-            //{
-            //    await this.athleteRepository.AddAsync(athlete);
-            //    await this.athleteRepository.SaveChangesAsync();
-            //}
-
-            //foreach (var athleteTypeCache in roles)
-            //{
-            //    var dbRole = await this.roleRepository.GetAsync(x => x.AthleteId == dbAthlete.Id && x.AthleteTypeId == athleteTypeCache.Id);
-            //    if (dbRole == null)
-            //    {
-            //        await this.roleRepository.AddAsync(new Role { AthleteId = dbAthlete.Id, AthleteTypeId = athleteTypeCache.Id });
-            //        await this.roleRepository.SaveChangesAsync();
-            //    }
-            //}
-
-            //foreach (var club in clubs)
-            //{
-            //    var dbAthleteClub = await this.athleteClubRepository.GetAsync(x => x.AthleteId == dbAthlete.Id && x.ClubId == club.Id);
-            //    if (dbAthleteClub == null)
-            //    {
-            //        await this.athleteClubRepository.AddAsync(new AthleteClub { AthleteId = dbAthlete.Id, ClubId = club.Id });
-            //        await this.athleteClubRepository.SaveChangesAsync();
-            //    }
-            //}
-        }
-        catch (Exception ex)
+        var measurmentsMatch = this.RegExpService.Match(document.ParsedText, @"<tr>\s*<th>Measurements<\/th>\s*<td>(.*?)<\/td><\/tr>");
+        if (measurmentsMatch != null)
         {
-            this.Logger.LogError(ex, $"Failed to process group: {group.Identifier}");
+            var heightMatch = this.RegExpService.Match(measurmentsMatch.Groups[1].Value, @"([\d]+)\s*cm");
+            if (heightMatch != null)
+            {
+                athlete.HeightInCentimeters = int.Parse(heightMatch.Groups[1].Value);
+                athlete.HeightInInches = athlete.HeightInCentimeters / GlobalConstants.INCHES;
+            }
+
+            var weightMatch = this.RegExpService.Match(measurmentsMatch.Groups[1].Value, @"([\d]+)\s*kg");
+            if (weightMatch != null)
+            {
+                athlete.WeightInKilograms = int.Parse(weightMatch.Groups[1].Value);
+                athlete.WeightInPounds = (int)(athlete.WeightInKilograms * GlobalConstants.POUNDS);
+            }
         }
+
+        var dbAthlete = await this.athletesService.GetAsync(x => x.Code == code);
+        if (dbAthlete != null)
+        {
+            var equals = athlete.Equals(dbAthlete);
+            if (!equals)
+            {
+                this.athletesService.Update(dbAthlete);
+            }
+        }
+        else
+        {
+            dbAthlete = await this.athletesService.AddAsync(athlete);
+        }
+
+        //var dbAthlete = await this.athleteRepository.GetAsync(x => x.Code == code);
+        //if (dbAthlete != null)
+        //{
+        //    var equals = athlete.Equals(dbAthlete);
+        //    if (!equals)
+        //    {
+        //        this.athleteRepository.Update(dbAthlete);
+        //        await this.athleteRepository.SaveChangesAsync();
+        //    }
+        //}
+        //else
+        //{
+        //    await this.athleteRepository.AddAsync(athlete);
+        //    await this.athleteRepository.SaveChangesAsync();
+        //}
+
+        //foreach (var athleteTypeCache in roles)
+        //{
+        //    var dbRole = await this.roleRepository.GetAsync(x => x.AthleteId == dbAthlete.Id && x.AthleteTypeId == athleteTypeCache.Id);
+        //    if (dbRole == null)
+        //    {
+        //        await this.roleRepository.AddAsync(new Role { AthleteId = dbAthlete.Id, AthleteTypeId = athleteTypeCache.Id });
+        //        await this.roleRepository.SaveChangesAsync();
+        //    }
+        //}
+
+        //foreach (var club in clubs)
+        //{
+        //    var dbAthleteClub = await this.athleteClubRepository.GetAsync(x => x.AthleteId == dbAthlete.Id && x.ClubId == club.Id);
+        //    if (dbAthleteClub == null)
+        //    {
+        //        await this.athleteClubRepository.AddAsync(new AthleteClub { AthleteId = dbAthlete.Id, ClubId = club.Id });
+        //        await this.athleteClubRepository.SaveChangesAsync();
+        //    }
+        //}
     }
 
     public Tuple<string, string> ExtractCityAndCountry(System.Text.RegularExpressions.Match match)
