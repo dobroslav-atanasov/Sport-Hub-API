@@ -8,11 +8,9 @@ public interface IDataCacheService
 
     ICollection<DisciplineCache> Disciplines { get; }
 
-    ICollection<VenueCache> Venues { get; }
-
     ICollection<ClubCache> Clubs { get; }
 
     ICollection<EventCache> Events { get; }
 
-    ICollection<NOCCache> NOCs { get; }
+    ICollection<NationalOlympicCommitteeCache> NationalOlympicCommittees { get; }
 }
