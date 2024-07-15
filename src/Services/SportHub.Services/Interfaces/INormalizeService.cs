@@ -20,4 +20,6 @@ public interface INormalizeService
     RoundDataModel MapRoundData(string name);
 
     RoundTypeEnum MapAdditionalRound(string name);
+
+    string MapCityToCountry(string city);
 }

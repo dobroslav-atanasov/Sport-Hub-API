@@ -1025,4 +1025,59 @@ public class NormalizeService : INormalizeService
 
         return round;
     }
+
+    public string MapCityToCountry(string city)
+    {
+        var country = string.Empty;
+        switch (city)
+        {
+            case "Albertville": country = "France"; break;
+            case "Amsterdam": country = "Netherlands"; break;
+            case "Antwerp": country = "Belgium"; break;
+            case "Athens": country = "Greece"; break;
+            case "Atlanta": country = "United States"; break;
+            case "Barcelona": country = "Spain"; break;
+            case "Beijing": country = "China"; break;
+            case "Berlin": country = "Germany"; break;
+            case "Brisbane": country = "Australia"; break;
+            case "Calgary": country = "Canada"; break;
+            case "Chamonix": country = "France"; break;
+            case "Cortina d'Ampezzo": country = "Italy"; break;
+            case "Garmisch-Partenkirchen": country = "Germany"; break;
+            case "Grenoble": country = "France"; break;
+            case "Helsinki": country = "Finland"; break;
+            case "Innsbruck": country = "Austria"; break;
+            case "Lake Placid": country = "United States"; break;
+            case "Lillehammer": country = "Norway"; break;
+            case "London": country = "United Kingdom"; break;
+            case "Los Angeles": country = "United States"; break;
+            case "Melbourne": country = "Australia"; break;
+            case "Mexico City": country = "Mexico"; break;
+            case "Milano-Cortina d'Ampezzo": country = "Italy"; break;
+            case "Montreal": country = "Canada"; break;
+            case "Moscow": country = "Russia"; break;
+            case "Munich": country = "Germany"; break;
+            case "Nagano": country = "Japan"; break;
+            case "Oslo": country = "Norway"; break;
+            case "Paris": country = "France"; break;
+            case "PyeongChang": country = "South Korea"; break;
+            case "Rio de Janeiro": country = "Brazil"; break;
+            case "Rome": country = "Italy"; break;
+            case "Salt Lake City": country = "United States"; break;
+            case "Sapporo": country = "Japan"; break;
+            case "Sarajevo": country = "Yugoslavia"; break;
+            case "Seoul": country = "South Korea"; break;
+            case "Sochi": country = "Russia"; break;
+            case "Squaw Valley": country = "United States"; break;
+            case "St. Louis": country = "United States"; break;
+            case "St. Moritz": country = "Switzerland"; break;
+            case "Stockholm": country = "Sweden"; break;
+            case "Sydney": country = "Australia"; break;
+            case "Tokyo": country = "Japan"; break;
+            case "Turin": country = "Italy"; break;
+            case "Vancouver": country = "Canada"; break;
+        }
+
+        return country;
+    }
 }
