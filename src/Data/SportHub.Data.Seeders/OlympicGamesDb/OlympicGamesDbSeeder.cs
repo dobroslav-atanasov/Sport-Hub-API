@@ -18,12 +18,14 @@ public class OlympicGamesDbSeeder : ISeeder
         {
             var seeders = new List<ISeeder>
             {
-                new AthleteTypesSeeder(),
-                new EventGenderTypesSeeder(),
-                new FinishTypesSeeder(),
-                new GenderSeeder(),
-                new MedalsSeeder(),
-                new OlympicGameTypesSeeder()
+                new GameTypesSeeder(),
+                new EventGendersSeeder(),
+                new GendersSeeder(),
+
+                //new AthleteTypesSeeder(),
+                //new FinishTypesSeeder(),
+                //new MedalsSeeder(),
+                //new OlympicGameTypesSeeder()
             };
 
             foreach (var seeder in seeders)
