@@ -3,7 +3,7 @@
 using SportHub.Data.Models.Converters;
 using SportHub.Data.Models.Converters.OlympicGames;
 using SportHub.Data.Models.Converters.OlympicGames.Base;
-using SportHub.Data.Models.Entities.OlympicGames.Enumerations;
+using SportHub.Data.Models.Enumerations.OlympicGames;
 
 public interface IOlympediaService
 {
@@ -19,11 +19,11 @@ public interface IOlympediaService
 
     string FindNOCCode(string text);
 
-    MedalTypeEnum FindMedal(string text);
+    MedalEnum FindMedal(string text);
 
-    MedalTypeEnum FindMedal(string text, RoundTypeEnum roundType);
+    MedalEnum FindMedal(string text, RoundEnum roundType);
 
-    FinishTypeEnum FindStatus(string text);
+    FinishStatusEnum FindFinishStatus(string text);
 
     int FindMatchNumber(string text);
 
@@ -33,13 +33,13 @@ public interface IOlympediaService
 
     string FindMatchInfo(string text);
 
-    RecordType FindRecord(string text);
+    RecordEnum FindRecord(string text);
 
-    QualificationType FindQualification(string text);
+    bool IsQualified(string text);
 
     IList<int> FindResults(string text);
 
-    DecisionType FindDecision(string text);
+    DecisionEnum FindDecision(string text);
 
     int FindSeedNumber(string text);
 

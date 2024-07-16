@@ -1,7 +1,7 @@
 ﻿namespace SportHub.Services.Interfaces;
 
 using SportHub.Data.Models.Converters.OlympicGames;
-using SportHub.Data.Models.Entities.OlympicGames.Enumerations;
+using SportHub.Data.Models.Enumerations.OlympicGames;
 
 public interface INormalizeService
 {
@@ -19,7 +19,7 @@ public interface INormalizeService
 
     RoundDataModel MapRoundData(string name);
 
-    RoundTypeEnum MapAdditionalRound(string name);
+    RoundEnum MapAdditionalRound(string name);
 
     string MapCityToCountry(string city);
 }

@@ -5,7 +5,7 @@ using SportHub.Data.Models.Converters;
 using SportHub.Data.Models.Converters.OlympicGames;
 using SportHub.Data.Models.Converters.OlympicGames.Base;
 using SportHub.Data.Models.Entities.Enumerations;
-using SportHub.Data.Models.Entities.OlympicGames.Enumerations;
+using SportHub.Data.Models.Enumerations.OlympicGames;
 using SportHub.Services.Interfaces;
 
 public class OlympediaService : IOlympediaService
@@ -101,7 +101,7 @@ public class OlympediaService : IOlympediaService
         return codes;
     }
 
-    public MedalTypeEnum FindMedal(string text)
+    public MedalEnum FindMedal(string text)
     {
         var match = this.regExpService.Match(text, @"<span class=""(?:Gold|Silver|Bronze)"">(Gold|Silver|Bronze)<\/span>");
         if (match != null)
@@ -109,71 +109,71 @@ public class OlympediaService : IOlympediaService
             var medalType = match.Groups[1].Value.ToLower();
             switch (medalType)
             {
-                case "gold": return MedalTypeEnum.Gold;
-                case "silver": return MedalTypeEnum.Silver;
-                case "bronze": return MedalTypeEnum.Bronze;
+                case "gold": return MedalEnum.Gold;
+                case "silver": return MedalEnum.Silver;
+                case "bronze": return MedalEnum.Bronze;
             }
         }
 
-        return MedalTypeEnum.None;
+        return MedalEnum.None;
     }
 
-    public MedalTypeEnum FindMedal(string text, RoundTypeEnum roundType)
+    public MedalEnum FindMedal(string text, RoundEnum roundType)
     {
-        var medalType = MedalTypeEnum.None;
-        if (roundType == RoundTypeEnum.FinalRound)
+        var medalType = MedalEnum.None;
+        if (roundType == RoundEnum.FinalRound)
         {
             if (text.Contains("1/2") || text.Contains("1-2"))
             {
-                medalType = MedalTypeEnum.Gold;
+                medalType = MedalEnum.Gold;
             }
             else if (text.Contains("3/4") || text.Contains("3-4"))
             {
-                medalType = MedalTypeEnum.Bronze;
+                medalType = MedalEnum.Bronze;
             }
         }
 
         return medalType;
     }
 
-    public FinishTypeEnum FindStatus(string text)
+    public FinishStatusEnum FindFinishStatus(string text)
     {
         if (string.IsNullOrEmpty(text))
         {
-            return FinishTypeEnum.None;
+            return FinishStatusEnum.None;
         }
 
         var acMatch = this.regExpService.Match(text, @"<abbrev title=""Also Competed"">AC</abbrev>");
         if (acMatch != null)
         {
-            return FinishTypeEnum.AlsoCompeted;
+            return FinishStatusEnum.AlsoCompeted;
         }
 
         var dnsMatch = this.regExpService.Match(text, @"<abbrev title=""Did Not Start"">DNS</abbrev>");
         if (dnsMatch != null)
         {
-            return FinishTypeEnum.DidNotStart;
+            return FinishStatusEnum.DidNotStart;
         }
 
         var dnfMatch = this.regExpService.Match(text, @"<abbrev title=""Did Not Finish"">DNF</abbrev>");
         if (dnfMatch != null)
         {
-            return FinishTypeEnum.DidNotFinish;
+            return FinishStatusEnum.DidNotFinish;
         }
 
         var dqMatch = this.regExpService.Match(text, @"<abbrev title=""Disqualified"">DQ</abbrev>");
         if (dqMatch != null)
         {
-            return FinishTypeEnum.Disqualified;
+            return FinishStatusEnum.Disqualified;
         }
 
         var tnkMatch = this.regExpService.Match(text, @"<abbrev title=""Time Not Known"">TNK</abbrev>");
         if (tnkMatch != null)
         {
-            return FinishTypeEnum.TimeNotKnow;
+            return FinishStatusEnum.TimeNotKnow;
         }
 
-        return FinishTypeEnum.Finish;
+        return FinishStatusEnum.Finish;
     }
 
     public List<int> FindVenues(string text)
@@ -368,9 +368,9 @@ public class OlympediaService : IOlympediaService
         return null;
     }
 
-    public RecordType FindRecord(string text)
+    public RecordEnum FindRecord(string text)
     {
-        var record = RecordType.None;
+        var record = RecordEnum.None;
         if (string.IsNullOrEmpty(text))
         {
             return record;
@@ -379,33 +379,33 @@ public class OlympediaService : IOlympediaService
         var match = this.regExpService.Match(text, @"World\s*Record");
         if (match != null)
         {
-            record = RecordType.World;
+            record = RecordEnum.World;
         }
 
         match = this.regExpService.Match(text, @"Olympic\s*Record");
         if (match != null)
         {
-            record = RecordType.Olympic;
+            record = RecordEnum.Olympic;
         }
 
         return record;
     }
 
-    public QualificationType FindQualification(string text)
+    public bool IsQualified(string text)
     {
-        var type = QualificationType.None;
         if (string.IsNullOrEmpty(text))
         {
-            return type;
+            return false;
         }
 
+        var isQualified = false;
         var match = this.regExpService.Match(text, @"Qualified");
         if (match != null)
         {
-            type = QualificationType.Qualified;
+            isQualified = true;
         }
 
-        return type;
+        return isQualified;
     }
 
     public IList<int> FindResults(string text)
@@ -424,9 +424,9 @@ public class OlympediaService : IOlympediaService
         return results;
     }
 
-    public DecisionType FindDecision(string text)
+    public DecisionEnum FindDecision(string text)
     {
-        var decision = DecisionType.None;
+        var decision = DecisionEnum.None;
 
         if (string.IsNullOrEmpty(text))
         {
@@ -436,13 +436,13 @@ public class OlympediaService : IOlympediaService
         var match = this.regExpService.Match(text, @">bye<");
         if (match != null)
         {
-            decision = DecisionType.Buy;
+            decision = DecisionEnum.Buy;
         }
 
         match = this.regExpService.Match(text, @">walkover<");
         if (match != null)
         {
-            decision = DecisionType.Walkover;
+            decision = DecisionEnum.Walkover;
         }
 
         return decision;
