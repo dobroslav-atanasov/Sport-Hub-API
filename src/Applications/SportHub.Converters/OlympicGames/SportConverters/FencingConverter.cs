@@ -11,7 +11,7 @@ using SportHub.Common.Constants;
 using SportHub.Data.Models.Converters.OlympicGames;
 using SportHub.Data.Models.Converters.OlympicGames.Base;
 using SportHub.Data.Models.Converters.OlympicGames.Disciplines;
-using SportHub.Data.Models.Entities.OlympicGames;
+using SportHub.Data.Models.DbEntities.OlympicGames;
 using SportHub.Data.Repositories;
 using SportHub.Services.Data.OlympicGamesDb.Interfaces;
 using SportHub.Services.Interfaces;
@@ -72,9 +72,9 @@ public class FencingConverter : BaseSportConverter
                 {
                     if (noc != null)
                     {
-                        var nocCache = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == noc);
+                        var nocCache = this.DataCacheService.NationalOlympicCommittees.FirstOrDefault(x => x.Code == noc);
                         var teamName = this.GetString(roundData.Indexes, ConverterConstants.Name, data);
-                        var dbTeam = await this.TeamRepository.GetAsync(x => x.NOCId == nocCache.Id && x.EventId == options.Event.Id);
+                        var dbTeam = await this.TeamRepository.GetAsync(x => x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == options.Event.Id);
 
                         if (dbTeam != null)
                         {
@@ -113,8 +113,8 @@ public class FencingConverter : BaseSportConverter
                 if (fencing != null)
                 {
                     fencing.NOC = noc;
-                    fencing.FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml);
-                    fencing.Qualification = this.OlympediaService.FindQualification(row.OuterHtml);
+                    fencing.FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml);
+                    fencing.IsQualified = this.OlympediaService.IsQualified(row.OuterHtml);
                     fencing.Points = this.GetInt(roundData.Indexes, ConverterConstants.Points, data);
                     fencing.Wins = this.GetInt(roundData.Indexes, ConverterConstants.Wins, data);
                     fencing.Draws = this.GetInt(roundData.Indexes, ConverterConstants.Draw, data);

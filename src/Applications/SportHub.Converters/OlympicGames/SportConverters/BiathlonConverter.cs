@@ -11,7 +11,7 @@ using SportHub.Common.Constants;
 using SportHub.Data.Models.Converters.OlympicGames;
 using SportHub.Data.Models.Converters.OlympicGames.Base;
 using SportHub.Data.Models.Converters.OlympicGames.Disciplines;
-using SportHub.Data.Models.Entities.OlympicGames;
+using SportHub.Data.Models.DbEntities.OlympicGames;
 using SportHub.Data.Repositories;
 using SportHub.Services.Data.OlympicGamesDb.Interfaces;
 using SportHub.Services.Interfaces;
@@ -56,15 +56,15 @@ public class BiathlonConverter : BaseSportConverter
 
             if (noc != null)
             {
-                var nocCache = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == noc);
-                var dbTeam = await this.TeamRepository.GetAsync(x => x.NOCId == nocCache.Id && x.EventId == eventId);
+                var nocCache = this.DataCacheService.NationalOlympicCommittees.FirstOrDefault(x => x.Code == noc);
+                var dbTeam = await this.TeamRepository.GetAsync(x => x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == eventId);
 
                 team = new Biathlon
                 {
                     Id = dbTeam.Id,
                     Name = dbTeam.Name,
                     NOC = noc,
-                    FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml),
+                    FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml),
                     Time = this.GetTime(roundData.Indexes, ConverterConstants.Time, data),
                     Misses = this.GetInt(roundData.Indexes, ConverterConstants.Misses, data),
                     ExtraShots = this.GetInt(roundData.Indexes, ConverterConstants.ExtraShots, data),
@@ -82,7 +82,7 @@ public class BiathlonConverter : BaseSportConverter
                     Name = athleteModel.Name,
                     NOC = noc,
                     Code = athleteModel.Code,
-                    FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml),
+                    FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml),
                     Number = this.GetInt(roundData.Indexes, ConverterConstants.Number, data),
                     Position = this.GetString(roundData.Indexes, ConverterConstants.Position, data),
                     Time = this.GetTime(roundData.Indexes, ConverterConstants.Time, data),
@@ -135,7 +135,7 @@ public class BiathlonConverter : BaseSportConverter
                     Name = athleteModel.Name,
                     NOC = noc,
                     Code = athleteModel.Code,
-                    FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml),
+                    FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml),
                     Number = this.GetInt(roundData.Indexes, ConverterConstants.Number, data),
                     Time = this.GetTime(roundData.Indexes, ConverterConstants.Time, data),
                     Skiing = this.GetTime(roundData.Indexes, ConverterConstants.Skiing, data),

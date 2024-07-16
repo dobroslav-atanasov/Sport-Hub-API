@@ -8,7 +8,7 @@ using SportHub.Common.Constants;
 using SportHub.Data.Models.Converters.OlympicGames;
 using SportHub.Data.Models.Converters.OlympicGames.Base;
 using SportHub.Data.Models.Converters.OlympicGames.Disciplines;
-using SportHub.Data.Models.Entities.OlympicGames;
+using SportHub.Data.Models.DbEntities.OlympicGames;
 using SportHub.Data.Repositories;
 using SportHub.Services.Data.OlympicGamesDb.Interfaces;
 using SportHub.Services.Interfaces;
@@ -133,8 +133,8 @@ public class AthleticsConverter : BaseSportConverter
                     Name = athleteModel.Name,
                     NOC = noc,
                     Code = athleteModel.Code,
-                    FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml),
-                    Qualification = this.OlympediaService.FindQualification(row.OuterHtml),
+                    FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml),
+                    IsQualified = this.OlympediaService.IsQualified(row.OuterHtml),
                     Record = this.OlympediaService.FindRecord(row.OuterHtml),
                     Number = this.GetInt(roundData.Indexes, ConverterConstants.Number, data),
                     Points = this.GetDouble(roundData.Indexes, ConverterConstants.Points, data)
@@ -172,8 +172,8 @@ public class AthleticsConverter : BaseSportConverter
                     Name = athleteModel.Name,
                     NOC = noc,
                     Code = athleteModel.Code,
-                    FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml),
-                    Qualification = this.OlympediaService.FindQualification(row.OuterHtml),
+                    FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml),
+                    IsQualified = this.OlympediaService.IsQualified(row.OuterHtml),
                     Record = this.OlympediaService.FindRecord(row.OuterHtml),
                     Number = this.GetInt(roundData.Indexes, ConverterConstants.Number, data),
                     BestMeasurement = bestMeasurement,
@@ -351,17 +351,17 @@ public class AthleticsConverter : BaseSportConverter
                 if (noc != null)
                 {
                     var teamName = data[roundData.Indexes[ConverterConstants.Name]].InnerText;
-                    var nocCache = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == noc);
-                    var dbTeam = await this.TeamRepository.GetAsync(x => x.Name == teamName && x.NOCId == nocCache.Id && x.EventId == eventId);
-                    dbTeam ??= await this.TeamRepository.GetAsync(x => x.NOCId == nocCache.Id && x.EventId == eventId);
+                    var nocCache = this.DataCacheService.NationalOlympicCommittees.FirstOrDefault(x => x.Code == noc);
+                    var dbTeam = await this.TeamRepository.GetAsync(x => x.Name == teamName && x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == eventId);
+                    dbTeam ??= await this.TeamRepository.GetAsync(x => x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == eventId);
 
                     team = new Athletics
                     {
                         Id = dbTeam.Id,
                         Name = dbTeam.Name,
                         NOC = noc,
-                        FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml),
-                        Qualification = this.OlympediaService.FindQualification(row.OuterHtml),
+                        FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml),
+                        IsQualified = this.OlympediaService.IsQualified(row.OuterHtml),
                         Record = this.OlympediaService.FindRecord(row.OuterHtml),
                         Number = this.GetInt(roundData.Indexes, ConverterConstants.Number, data),
                         Order = this.GetInt(roundData.Indexes, ConverterConstants.Order, data),
@@ -391,8 +391,8 @@ public class AthleticsConverter : BaseSportConverter
                             Name = athleteModel.Name,
                             NOC = team.NOC,
                             Code = athleteModel.Code,
-                            FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml),
-                            Qualification = this.OlympediaService.FindQualification(row.OuterHtml),
+                            FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml),
+                            IsQualified = this.OlympediaService.IsQualified(row.OuterHtml),
                             Record = this.OlympediaService.FindRecord(row.OuterHtml),
                             Wind = wind
                         };
@@ -427,8 +427,8 @@ public class AthleticsConverter : BaseSportConverter
                         Name = athleteModel.Name,
                         NOC = noc,
                         Code = athleteModel.Code,
-                        FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml),
-                        Qualification = this.OlympediaService.FindQualification(row.OuterHtml),
+                        FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml),
+                        IsQualified = this.OlympediaService.IsQualified(row.OuterHtml),
                         Record = this.OlympediaService.FindRecord(row.OuterHtml),
                         Number = this.GetInt(roundData.Indexes, ConverterConstants.Number, data),
                         Order = this.GetInt(roundData.Indexes, ConverterConstants.Order, data),

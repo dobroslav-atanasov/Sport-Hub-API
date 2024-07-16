@@ -12,9 +12,9 @@ using SportHub.Common.Constants;
 using SportHub.Data.Models.Converters.OlympicGames;
 using SportHub.Data.Models.Converters.OlympicGames.Base;
 using SportHub.Data.Models.Converters.OlympicGames.Disciplines;
+using SportHub.Data.Models.DbEntities.OlympicGames;
 using SportHub.Data.Models.Entities.Enumerations;
-using SportHub.Data.Models.Entities.OlympicGames;
-using SportHub.Data.Models.Entities.OlympicGames.Enumerations;
+using SportHub.Data.Models.Enumerations.OlympicGames;
 using SportHub.Data.Repositories;
 using SportHub.Services.Data.OlympicGamesDb.Interfaces;
 using SportHub.Services.Interfaces;
@@ -96,19 +96,18 @@ public abstract class BaseSportConverter
         if (input.IsTeam)
         {
             var homeTeamNOCCode = this.OlympediaService.FindNOCCode(input.HomeNOC);
-            var homeTeamNOC = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == homeTeamNOCCode);
+            var homeTeamNOC = this.DataCacheService.NationalOlympicCommittees.FirstOrDefault(x => x.Code == homeTeamNOCCode);
 
             Team homeTeam = null;
             if (input.IsDoubles)
             {
                 var athleteModels = this.OlympediaService.FindAthletes(input.HomeName);
                 var participant = await this.ParticipationRepository.GetAsync(x => x.Code == athleteModels.FirstOrDefault().Code && x.EventId == input.EventId);
-                homeTeam = await this.TeamRepository.GetAsync(x => x.NOCId == homeTeamNOC.Id && x.Squads.Any(x => x.ParticipationId == participant.Id));
+                //homeTeam = await this.TeamRepository.GetAsync(x => x.NationalOlympicCommitteeId == homeTeamNOC.Id && x.Squads.Any(x => x.ParticipationId == participant.Id));
             }
             else
             {
-                homeTeam = await this.TeamRepository.GetAsync(x => x.NOCId == homeTeamNOC.Id && x.EventId == input.EventId);
-                //homeTeam ??= await this.TeamRepository.GetAsync(x => x.NOCId == homeTeamNOC.Id && x.EventId == input.EventId && x.Name == input.HomeName);
+                homeTeam = await this.TeamRepository.GetAsync(x => x.NationalOlympicCommitteeId == homeTeamNOC.Id && x.EventId == input.EventId);
             }
 
             if (homeTeam == null)
@@ -122,23 +121,22 @@ public abstract class BaseSportConverter
                 match.Team1.NOC = homeTeamNOCCode;
                 match.Team1.Seed = this.OlympediaService.FindSeedNumber(input.HomeName);
 
-                if (match.Decision == DecisionType.None)
+                if (match.Decision == DecisionEnum.None)
                 {
                     var awayTeamNOCCode = this.OlympediaService.FindNOCCode(input.AwayNOC);
                     if (awayTeamNOCCode != null)
                     {
-                        var awayTeamNOC = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == awayTeamNOCCode);
+                        var awayTeamNOC = this.DataCacheService.NationalOlympicCommittees.FirstOrDefault(x => x.Code == awayTeamNOCCode);
                         Team awayTeam = null;
                         if (input.IsDoubles)
                         {
                             var athleteModels = this.OlympediaService.FindAthletes(input.AwayName);
                             var participant = await this.ParticipationRepository.GetAsync(x => x.Code == athleteModels.FirstOrDefault().Code && x.EventId == input.EventId);
-                            awayTeam = await this.TeamRepository.GetAsync(x => x.NOCId == awayTeamNOC.Id && x.Squads.Any(x => x.ParticipationId == participant.Id));
+                            //awayTeam = await this.TeamRepository.GetAsync(x => x.NationalOlympicCommitteeId == awayTeamNOC.Id && x.Squads.Any(x => x.ParticipationId == participant.Id));
                         }
                         else
                         {
-                            awayTeam = await this.TeamRepository.GetAsync(x => x.NOCId == awayTeamNOC.Id && x.EventId == input.EventId);
-                            //awayTeam ??= await this.TeamRepository.GetAsync(x => x.NOCId == awayTeamNOC.Id && x.EventId == input.EventId && x.Name == input.AwayName);
+                            awayTeam = await this.TeamRepository.GetAsync(x => x.NationalOlympicCommitteeId == awayTeamNOC.Id && x.EventId == input.EventId);
                         }
 
                         if (awayTeam == null)
@@ -160,11 +158,11 @@ public abstract class BaseSportConverter
         {
             var homeAthleteModel = this.OlympediaService.FindAthlete(input.HomeName);
             var homeAthleteNOCCode = this.OlympediaService.FindNOCCode(input.HomeNOC);
-            var homeAthleteNOC = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == homeAthleteNOCCode);
+            var homeAthleteNOC = this.DataCacheService.NationalOlympicCommittees.FirstOrDefault(x => x.Code == homeAthleteNOCCode);
             if (homeAthleteModel != null)
             {
                 var homeAthlete = await this.ParticipationRepository.GetAsync(x => x.Code == homeAthleteModel.Code && x.EventId == input.EventId);
-                homeAthlete ??= await this.ParticipationRepository.GetAsync(x => x.Code == homeAthleteModel.Code && x.EventId == input.EventId && x.NOCId == homeAthleteNOC.Id);
+                homeAthlete ??= await this.ParticipationRepository.GetAsync(x => x.Code == homeAthleteModel.Code && x.EventId == input.EventId && x.NationalOlympicCommitteeId == homeAthleteNOC.Id);
 
                 match.Team1.Id = homeAthlete.Id;
                 match.Team1.Name = homeAthleteModel.Name;
@@ -172,15 +170,15 @@ public abstract class BaseSportConverter
                 match.Team1.Code = homeAthleteModel.Code;
                 match.Team1.Seed = this.OlympediaService.FindSeedNumber(input.HomeName);
 
-                if (match.Decision == DecisionType.None)
+                if (match.Decision == DecisionEnum.None)
                 {
                     var awayAthleteModel = this.OlympediaService.FindAthlete(input.AwayName);
                     var awayAthleteNOCCode = this.OlympediaService.FindNOCCode(input.AwayNOC);
                     if (awayAthleteModel != null && awayAthleteNOCCode != null)
                     {
-                        var awayAthleteNOC = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == awayAthleteNOCCode);
+                        var awayAthleteNOC = this.DataCacheService.NationalOlympicCommittees.FirstOrDefault(x => x.Code == awayAthleteNOCCode);
                         var awayAthlete = await this.ParticipationRepository.GetAsync(x => x.Code == awayAthleteModel.Code && x.EventId == input.EventId);
-                        awayAthlete ??= await this.ParticipationRepository.GetAsync(x => x.Code == awayAthleteModel.Code && x.EventId == input.EventId && x.NOCId == awayAthleteNOC.Id);
+                        awayAthlete ??= await this.ParticipationRepository.GetAsync(x => x.Code == awayAthleteModel.Code && x.EventId == input.EventId && x.NationalOlympicCommitteeId == awayAthleteNOC.Id);
 
                         if (awayAthlete != null)
                         {
@@ -195,7 +193,7 @@ public abstract class BaseSportConverter
             }
         }
 
-        if (match.Decision == DecisionType.None && match.Team2.NOC != null)
+        if (match.Decision == DecisionEnum.None && match.Team2.NOC != null)
         {
             input.Result = input.Result.Replace("[", string.Empty).Replace("]", string.Empty);
             var isDone = false;
@@ -325,7 +323,7 @@ public abstract class BaseSportConverter
             var athleteModel = this.OlympediaService.FindAthlete(match.Groups[0].Value);
             //var nocCode = this.OlympediaService.FindNOCCode(judgeMatch.Groups[1].Value);
             var nocCode = this.OlympediaService.FindNOCCode(match.Groups[0].Value);
-            var nocCodeCache = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == nocCode);
+            var nocCodeCache = this.DataCacheService.NationalOlympicCommittees.FirstOrDefault(x => x.Code == nocCode);
             if (athleteModel != null && nocCodeCache != null)
             {
                 var athlete = await this.AthleteRepository.GetAsync(x => x.Code == athleteModel.Code);
@@ -384,7 +382,7 @@ public abstract class BaseSportConverter
             EventData = new EventData
             {
                 Id = options.Event.Id,
-                EventGenderType = (EventGenderTypeEnum)options.Event.EventGenderTypeId,
+                Gender = options.Event.Gender,
                 IsTeamEvent = options.Event.IsTeamEvent,
                 Name = options.Event.Name,
                 NormalizedName = options.Event.NormalizedName,
@@ -398,7 +396,7 @@ public abstract class BaseSportConverter
             GameData = new GameData
             {
                 Id = options.Game.Id,
-                OlympicGameType = (OlympicGameTypeEnum)options.Game.OlympicGameTypeId,
+                Type = options.Game.Type,
                 Year = options.Game.Year
             },
             Ranking = ranking,
@@ -411,7 +409,7 @@ public abstract class BaseSportConverter
             EventId = options.Event.Id,
             UniqueNumber = $"{resultModel.GameData.Id}_{resultModel.DisciplineData.Id}_{resultModel.EventData.Id}",
             Json = json,
-            GameId = options.Game.Id,
+            //GameId = options.Game.Id,
         };
 
         //var dbResult = await this.resultRepository.GetAsync(x => x.UniqueNumber == $"{resultModel.GameData.Id}_{resultModel.DisciplineData.Id}_{resultModel.EventData.Id}");
@@ -451,12 +449,12 @@ public abstract class BaseSportConverter
 
             if (noc != null && athleteModels.Count == 0)
             {
-                var nocCache = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == noc);
+                var nocCache = this.DataCacheService.NationalOlympicCommittees.FirstOrDefault(x => x.Code == noc);
                 if (nocCache != null)
                 {
                     var teamName = this.GetString(roundData.Indexes, ConverterConstants.Name, data);
-                    var team = await this.TeamRepository.GetAsync(x => x.Name == teamName && x.NOCId == nocCache.Id && x.EventId == options.Event.Id);
-                    team ??= await this.TeamRepository.GetAsync(x => x.NOCId == nocCache.Id && x.EventId == options.Event.Id);
+                    var team = await this.TeamRepository.GetAsync(x => x.Name == teamName && x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == options.Event.Id);
+                    team ??= await this.TeamRepository.GetAsync(x => x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == options.Event.Id);
 
                     if (team != null)
                     {
@@ -519,10 +517,10 @@ public abstract class BaseSportConverter
             }
             else if (noc != null && athleteModels.Count == 2)
             {
-                var nocCache = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == noc);
+                var nocCache = this.DataCacheService.NationalOlympicCommittees.FirstOrDefault(x => x.Code == noc);
                 var teamName = this.GetString(roundData.Indexes, ConverterConstants.Name, data);
-                var dbTeam = await this.TeamRepository.GetAsync(x => x.Name == teamName && x.NOCId == nocCache.Id && x.EventId == options.Event.Id);
-                dbTeam ??= await this.TeamRepository.GetAsync(x => x.NOCId == nocCache.Id && x.EventId == options.Event.Id);
+                var dbTeam = await this.TeamRepository.GetAsync(x => x.Name == teamName && x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == options.Event.Id);
+                dbTeam ??= await this.TeamRepository.GetAsync(x => x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == options.Event.Id);
 
                 ranking.Teams.Add(new TeamRanking
                 {
@@ -601,7 +599,7 @@ public abstract class BaseSportConverter
             foreach (var athleteId in athletes)
             {
                 var participation = await this.ParticipationRepository.GetAsync(x => x.Id == athleteId);
-                participation.ResultId = result.Id;
+                //participation.ResultId = result.Id;
                 this.ParticipationRepository.Update(participation);
                 await this.ParticipationRepository.SaveChangesAsync();
             }
@@ -609,7 +607,7 @@ public abstract class BaseSportConverter
             foreach (var teamId in teams)
             {
                 var team = await this.TeamRepository.GetAsync(x => x.Id == teamId);
-                team.ResultId = result.Id;
+                //team.ResultId = result.Id;
                 this.TeamRepository.Update(team);
                 await this.TeamRepository.SaveChangesAsync();
             }

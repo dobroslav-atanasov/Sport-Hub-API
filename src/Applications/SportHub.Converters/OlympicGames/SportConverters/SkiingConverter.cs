@@ -6,7 +6,7 @@ using SportHub.Common.Constants;
 using SportHub.Data.Models.Converters.OlympicGames;
 using SportHub.Data.Models.Converters.OlympicGames.Base;
 using SportHub.Data.Models.Converters.OlympicGames.Disciplines;
-using SportHub.Data.Models.Entities.OlympicGames;
+using SportHub.Data.Models.DbEntities.OlympicGames;
 using SportHub.Data.Repositories;
 using SportHub.Services.Data.OlympicGamesDb.Interfaces;
 using SportHub.Services.Interfaces;
@@ -95,9 +95,9 @@ public class SkiingConverter : BaseSportConverter
 
                 if (athleteModels.Count == 0)
                 {
-                    var nocCache = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == noc);
+                    var nocCache = this.DataCacheService.NationalOlympicCommittees.FirstOrDefault(x => x.Code == noc);
                     var teamName = this.GetString(roundData.Indexes, ConverterConstants.Name, data);
-                    var dbTeam = await this.TeamRepository.GetAsync(x => x.NOCId == nocCache.Id && x.EventId == options.Event.Id);
+                    var dbTeam = await this.TeamRepository.GetAsync(x => x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == options.Event.Id);
 
                     crossCountrySkiing = new CrossCountrySkiing
                     {
@@ -148,8 +148,8 @@ public class SkiingConverter : BaseSportConverter
             if (crossCountrySkiing != null)
             {
                 crossCountrySkiing.NOC = noc;
-                crossCountrySkiing.FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml);
-                crossCountrySkiing.Qualification = this.OlympediaService.FindQualification(row.OuterHtml);
+                crossCountrySkiing.FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml);
+                crossCountrySkiing.IsQualified = this.OlympediaService.IsQualified(row.OuterHtml);
                 crossCountrySkiing.Number = this.GetInt(roundData.Indexes, ConverterConstants.Number, data);
                 crossCountrySkiing.Time = this.GetTime(roundData.Indexes, ConverterConstants.Time, data);
                 crossCountrySkiing.Race = this.GetTime(roundData.Indexes, ConverterConstants.Race, data);
@@ -440,8 +440,8 @@ public class SkiingConverter : BaseSportConverter
                     Name = athleteModel.Name,
                     NOC = noc,
                     Code = athleteModel.Code,
-                    FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml),
-                    Qualification = this.OlympediaService.FindQualification(row.OuterHtml),
+                    FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml),
+                    IsQualified = this.OlympediaService.IsQualified(row.OuterHtml),
                     Number = this.GetInt(roundData.Indexes, ConverterConstants.Number, data),
                     Downhill = this.GetTime(roundData.Indexes, ConverterConstants.Downhill, data),
                     PenaltyTime = this.GetTime(roundData.Indexes, ConverterConstants.PenaltyTime, data),

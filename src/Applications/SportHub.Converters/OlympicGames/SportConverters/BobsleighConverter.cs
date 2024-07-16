@@ -11,7 +11,7 @@ using SportHub.Common.Constants;
 using SportHub.Data.Models.Converters.OlympicGames;
 using SportHub.Data.Models.Converters.OlympicGames.Base;
 using SportHub.Data.Models.Converters.OlympicGames.Disciplines;
-using SportHub.Data.Models.Entities.OlympicGames;
+using SportHub.Data.Models.DbEntities.OlympicGames;
 using SportHub.Data.Repositories;
 using SportHub.Services.Data.OlympicGamesDb.Interfaces;
 using SportHub.Services.Interfaces;
@@ -145,19 +145,19 @@ public class BobsleighConverter : BaseSportConverter
                 athleteModels = this.OlympediaService.FindAthletes(roundData.Rows[i + 1].OuterHtml);
             }
 
-            var nocCache = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == noc);
+            var nocCache = this.DataCacheService.NationalOlympicCommittees.FirstOrDefault(x => x.Code == noc);
 
             if (isTeamEvent)
             {
                 var teamName = this.GetString(roundData.Indexes, ConverterConstants.Name, data);
-                var dbTeam = await this.TeamRepository.GetAsync(x => x.Name == teamName && x.NOCId == nocCache.Id && x.EventId == eventId);
+                var dbTeam = await this.TeamRepository.GetAsync(x => x.Name == teamName && x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == eventId);
 
                 var team = new Bobsleigh
                 {
                     Id = dbTeam.Id,
                     Name = dbTeam.Name,
                     NOC = noc,
-                    FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml),
+                    FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml),
                     Time = this.GetTime(roundData.Indexes, ConverterConstants.Time, data),
                 };
 
@@ -170,7 +170,7 @@ public class BobsleighConverter : BaseSportConverter
                         Name = athleteModel.Name,
                         NOC = noc,
                         Code = athleteModel.Code,
-                        FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml),
+                        FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml),
                     });
                 }
 
@@ -186,7 +186,7 @@ public class BobsleighConverter : BaseSportConverter
                     Name = model.Name,
                     NOC = noc,
                     Code = model.Code,
-                    FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml),
+                    FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml),
                     Time = this.GetTime(roundData.Indexes, ConverterConstants.Time, data),
                 };
 

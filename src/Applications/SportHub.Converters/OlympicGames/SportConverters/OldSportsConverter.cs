@@ -9,8 +9,8 @@ using SportHub.Common.Constants;
 using SportHub.Data.Models.Converters.OlympicGames;
 using SportHub.Data.Models.Converters.OlympicGames.Base;
 using SportHub.Data.Models.Converters.OlympicGames.Disciplines;
+using SportHub.Data.Models.DbEntities.OlympicGames;
 using SportHub.Data.Models.Entities.Enumerations;
-using SportHub.Data.Models.Entities.OlympicGames;
 using SportHub.Data.Repositories;
 using SportHub.Services.Data.OlympicGamesDb.Interfaces;
 using SportHub.Services.Interfaces;
@@ -115,16 +115,16 @@ public class OldSportsConverter : BaseSportConverter
             var data = row.Elements("td").ToList();
             var teamName = data[roundData.Indexes[ConverterConstants.Name]].InnerText;
             var noc = this.OlympediaService.FindNOCCode(row.OuterHtml);
-            var nocCache = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == noc);
+            var nocCache = this.DataCacheService.NationalOlympicCommittees.FirstOrDefault(x => x.Code == noc);
             var athleteModels = this.OlympediaService.FindAthletes(row.OuterHtml);
-            var dbTeam = await this.TeamRepository.GetAsync(x => x.Name == teamName && x.NOCId == nocCache.Id && x.EventId == options.Event.Id);
+            var dbTeam = await this.TeamRepository.GetAsync(x => x.Name == teamName && x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == options.Event.Id);
 
             var team = new BasquePelota
             {
                 Id = dbTeam.Id,
                 Name = dbTeam.Name,
                 NOC = noc,
-                FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml),
+                FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml),
             };
 
             foreach (var athleteModel in athleteModels)
@@ -136,7 +136,7 @@ public class OldSportsConverter : BaseSportConverter
                     Code = athleteModel.Code,
                     Name = athleteModel.Name,
                     NOC = team.NOC,
-                    FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml),
+                    FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml),
                 };
 
                 team.Athletes.Add(athlete);

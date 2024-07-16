@@ -6,8 +6,8 @@ using SportHub.Common.Constants;
 using SportHub.Data.Models.Converters.OlympicGames;
 using SportHub.Data.Models.Converters.OlympicGames.Base;
 using SportHub.Data.Models.Converters.OlympicGames.Disciplines;
-using SportHub.Data.Models.Entities.OlympicGames;
-using SportHub.Data.Models.Entities.OlympicGames.Enumerations;
+using SportHub.Data.Models.DbEntities.OlympicGames;
+using SportHub.Data.Models.Enumerations.OlympicGames;
 using SportHub.Data.Repositories;
 using SportHub.Services.Data.OlympicGamesDb.Interfaces;
 using SportHub.Services.Interfaces;
@@ -35,7 +35,7 @@ public class ArcheryConverter : BaseSportConverter
                 }
 
                 var round = this.CreateRound<Archery>(roundData, options.Event.Name, null);
-                if (options.Game.Year <= 1988 || round.Type == RoundTypeEnum.RankingRound)
+                if (options.Game.Year <= 1988 || round.Type == RoundEnum.RankingRound)
                 {
                     await this.SetTeamsAsync(round, roundData, options.Event.Id, null);
                     var documentNumbers = this.OlympediaService.FindResults(roundData.Html);
@@ -67,7 +67,7 @@ public class ArcheryConverter : BaseSportConverter
                 {
                     await this.SetAthletesAsync(round, roundData, options.Event.Id, null);
                 }
-                if (options.Game.Year == 1988 || (options.Game.Year >= 1992 && round.Type == RoundTypeEnum.RankingRound))
+                if (options.Game.Year == 1988 || (options.Game.Year >= 1992 && round.Type == RoundEnum.RankingRound))
                 {
                     await this.SetAthletesAsync(round, roundData, options.Event.Id, null);
                     var documentNumbers = this.OlympediaService.FindResults(roundData.Html);
@@ -106,8 +106,8 @@ public class ArcheryConverter : BaseSportConverter
                     Name = athleteModel.Name,
                     NOC = noc,
                     Code = athleteModel.Code,
-                    FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml),
-                    Qualification = this.OlympediaService.FindQualification(row.OuterHtml),
+                    FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml),
+                    IsQualified = this.OlympediaService.IsQualified(row.OuterHtml),
                     Number = this.GetInt(roundData.Indexes, ConverterConstants.Number, data),
                     TargetsHit = this.GetInt(roundData.Indexes, ConverterConstants.TargetsHit, data),
                     Golds = this.GetInt(roundData.Indexes, ConverterConstants.Golds, data),
@@ -319,21 +319,21 @@ public class ArcheryConverter : BaseSportConverter
             if (noc != null)
             {
                 var teamName = data[roundData.Indexes[ConverterConstants.Name]].InnerText;
-                var nocCache = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == noc);
+                var nocCache = this.DataCacheService.NationalOlympicCommittees.FirstOrDefault(x => x.Code == noc);
                 if (string.IsNullOrEmpty(info))
                 {
-                    var dbTeam = await this.TeamRepository.GetAsync(x => x.Name == teamName && x.NOCId == nocCache.Id && x.EventId == eventId);
-                    dbTeam ??= await this.TeamRepository.GetAsync(x => x.NOCId == nocCache.Id && x.EventId == eventId);
+                    var dbTeam = await this.TeamRepository.GetAsync(x => x.Name == teamName && x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == eventId);
+                    dbTeam ??= await this.TeamRepository.GetAsync(x => x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == eventId);
 
                     team = new Archery
                     {
                         Id = dbTeam.Id,
                         Name = dbTeam.Name,
                         NOC = noc,
-                        FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml),
+                        FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml),
                         Record = this.OlympediaService.FindRecord(row.OuterHtml),
                         Points = this.GetInt(roundData.Indexes, ConverterConstants.Points, data),
-                        Qualification = this.OlympediaService.FindQualification(row.OuterHtml),
+                        IsQualified = this.OlympediaService.IsQualified(row.OuterHtml),
                         TargetsHit = this.GetInt(roundData.Indexes, ConverterConstants.TargetsHit, data),
                         Score10s = this.GetInt(roundData.Indexes, ConverterConstants.S10, data),
                         Score9s = this.GetInt(roundData.Indexes, ConverterConstants.S9, data),
@@ -369,10 +369,10 @@ public class ArcheryConverter : BaseSportConverter
                             Code = athleteModel.Code,
                             Name = athleteModel.Name,
                             NOC = team.NOC,
-                            FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml),
+                            FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml),
                             Record = this.OlympediaService.FindRecord(row.OuterHtml),
                             Points = this.GetInt(roundData.Indexes, ConverterConstants.Points, data),
-                            Qualification = this.OlympediaService.FindQualification(row.OuterHtml),
+                            IsQualified = this.OlympediaService.IsQualified(row.OuterHtml),
                             TargetsHit = this.GetInt(roundData.Indexes, ConverterConstants.TargetsHit, data),
                             Score10s = this.GetInt(roundData.Indexes, ConverterConstants.S10, data),
                             Score9s = this.GetInt(roundData.Indexes, ConverterConstants.S9, data),

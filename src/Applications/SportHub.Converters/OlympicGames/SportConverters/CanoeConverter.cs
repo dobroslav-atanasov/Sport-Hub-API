@@ -8,7 +8,7 @@ using SportHub.Common.Constants;
 using SportHub.Data.Models.Converters.OlympicGames;
 using SportHub.Data.Models.Converters.OlympicGames.Base;
 using SportHub.Data.Models.Converters.OlympicGames.Disciplines;
-using SportHub.Data.Models.Entities.OlympicGames;
+using SportHub.Data.Models.DbEntities.OlympicGames;
 using SportHub.Data.Repositories;
 using SportHub.Services.Data.OlympicGamesDb.Interfaces;
 using SportHub.Services.Interfaces;
@@ -98,9 +98,9 @@ public class CanoeConverter : BaseSportConverter
                     continue;
                 }
 
-                var nocCache = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == noc);
+                var nocCache = this.DataCacheService.NationalOlympicCommittees.FirstOrDefault(x => x.Code == noc);
                 var teamName = this.GetString(roundData.Indexes, ConverterConstants.Name, data);
-                var dbTeam = await this.TeamRepository.GetAsync(x => x.NOCId == nocCache.Id && x.EventId == options.Event.Id);
+                var dbTeam = await this.TeamRepository.GetAsync(x => x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == options.Event.Id);
 
                 canoeSprint = new CanoeSprint
                 {
@@ -143,8 +143,8 @@ public class CanoeConverter : BaseSportConverter
             if (canoeSprint != null)
             {
                 canoeSprint.NOC = noc;
-                canoeSprint.FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml);
-                canoeSprint.Qualification = this.OlympediaService.FindQualification(row.OuterHtml);
+                canoeSprint.FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml);
+                canoeSprint.IsQualified = this.OlympediaService.IsQualified(row.OuterHtml);
                 canoeSprint.Number = this.GetInt(roundData.Indexes, ConverterConstants.Number, data);
                 canoeSprint.Lane = this.GetInt(roundData.Indexes, ConverterConstants.Lane, data);
                 canoeSprint.Time = this.GetTime(roundData.Indexes, ConverterConstants.Time, data);
@@ -257,9 +257,9 @@ public class CanoeConverter : BaseSportConverter
             CanoeSlalom canoeSlalom = null;
             if (options.Event.IsTeamEvent)
             {
-                var nocCache = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == noc);
+                var nocCache = this.DataCacheService.NationalOlympicCommittees.FirstOrDefault(x => x.Code == noc);
                 var teamName = this.GetString(roundData.Indexes, ConverterConstants.Name, data);
-                var dbTeam = await this.TeamRepository.GetAsync(x => x.Name == teamName && x.NOCId == nocCache.Id && x.EventId == options.Event.Id);
+                var dbTeam = await this.TeamRepository.GetAsync(x => x.Name == teamName && x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == options.Event.Id);
 
                 canoeSlalom = new CanoeSlalom
                 {
@@ -303,8 +303,8 @@ public class CanoeConverter : BaseSportConverter
             if (canoeSlalom != null)
             {
                 canoeSlalom.NOC = noc;
-                canoeSlalom.FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml);
-                canoeSlalom.Qualification = this.OlympediaService.FindQualification(row.OuterHtml);
+                canoeSlalom.FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml);
+                canoeSlalom.IsQualified = this.OlympediaService.IsQualified(row.OuterHtml);
                 canoeSlalom.Number = this.GetInt(roundData.Indexes, ConverterConstants.Number, data);
                 canoeSlalom.Order = this.GetInt(roundData.Indexes, ConverterConstants.Order, data);
                 canoeSlalom.Time = this.GetTime(roundData.Indexes, ConverterConstants.Time, data);

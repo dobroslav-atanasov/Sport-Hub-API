@@ -8,7 +8,7 @@ using SportHub.Common.Constants;
 using SportHub.Data.Models.Converters.OlympicGames;
 using SportHub.Data.Models.Converters.OlympicGames.Base;
 using SportHub.Data.Models.Converters.OlympicGames.Disciplines;
-using SportHub.Data.Models.Entities.OlympicGames;
+using SportHub.Data.Models.DbEntities.OlympicGames;
 using SportHub.Data.Repositories;
 using SportHub.Services.Data.OlympicGamesDb.Interfaces;
 using SportHub.Services.Interfaces;
@@ -84,8 +84,8 @@ public class AquaticsConverter : BaseSportConverter
 
                     if (noc != null)
                     {
-                        var nocCache = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == noc);
-                        var dbTeam = await this.TeamRepository.GetAsync(x => x.NOCId == nocCache.Id && x.EventId == options.Event.Id);
+                        var nocCache = this.DataCacheService.NationalOlympicCommittees.FirstOrDefault(x => x.Code == noc);
+                        var dbTeam = await this.TeamRepository.GetAsync(x => x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == options.Event.Id);
 
                         diving = new Diving
                         {
@@ -166,8 +166,8 @@ public class AquaticsConverter : BaseSportConverter
             if (diving != null && string.IsNullOrEmpty(info))
             {
                 diving.NOC = noc;
-                diving.FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml);
-                diving.Qualification = this.OlympediaService.FindQualification(row.OuterHtml);
+                diving.FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml);
+                diving.IsQualified = this.OlympediaService.IsQualified(row.OuterHtml);
                 diving.Order = this.GetInt(roundData.Indexes, ConverterConstants.Order, data);
                 diving.Points = this.GetDouble(roundData.Indexes, ConverterConstants.Points, data);
                 diving.CompulsoryPoints = this.GetDouble(roundData.Indexes, ConverterConstants.CompulsaryPoints, data);
@@ -302,9 +302,9 @@ public class AquaticsConverter : BaseSportConverter
                 if (noc != null)
                 {
                     var teamName = data[roundData.Indexes[ConverterConstants.Name]].InnerText;
-                    var nocCache = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == noc);
-                    var dbTeam = await this.TeamRepository.GetAsync(x => x.Name == teamName && x.NOCId == nocCache.Id && x.EventId == eventId);
-                    dbTeam ??= await this.TeamRepository.GetAsync(x => x.NOCId == nocCache.Id && x.EventId == eventId);
+                    var nocCache = this.DataCacheService.NationalOlympicCommittees.FirstOrDefault(x => x.Code == noc);
+                    var dbTeam = await this.TeamRepository.GetAsync(x => x.Name == teamName && x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == eventId);
+                    dbTeam ??= await this.TeamRepository.GetAsync(x => x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == eventId);
 
                     if (dbTeam != null)
                     {
@@ -313,8 +313,8 @@ public class AquaticsConverter : BaseSportConverter
                             Id = dbTeam.Id,
                             Name = dbTeam.Name,
                             NOC = noc,
-                            FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml),
-                            Qualification = this.OlympediaService.FindQualification(row.OuterHtml),
+                            FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml),
+                            IsQualified = this.OlympediaService.IsQualified(row.OuterHtml),
                             Points = this.GetDouble(roundData.Indexes, ConverterConstants.Points, data),
                             FigurePoints = this.GetDouble(roundData.Indexes, ConverterConstants.Figures, data),
                             MusicalRoutinePoints = this.GetDouble(roundData.Indexes, ConverterConstants.MusicalRoutinePoints, data),
@@ -383,8 +383,8 @@ public class AquaticsConverter : BaseSportConverter
                                     Code = athleteModel.Code,
                                     Name = athleteModel.Name,
                                     NOC = noc,
-                                    FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml),
-                                    Qualification = this.OlympediaService.FindQualification(row.OuterHtml),
+                                    FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml),
+                                    IsQualified = this.OlympediaService.IsQualified(row.OuterHtml),
                                 };
 
                                 team.Athletes.Add(athlete);
@@ -405,8 +405,8 @@ public class AquaticsConverter : BaseSportConverter
                             Code = athleteModel.Code,
                             Name = athleteModel.Name,
                             NOC = noc,
-                            FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml),
-                            Qualification = this.OlympediaService.FindQualification(row.OuterHtml),
+                            FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml),
+                            IsQualified = this.OlympediaService.IsQualified(row.OuterHtml),
                         };
 
                         team.Athletes.Add(athlete);
@@ -423,8 +423,8 @@ public class AquaticsConverter : BaseSportConverter
                     Code = athleteModel.Code,
                     Name = athleteModel.Name,
                     NOC = noc,
-                    FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml),
-                    Qualification = this.OlympediaService.FindQualification(row.OuterHtml),
+                    FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml),
+                    IsQualified = this.OlympediaService.IsQualified(row.OuterHtml),
                     Points = this.GetDouble(roundData.Indexes, ConverterConstants.Points, data),
                     FigurePoints = this.GetDouble(roundData.Indexes, ConverterConstants.Figures, data),
                     MusicalRoutinePoints = this.GetDouble(roundData.Indexes, ConverterConstants.MusicalRoutinePoints, data),

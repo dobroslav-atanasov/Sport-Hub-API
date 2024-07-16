@@ -8,7 +8,7 @@ using SportHub.Common.Constants;
 using SportHub.Data.Models.Converters.OlympicGames;
 using SportHub.Data.Models.Converters.OlympicGames.Base;
 using SportHub.Data.Models.Converters.OlympicGames.Disciplines;
-using SportHub.Data.Models.Entities.OlympicGames;
+using SportHub.Data.Models.DbEntities.OlympicGames;
 using SportHub.Data.Repositories;
 using SportHub.Services.Data.OlympicGamesDb.Interfaces;
 using SportHub.Services.Interfaces;
@@ -142,8 +142,8 @@ public class GymnasticsConverter : BaseSportConverter
                         Name = athleteModel.Name,
                         NOC = noc,
                         Code = athleteModel.Code,
-                        FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml),
-                        Qualification = this.OlympediaService.FindQualification(row.OuterHtml),
+                        FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml),
+                        IsQualified = this.OlympediaService.IsQualified(row.OuterHtml),
                         Points = this.GetDouble(roundData.Indexes, ConverterConstants.Points, data),
                         CompulsoryPoints = this.GetDouble(roundData.Indexes, ConverterConstants.CompulsaryPoints, data),
                         Height = this.GetDouble(roundData.Indexes, ConverterConstants.Height, data),
@@ -258,17 +258,17 @@ public class GymnasticsConverter : BaseSportConverter
                 if (string.IsNullOrEmpty(info))
                 {
                     var teamName = data[roundData.Indexes[ConverterConstants.Name]].InnerText;
-                    var nocCache = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == noc);
-                    var dbTeam = await this.TeamRepository.GetAsync(x => x.Name == teamName && x.NOCId == nocCache.Id && x.EventId == eventId);
-                    dbTeam ??= await this.TeamRepository.GetAsync(x => x.NOCId == nocCache.Id && x.EventId == eventId);
+                    var nocCache = this.DataCacheService.NationalOlympicCommittees.FirstOrDefault(x => x.Code == noc);
+                    var dbTeam = await this.TeamRepository.GetAsync(x => x.Name == teamName && x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == eventId);
+                    dbTeam ??= await this.TeamRepository.GetAsync(x => x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == eventId);
 
                     team = new ArtisticGymnastics
                     {
                         Id = dbTeam.Id,
                         Name = dbTeam.Name,
                         NOC = noc,
-                        FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml),
-                        Qualification = this.OlympediaService.FindQualification(row.OuterHtml),
+                        FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml),
+                        IsQualified = this.OlympediaService.IsQualified(row.OuterHtml),
                         ApparatusPoints = this.GetDouble(roundData.Indexes, ConverterConstants.ApparatusPoints, data),
                         CompulsoryPoints = this.GetDouble(roundData.Indexes, ConverterConstants.CompulsaryPoints, data),
                         DrillPoints = this.GetDouble(roundData.Indexes, ConverterConstants.DrillPoints, data),
@@ -330,8 +330,8 @@ public class GymnasticsConverter : BaseSportConverter
                                 Code = athleteModel.Code,
                                 Name = athleteModel.Name,
                                 NOC = team.NOC,
-                                FinishStatus = this.OlympediaService.FindStatus(row.OuterHtml),
-                                Qualification = this.OlympediaService.FindQualification(row.OuterHtml),
+                                FinishStatus = this.OlympediaService.FindFinishStatus(row.OuterHtml),
+                                IsQualified = this.OlympediaService.IsQualified(row.OuterHtml),
                             };
 
                             if (athleteModels.Count == 1)
