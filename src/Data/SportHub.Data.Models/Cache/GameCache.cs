@@ -1,6 +1,6 @@
 ﻿namespace SportHub.Data.Models.Cache;
 
-using SportHub.Data.Models.Entities.OlympicGames;
+using SportHub.Data.Models.DbEntities.OlympicGames;
 using SportHub.Data.Models.Enumerations.OlympicGames;
 using SportHub.Services.Mapper.Interfaces;
 
