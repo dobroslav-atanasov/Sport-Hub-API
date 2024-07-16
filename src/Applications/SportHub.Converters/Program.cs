@@ -83,7 +83,7 @@ services.AddDbContext<OlympicGamesDbContext>(options =>
 
 services.AddScoped(typeof(SportHubRepository<>));
 services.AddScoped(typeof(OlympicGamesRepository<>));
-services.AddScoped(typeof(OlympicGamesRepositoryService<>));
+services.AddScoped(typeof(DataService<>));
 
 services.AddScoped<IZipService, ZipService>();
 services.AddScoped<IRegExpService, RegExpService>();
@@ -100,7 +100,8 @@ services.AddScoped<SportHub.Services.Data.SportHubDb.Interfaces.ICountriesServic
 services.AddScoped<IDataCacheService, DataCacheService>();
 
 services.AddScoped<CountryDataConverter>();
-services.AddScoped<NOCConverter>();
+services.AddScoped<NationalOlympicCommitteeConverter>();
+services.AddScoped<CountryConverter>();
 services.AddScoped<GameConverter>();
 services.AddScoped<SportDisciplineConverter>();
 services.AddScoped<VenueConverter>();
@@ -135,12 +136,13 @@ var dbContext = serviceProvider.GetRequiredService<OlympicGamesDbContext>();
 dbContext.Database.Migrate();
 new OlympicGamesDbSeeder().SeedAsync(serviceProvider).GetAwaiter().GetResult();
 
-//await serviceProvider.GetService<CountryDataConverter>().ConvertAsync(ConverterConstants.COUNTRY_CONVERTER);
-//await serviceProvider.GetService<NOCConverter>().ConvertAsync(ConverterConstants.OLYMPEDIA_NOC_CONVERTER);
 //await serviceProvider.GetService<GameConverter>().ConvertAsync(ConverterConstants.OLYMPEDIA_GAME_CONVERTER);
 //await serviceProvider.GetService<SportDisciplineConverter>().ConvertAsync(ConverterConstants.OLYMPEDIA_SPORT_DISCIPLINE_CONVERTER);
+await serviceProvider.GetService<EventConverter>().ConvertAsync(ConverterConstants.OLYMPEDIA_RESULT_CONVERTER);
 //await serviceProvider.GetService<VenueConverter>().ConvertAsync(ConverterConstants.OLYMPEDIA_VENUE_CONVERTER);
-//await serviceProvider.GetService<EventConverter>().ConvertAsync(ConverterConstants.OLYMPEDIA_RESULT_CONVERTER);
+//await serviceProvider.GetService<NationalOlympicCommitteeConverter>().ConvertAsync(ConverterConstants.OLYMPEDIA_NOC_CONVERTER);
+//await serviceProvider.GetService<CountryConverter>().ConvertAsync(ConverterConstants.COUNTRY_CONVERTER);
+
 //await serviceProvider.GetService<AthleteConverter>().ConvertAsync(ConverterConstants.OLYMPEDIA_ATHELETE_CONVERTER);
 //await serviceProvider.GetService<ParticipantConverter>().ConvertAsync(ConverterConstants.OLYMPEDIA_RESULT_CONVERTER);
-await serviceProvider.GetService<ResultConverter>().ConvertAsync(ConverterConstants.OLYMPEDIA_RESULT_CONVERTER);
+//await serviceProvider.GetService<ResultConverter>().ConvertAsync(ConverterConstants.OLYMPEDIA_RESULT_CONVERTER);
