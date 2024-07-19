@@ -145,12 +145,12 @@ public class BobsleighConverter : BaseSportConverter
                 athleteModels = this.OlympediaService.FindAthletes(roundData.Rows[i + 1].OuterHtml);
             }
 
-            var nocCache = this.DataCacheService.NationalOlympicCommittees.FirstOrDefault(x => x.Code == noc);
+            var nocCache = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == noc);
 
             if (isTeamEvent)
             {
                 var teamName = this.GetString(roundData.Indexes, ConverterConstants.Name, data);
-                var dbTeam = await this.TeamRepository.GetAsync(x => x.Name == teamName && x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == eventId);
+                var dbTeam = await this.TeamRepository.GetAsync(x => x.Name == teamName && x.NOCId == nocCache.Id && x.EventId == eventId);
 
                 var team = new Bobsleigh
                 {

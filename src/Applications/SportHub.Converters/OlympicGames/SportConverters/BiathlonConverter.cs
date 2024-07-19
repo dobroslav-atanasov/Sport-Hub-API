@@ -56,8 +56,8 @@ public class BiathlonConverter : BaseSportConverter
 
             if (noc != null)
             {
-                var nocCache = this.DataCacheService.NationalOlympicCommittees.FirstOrDefault(x => x.Code == noc);
-                var dbTeam = await this.TeamRepository.GetAsync(x => x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == eventId);
+                var nocCache = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == noc);
+                var dbTeam = await this.TeamRepository.GetAsync(x => x.NOCId == nocCache.Id && x.EventId == eventId);
 
                 team = new Biathlon
                 {

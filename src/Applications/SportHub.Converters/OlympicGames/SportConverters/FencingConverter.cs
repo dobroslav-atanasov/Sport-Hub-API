@@ -72,9 +72,9 @@ public class FencingConverter : BaseSportConverter
                 {
                     if (noc != null)
                     {
-                        var nocCache = this.DataCacheService.NationalOlympicCommittees.FirstOrDefault(x => x.Code == noc);
+                        var nocCache = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == noc);
                         var teamName = this.GetString(roundData.Indexes, ConverterConstants.Name, data);
-                        var dbTeam = await this.TeamRepository.GetAsync(x => x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == options.Event.Id);
+                        var dbTeam = await this.TeamRepository.GetAsync(x => x.NOCId == nocCache.Id && x.EventId == options.Event.Id);
 
                         if (dbTeam != null)
                         {

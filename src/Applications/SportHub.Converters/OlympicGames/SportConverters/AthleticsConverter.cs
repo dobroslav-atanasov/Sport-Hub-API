@@ -351,9 +351,9 @@ public class AthleticsConverter : BaseSportConverter
                 if (noc != null)
                 {
                     var teamName = data[roundData.Indexes[ConverterConstants.Name]].InnerText;
-                    var nocCache = this.DataCacheService.NationalOlympicCommittees.FirstOrDefault(x => x.Code == noc);
-                    var dbTeam = await this.TeamRepository.GetAsync(x => x.Name == teamName && x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == eventId);
-                    dbTeam ??= await this.TeamRepository.GetAsync(x => x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == eventId);
+                    var nocCache = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == noc);
+                    var dbTeam = await this.TeamRepository.GetAsync(x => x.Name == teamName && x.NOCId == nocCache.Id && x.EventId == eventId);
+                    dbTeam ??= await this.TeamRepository.GetAsync(x => x.NOCId == nocCache.Id && x.EventId == eventId);
 
                     team = new Athletics
                     {

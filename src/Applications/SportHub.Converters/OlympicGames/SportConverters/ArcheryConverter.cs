@@ -319,11 +319,11 @@ public class ArcheryConverter : BaseSportConverter
             if (noc != null)
             {
                 var teamName = data[roundData.Indexes[ConverterConstants.Name]].InnerText;
-                var nocCache = this.DataCacheService.NationalOlympicCommittees.FirstOrDefault(x => x.Code == noc);
+                var nocCache = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == noc);
                 if (string.IsNullOrEmpty(info))
                 {
-                    var dbTeam = await this.TeamRepository.GetAsync(x => x.Name == teamName && x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == eventId);
-                    dbTeam ??= await this.TeamRepository.GetAsync(x => x.NationalOlympicCommitteeId == nocCache.Id && x.EventId == eventId);
+                    var dbTeam = await this.TeamRepository.GetAsync(x => x.Name == teamName && x.NOCId == nocCache.Id && x.EventId == eventId);
+                    dbTeam ??= await this.TeamRepository.GetAsync(x => x.NOCId == nocCache.Id && x.EventId == eventId);
 
                     team = new Archery
                     {
