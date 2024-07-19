@@ -72,6 +72,6 @@ var serviceProvider = services.BuildServiceProvider();
 //await serviceProvider.GetService<NOCCrawler>().StartAsync();
 //await serviceProvider.GetService<GameCrawler>().StartAsync();
 //await serviceProvider.GetService<SportDisciplineCrawler>().StartAsync();
-//await serviceProvider.GetService<ResultCrawler>().StartAsync();
-//await serviceProvider.GetService<AthleteCrawler>().StartAsync();
 //await serviceProvider.GetService<VenueCrawler>().StartAsync();
+//await serviceProvider.GetService<ResultCrawler>().StartAsync();
+await serviceProvider.GetService<AthleteCrawler>().StartAsync();
