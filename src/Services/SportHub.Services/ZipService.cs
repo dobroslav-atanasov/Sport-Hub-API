@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 using ICSharpCode.SharpZipLib.Zip;
 
-using SportHub.Data.Models.Entities.Crawlers;
+using SportHub.Data.Models.DbEntities.Crawlers;
 using SportHub.Data.Models.Zip;
 using SportHub.Services.Interfaces;
 
