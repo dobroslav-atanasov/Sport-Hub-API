@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 using SportHub.Data.Contexts;
-using SportHub.Data.Models.Entities.SportHub;
+using SportHub.Data.Models.DbEntities.SportHub;
 using SportHub.Services.Data.SportHubDb.Interfaces;
 
 public class UsersService : IUsersService

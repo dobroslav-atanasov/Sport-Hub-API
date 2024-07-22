@@ -1,6 +1,6 @@
 ﻿namespace SportHub.Services.Data.SportHubDb.Interfaces;
 
-using SportHub.Data.Models.Entities.SportHub;
+using SportHub.Data.Models.DbEntities.SportHub;
 
 public interface IUsersService
 {
