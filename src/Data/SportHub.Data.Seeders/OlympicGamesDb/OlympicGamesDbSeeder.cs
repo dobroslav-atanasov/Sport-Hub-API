@@ -21,11 +21,12 @@ public class OlympicGamesDbSeeder : ISeeder
                 new GameTypesSeeder(),
                 new EventGendersSeeder(),
                 new GendersSeeder(),
-
-                //new AthleteTypesSeeder(),
-                //new FinishTypesSeeder(),
-                //new MedalsSeeder(),
-                //new OlympicGameTypesSeeder()
+                new RolesSeeder(),
+                new MedalsSeeder(),
+                new FinishTypesSeeder(),
+                new DecisionsSeeder(),
+                new RecordsSeeder(),
+                new RoundsSeeder()
             };
 
             foreach (var seeder in seeders)

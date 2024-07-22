@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using SportHub.Data.Models.Entities.OlympicGames;
-using SportHub.Data.Models.Entities.OlympicGames.Enumerations;
+using SportHub.Data.Models.DbEntities.OlympicGames.Enumerations;
+using SportHub.Data.Models.Enumerations.OlympicGames;
 using SportHub.Data.Repositories;
 using SportHub.Data.Seeders.Interfaces;
 
@@ -16,12 +16,12 @@ public class MedalsSeeder : ISeeder
     {
         var repository = services.GetService<OlympicGamesRepository<Medal>>();
 
-        var types = new List<MedalTypeEnum>
+        var types = new List<MedalEnum>
         {
-            MedalTypeEnum.Gold,
-            MedalTypeEnum.Silver,
-            MedalTypeEnum.Bronze,
-            MedalTypeEnum.None
+            MedalEnum.Gold,
+            MedalEnum.Silver,
+            MedalEnum.Bronze,
+            MedalEnum.None
         };
 
         foreach (var type in types)
