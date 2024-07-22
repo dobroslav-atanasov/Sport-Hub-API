@@ -2,7 +2,7 @@
 
 using System.Security.Claims;
 
-using SportHub.Data.Models.Entities.SportHub;
+using SportHub.Data.Models.DbEntities.SportHub;
 using SportHub.Data.Models.Users;
 
 public interface IJwtService

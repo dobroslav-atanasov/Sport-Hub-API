@@ -10,7 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 
 using SportHub.Common.Constants;
 using SportHub.Common.Exceptions;
-using SportHub.Data.Models.Entities.SportHub;
+using SportHub.Data.Models.DbEntities.SportHub;
 using SportHub.Data.Models.Users;
 using SportHub.Services.Interfaces;
 
