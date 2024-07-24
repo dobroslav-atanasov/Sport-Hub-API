@@ -117,6 +117,11 @@ public class RegExpService : IRegExpService
 
     public string MatchFirstGroup(string text, string pattern)
     {
+        if (string.IsNullOrEmpty(text))
+        {
+            return null;
+        }
+
         var match = Regex.Match(text, pattern, RegexOptions.IgnoreCase | RegexOptions.Singleline);
         if (match.Success)
         {
