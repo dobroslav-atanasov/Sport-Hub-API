@@ -4,7 +4,7 @@ using SportHub.Common.Constants;
 using SportHub.Data.Models.Converters;
 using SportHub.Data.Models.Converters.OlympicGames;
 using SportHub.Data.Models.Converters.OlympicGames.Base;
-using SportHub.Data.Models.Entities.Enumerations;
+using SportHub.Data.Models.DbEntities.Enumerations;
 using SportHub.Data.Models.Enumerations.OlympicGames;
 using SportHub.Services.Interfaces;
 
