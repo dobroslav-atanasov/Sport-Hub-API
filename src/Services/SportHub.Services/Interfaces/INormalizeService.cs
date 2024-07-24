@@ -9,7 +9,7 @@ public interface INormalizeService
 
     string NormalizeHostCityName(string hostCity);
 
-    string NormalizeEventName(string name, int gameYear, string disciplineName);
+    string NormalizeEventName(ConverterModel model);
 
     string ReplaceNonEnglishLetters(string name);
 

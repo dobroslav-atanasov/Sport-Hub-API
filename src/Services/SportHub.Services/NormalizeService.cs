@@ -311,8 +311,9 @@ public class NormalizeService : INormalizeService
         };
     }
 
-    public string NormalizeEventName(string name, int gameYear, string disciplineName)
+    public string NormalizeEventName(ConverterModel model)
     {
+        var name = model.EventInfo.OriginalName;
         name = Regex.Replace(name, @"(\d+)\s+(\d+)", me =>
         {
             return $"{me.Groups[1].Value.Trim()}{me.Groups[2].Value.Trim()}";
@@ -369,11 +370,9 @@ public class NormalizeService : INormalizeService
             .Replace("Coxless Fours", "Coxless Four")
             .Replace("Coxless Teams", "Coxless Pair")
             .Replace("Covered Courts", "Indoor")
-            //.Replace("", "")
-            //.Replace("", "")
             .Replace("Target Archery", "Moving Bird");
 
-        if (gameYear == 1924 && disciplineName == "Artistic Gymnastics" && name == "Side Horse, Men")
+        if (model.GameCache.Year == 1924 && model.DisciplineCache.Name == "Artistic Gymnastics" && name == "Side Horse, Men")
         {
             name = "Pommel Horse, Men";
         }
