@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using SportHub.Common.Constants;
 using SportHub.Crawlers.Countries;
 using SportHub.Crawlers.Olympedia;
+using SportHub.Crawlers.OlympicGames.Paris2024;
 using SportHub.Data.Contexts;
 using SportHub.Data.Factories;
 using SportHub.Data.Factories.Interfaces;
@@ -59,19 +60,71 @@ services.AddScoped<ILogsService, LogsService>();
 services.AddScoped<IOperationsService, OperationsService>();
 
 services.AddTransient<CountryDataCrawler>();
-services.AddTransient<NOCCrawler>();
+services.AddTransient<SportHub.Crawlers.Olympedia.NOCCrawler>();
 services.AddTransient<GameCrawler>();
 services.AddTransient<SportDisciplineCrawler>();
-services.AddTransient<ResultCrawler>();
-services.AddTransient<AthleteCrawler>();
+services.AddTransient<SportHub.Crawlers.Olympedia.ResultCrawler>();
+services.AddTransient<SportHub.Crawlers.Olympedia.AthleteCrawler>();
 services.AddTransient<VenueCrawler>();
+
+// PARIS 2024
+services.AddTransient<LabelsCrawler>();
+services.AddTransient<NOCsCrawler>();
+services.AddTransient<SportHub.Crawlers.OlympicGames.Paris2024.NOCCrawler>();
+services.AddTransient<LinksCrawler>();
+services.AddTransient<SportCodesCrawler>();
+services.AddTransient<EventCodesCrawler>();
+services.AddTransient<DisciplinesCrawler>();
+services.AddTransient<TeamsCrawler>();
+services.AddTransient<HorsesCrawler>();
+services.AddTransient<ParticipationsCrawler>();
+services.AddTransient<AthletesCrawler>();
+services.AddTransient<CoachesCrawler>();
+services.AddTransient<JudgesCrawler>();
+services.AddTransient<SportHub.Crawlers.OlympicGames.Paris2024.AthleteCrawler>();
+services.AddTransient<CoachCrawler>();
+services.AddTransient<JudgeCrawler>();
+services.AddTransient<HorseCrawler>();
+services.AddTransient<TeamCrawler>();
+services.AddTransient<ScheduleCrawler>();
+services.AddTransient<DisciplineCrawler>();
+services.AddTransient<EventCrawler>();
+services.AddTransient<SportHub.Crawlers.OlympicGames.Paris2024.ResultCrawler>();
+services.AddTransient<PDFsCrawler>();
 
 var serviceProvider = services.BuildServiceProvider();
 
 //await serviceProvider.GetService<CountryDataCrawler>().StartAsync();
-//await serviceProvider.GetService<NOCCrawler>().StartAsync();
+
+// OLYMPEDIA
+//await serviceProvider.GetService<SportHub.Crawlers.Olympedia.NOCCrawler>().StartAsync();
 //await serviceProvider.GetService<GameCrawler>().StartAsync();
 //await serviceProvider.GetService<SportDisciplineCrawler>().StartAsync();
 //await serviceProvider.GetService<VenueCrawler>().StartAsync();
-//await serviceProvider.GetService<ResultCrawler>().StartAsync();
-await serviceProvider.GetService<AthleteCrawler>().StartAsync();
+//await serviceProvider.GetService<SportHub.Crawlers.Olympedia.ResultCrawler>().StartAsync();
+//await serviceProvider.GetService<AthleteCrawler>().StartAsync();
+
+// PARIS 2024
+await serviceProvider.GetService<LabelsCrawler>().StartAsync();
+await serviceProvider.GetService<NOCsCrawler>().StartAsync();
+await serviceProvider.GetService<SportHub.Crawlers.OlympicGames.Paris2024.NOCCrawler>().StartAsync();
+await serviceProvider.GetService<LinksCrawler>().StartAsync();
+await serviceProvider.GetService<SportCodesCrawler>().StartAsync();
+await serviceProvider.GetService<EventCodesCrawler>().StartAsync();
+await serviceProvider.GetService<DisciplinesCrawler>().StartAsync();
+await serviceProvider.GetService<TeamsCrawler>().StartAsync();
+await serviceProvider.GetService<HorsesCrawler>().StartAsync();
+await serviceProvider.GetService<ParticipationsCrawler>().StartAsync();
+await serviceProvider.GetService<AthletesCrawler>().StartAsync();
+await serviceProvider.GetService<CoachesCrawler>().StartAsync();
+await serviceProvider.GetService<JudgesCrawler>().StartAsync();
+await serviceProvider.GetService<SportHub.Crawlers.OlympicGames.Paris2024.AthleteCrawler>().StartAsync();
+await serviceProvider.GetService<CoachCrawler>().StartAsync();
+await serviceProvider.GetService<JudgeCrawler>().StartAsync();
+await serviceProvider.GetService<HorseCrawler>().StartAsync();
+await serviceProvider.GetService<TeamCrawler>().StartAsync();
+await serviceProvider.GetService<ScheduleCrawler>().StartAsync();
+await serviceProvider.GetService<DisciplineCrawler>().StartAsync();
+await serviceProvider.GetService<EventCrawler>().StartAsync();
+//await serviceProvider.GetService<SportHub.Crawlers.OlympicGames.Paris2024.ResultCrawler>().StartAsync();
+//await serviceProvider.GetService<PDFsCrawler>().StartAsync();
