@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 using SportHub.Data.Factories.Interfaces;
-using SportHub.Data.Models.Entities.Crawlers;
-using SportHub.Data.Models.Entities.Crawlers.Enumerations;
+using SportHub.Data.Models.DbEntities.Crawlers;
+using SportHub.Data.Models.DbEntities.Crawlers.Enumerations;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
 using SportHub.Services.Interfaces;
 
@@ -55,45 +55,27 @@ public class GroupsService : IGroupsService
 
         if (dbGroup == null)
         {
-            try
+            await this.AddGroupAsync(group);
+            var log = new Log
             {
-                await this.AddGroupAsync(group);
-                var log = new Log
-                {
-                    Identifier = group.Identifier,
-                    LogDate = DateTime.UtcNow,
-                    Operation = (int)OperationType.Add,
-                    CrawlerId = group.CrawlerId,
-                };
-                await this.logsService.AddLogAsync(log);
-            }
-            catch (Exception ex)
-            {
-            }
+                Identifier = group.Identifier,
+                LogDate = DateTime.UtcNow,
+                Operation = (int)OperationType.Add,
+                CrawlerId = group.CrawlerId,
+            };
+            await this.logsService.AddLogAsync(log);
         }
         else
         {
             var isUpdated = this.CheckForUpdate(group, dbGroup);
             if (isUpdated)
             {
-                try
-                {
-                    await this.UpdateGroupAsync(group, dbGroup);
-                    await this.logsService.UpdateLogAsync(dbGroup.Identifier, (int)OperationType.Update);
-                }
-                catch (Exception ex)
-                {
-                }
+                await this.UpdateGroupAsync(group, dbGroup);
+                await this.logsService.UpdateLogAsync(dbGroup.Identifier, (int)OperationType.Update);
             }
             else
             {
-                try
-                {
-                    await this.logsService.UpdateLogAsync(dbGroup.Identifier, (int)OperationType.None);
-                }
-                catch (Exception ex)
-                {
-                }
+                await this.logsService.UpdateLogAsync(dbGroup.Identifier, (int)OperationType.None);
             }
         }
     }

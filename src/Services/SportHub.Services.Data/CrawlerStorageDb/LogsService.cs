@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 using SportHub.Data.Factories.Interfaces;
-using SportHub.Data.Models.Entities.Crawlers;
+using SportHub.Data.Models.DbEntities.Crawlers;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
 
 public class LogsService : ILogsService

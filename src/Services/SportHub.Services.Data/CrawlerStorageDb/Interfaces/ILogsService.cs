@@ -1,6 +1,6 @@
 ﻿namespace SportHub.Services.Data.CrawlerStorageDb.Interfaces;
 
-using SportHub.Data.Models.Entities.Crawlers;
+using SportHub.Data.Models.DbEntities.Crawlers;
 
 public interface ILogsService
 {

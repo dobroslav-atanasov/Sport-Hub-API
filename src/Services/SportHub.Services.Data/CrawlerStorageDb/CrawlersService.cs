@@ -3,7 +3,7 @@
 using System.Threading.Tasks;
 
 using SportHub.Data.Factories.Interfaces;
-using SportHub.Data.Models.Entities.Crawlers;
+using SportHub.Data.Models.DbEntities.Crawlers;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
 
 public class CrawlersService : ICrawlersService
