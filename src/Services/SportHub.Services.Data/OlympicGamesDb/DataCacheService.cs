@@ -13,20 +13,20 @@ public class DataCacheService : IDataCacheService
     private readonly Lazy<ICollection<GameCache>> games;
     private readonly Lazy<ICollection<DisciplineCache>> disciplines;
     private readonly Lazy<ICollection<EventCache>> events;
-    private readonly Lazy<ICollection<NationalOlympicCommitteeCache>> nationalOlmypicCommittees;
+    private readonly Lazy<ICollection<NOCCache>> nocs;
 
     private readonly OlympicGamesRepository<Game> gameRepository;
     private readonly OlympicGamesRepository<Discipline> disciplineRepository;
     private readonly OlympicGamesRepository<Event> eventRepository;
-    private readonly OlympicGamesRepository<NationalOlympicCommittee> nocRepository;
+    private readonly OlympicGamesRepository<NOC> nocRepository;
 
     public DataCacheService(OlympicGamesRepository<Game> gameRepository, OlympicGamesRepository<Discipline> disciplineRepository,
-        OlympicGamesRepository<Event> eventRepository, OlympicGamesRepository<NationalOlympicCommittee> nocRepository)
+        OlympicGamesRepository<Event> eventRepository, OlympicGamesRepository<NOC> nocRepository)
     {
         this.games = new Lazy<ICollection<GameCache>>(() => this.GetAllGames());
         this.disciplines = new Lazy<ICollection<DisciplineCache>>(() => this.GetAllDisciplines());
         this.events = new Lazy<ICollection<EventCache>>(() => this.GetAllEvents());
-        this.nationalOlmypicCommittees = new Lazy<ICollection<NationalOlympicCommitteeCache>>(() => this.GetAllNationalOlympicCommittees());
+        this.nocs = new Lazy<ICollection<NOCCache>>(() => this.GetAllNOCs());
 
         this.gameRepository = gameRepository;
         this.disciplineRepository = disciplineRepository;
@@ -34,11 +34,11 @@ public class DataCacheService : IDataCacheService
         this.nocRepository = nocRepository;
     }
 
-    private ICollection<NationalOlympicCommitteeCache> GetAllNationalOlympicCommittees()
+    private ICollection<NOCCache> GetAllNOCs()
     {
         return this.nocRepository
             .AllAsNoTracking()
-            .To<NationalOlympicCommitteeCache>()
+            .To<NOCCache>()
             .ToList();
     }
 
@@ -72,5 +72,5 @@ public class DataCacheService : IDataCacheService
 
     public ICollection<EventCache> Events => this.events.Value;
 
-    public ICollection<NationalOlympicCommitteeCache> NationalOlympicCommittees => this.nationalOlmypicCommittees.Value;
+    public ICollection<NOCCache> NOCs => this.nocs.Value;
 }

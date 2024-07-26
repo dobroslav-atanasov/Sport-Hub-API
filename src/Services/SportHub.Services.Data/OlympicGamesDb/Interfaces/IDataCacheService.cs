@@ -10,5 +10,5 @@ public interface IDataCacheService
 
     ICollection<EventCache> Events { get; }
 
-    ICollection<NationalOlympicCommitteeCache> NationalOlympicCommittees { get; }
+    ICollection<NOCCache> NOCs { get; }
 }
