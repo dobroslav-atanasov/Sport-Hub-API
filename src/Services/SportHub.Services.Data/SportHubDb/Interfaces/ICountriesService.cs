@@ -1,6 +1,6 @@
 ﻿namespace SportHub.Services.Data.SportHubDb.Interfaces;
 
-using SportHub.Data.Models.Entities.SportHub;
+using SportHub.Data.Models.DbEntities.SportHub;
 using SportHub.Data.ViewModels.Countries;
 
 public interface ICountriesService

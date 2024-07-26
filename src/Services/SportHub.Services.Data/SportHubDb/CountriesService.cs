@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 
-using SportHub.Data.Models.Entities.SportHub;
+using SportHub.Data.Models.DbEntities.SportHub;
 using SportHub.Data.Repositories;
 using SportHub.Data.ViewModels.Countries;
 using SportHub.Services.Data.SportHubDb.Interfaces;
