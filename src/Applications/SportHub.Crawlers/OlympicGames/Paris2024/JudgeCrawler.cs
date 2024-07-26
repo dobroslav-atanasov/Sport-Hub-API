@@ -40,12 +40,19 @@ public class JudgeCrawler : BaseCrawler
                 {
                     var personHttpModel = await this.HttpService.GetAsync(url);
                     await this.ProcessGroupAsync(personHttpModel);
+
+                    var imageCode = person.Code.Substring(1, 3);
+                    if (person.Image != null && person.Image.ImageExtension != null)
+                    {
+                        var imageUrl = $"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_ATHLETE_IMAGE_URL).Value}{imageCode}/medium/{person.Code}{person.Image.ImageExtension}";
+                        var imageBytes = await this.HttpService.DownloadBytesAsync(imageUrl);
+                        await File.WriteAllBytesAsync($"Images/Judges/{person.Code}{person.Image.ImageExtension}", imageBytes);
+                    }
                 }
                 catch (Exception ex)
                 {
                     this.Logger.LogError(ex, $"Failed to process url: {url};");
                 }
-
             }
         }
         catch (Exception ex)

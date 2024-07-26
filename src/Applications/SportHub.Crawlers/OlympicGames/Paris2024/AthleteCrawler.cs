@@ -31,7 +31,6 @@ public class AthleteCrawler : BaseCrawler
         {
             var httpModel = await this.HttpService.GetAsync(this.Configuration.GetSection(CrawlerConstants.PARIS_2024_ATHLETES_URL).Value);
             var json = Encoding.UTF8.GetString(httpModel.Bytes);
-
             var model = JsonSerializer.Deserialize<AthletesList>(json);
 
             var count = 0;
@@ -44,30 +43,19 @@ public class AthleteCrawler : BaseCrawler
                 {
                     var personHttpModel = await this.HttpService.GetAsync(url);
                     await this.ProcessGroupAsync(personHttpModel);
-                    //var documents = new List<Document>
-                    //{
-                    //    this.CreateDocument(personHttpModel)
-                    //};
 
-                    //var pageHtmlHttpModel = await this.HttpService.GetAsync($"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_ATHLETE_PAGE_URL).Value}{person.Code}");
-                    //var imageSiteUrl = this.regExpService.MatchFirstGroup(pageHtmlHttpModel.Content, @"<img class=""wrsBiosDetail__image"" alt="""" src=""(.*?)"">");
-
-                    //if (string.IsNullOrEmpty(imageSiteUrl))
-                    //{
-                    //    var imageUrl = $"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_MAIN_URL).Value}{imageSiteUrl}";
-                    //    var imageHttpModel = await this.HttpService.GetAsync(imageUrl);
-                    //    var imageDocument = this.CreateDocument(imageHttpModel);
-                    //    imageDocument.Order = 2;
-                    //    documents.Add(imageDocument);
-                    //}
-
-                    //await this.ProcessGroupAsync(personHttpModel, documents);
+                    var imageCode = person.Code.Substring(1, 3);
+                    if (person.Image != null && person.Image.ImageExtension != null)
+                    {
+                        var imageUrl = $"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_ATHLETE_IMAGE_URL).Value}{imageCode}/medium/{person.Code}{person.Image.ImageExtension}";
+                        var imageBytes = await this.HttpService.DownloadBytesAsync(imageUrl);
+                        await File.WriteAllBytesAsync($"Images/Athletes/{person.Code}{person.Image.ImageExtension}", imageBytes);
+                    }
                 }
                 catch (Exception ex)
                 {
                     this.Logger.LogError(ex, $"Failed to process url: {url};");
                 }
-
             }
         }
         catch (Exception ex)

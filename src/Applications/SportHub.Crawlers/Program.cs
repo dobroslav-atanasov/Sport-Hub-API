@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 using SportHub.Common.Constants;
 using SportHub.Crawlers.Countries;
-using SportHub.Crawlers.Olympedia;
+using SportHub.Crawlers.OlympicGames.Olympedia;
 using SportHub.Crawlers.OlympicGames.Paris2024;
 using SportHub.Data.Contexts;
 using SportHub.Data.Factories;
@@ -60,11 +60,11 @@ services.AddScoped<ILogsService, LogsService>();
 services.AddScoped<IOperationsService, OperationsService>();
 
 services.AddTransient<CountryDataCrawler>();
-services.AddTransient<SportHub.Crawlers.Olympedia.NOCCrawler>();
+services.AddTransient<SportHub.Crawlers.OlympicGames.Olympedia.NOCCrawler>();
 services.AddTransient<GameCrawler>();
 services.AddTransient<SportDisciplineCrawler>();
-services.AddTransient<SportHub.Crawlers.Olympedia.ResultCrawler>();
-services.AddTransient<SportHub.Crawlers.Olympedia.AthleteCrawler>();
+services.AddTransient<SportHub.Crawlers.OlympicGames.Olympedia.ResultCrawler>();
+services.AddTransient<SportHub.Crawlers.OlympicGames.Olympedia.AthleteCrawler>();
 services.AddTransient<VenueCrawler>();
 
 // PARIS 2024
@@ -126,5 +126,5 @@ await serviceProvider.GetService<TeamCrawler>().StartAsync();
 await serviceProvider.GetService<ScheduleCrawler>().StartAsync();
 await serviceProvider.GetService<DisciplineCrawler>().StartAsync();
 await serviceProvider.GetService<EventCrawler>().StartAsync();
-//await serviceProvider.GetService<SportHub.Crawlers.OlympicGames.Paris2024.ResultCrawler>().StartAsync();
+await serviceProvider.GetService<SportHub.Crawlers.OlympicGames.Paris2024.ResultCrawler>().StartAsync();
 //await serviceProvider.GetService<PDFsCrawler>().StartAsync();

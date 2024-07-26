@@ -40,45 +40,44 @@ public class DisciplineCrawler : BaseCrawler
                     var unitsHttpModel = await this.HttpService.GetAsync(url);
                     var unitsDocument = this.CreateDocument(unitsHttpModel);
 
-                    var imageUrl = $"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_DISCIPLINE_IMAGE_URL).Value}{discipline.Code}_big.svg";
-                    var imageHttpModel = await this.HttpService.GetAsync(imageUrl);
-                    var imageDocument = this.CreateDocument(imageHttpModel);
-                    imageDocument.Order = 2;
+                    //var imageUrl = $"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_DISCIPLINE_IMAGE_URL).Value}{discipline.Code}_big.svg";
+                    //var imageHttpModel = await this.HttpService.GetAsync(imageUrl);
+                    //var imageDocument = this.CreateDocument(imageHttpModel);
+                    //imageDocument.Order = 2;
 
                     var positionsUrl = $"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_DISCIPLINE_POSITIONS_URL).Value}{discipline.Code}.json";
                     var positionsHttpModel = await this.HttpService.GetAsync(positionsUrl);
                     var positionsDocument = this.CreateDocument(positionsHttpModel);
-                    positionsDocument.Order = 3;
+                    positionsDocument.Order = 2;
 
                     var schedulesUrl = $"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_DISCIPLINE_SCHEDULES_URL).Value}{discipline.Code}.json";
                     var schedulesHttpModel = await this.HttpService.GetAsync(schedulesUrl);
                     var schedulesDocument = this.CreateDocument(schedulesHttpModel);
-                    schedulesDocument.Order = 4;
+                    schedulesDocument.Order = 3;
 
                     var eventsUrl = $"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_DISCIPLINE_EVENTS_URL).Value}{discipline.Code}.json";
                     var eventsHttpModel = await this.HttpService.GetAsync(eventsUrl);
                     var eventsDocument = this.CreateDocument(eventsHttpModel);
-                    eventsDocument.Order = 5;
+                    eventsDocument.Order = 4;
 
                     var eventUnitsUrl = $"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_DISCIPLINE_EVENT_UNITS_URL).Value}{discipline.Code}.json";
                     var eventUnitsHttpModel = await this.HttpService.GetAsync(eventUnitsUrl);
                     var eventUnitsDocument = this.CreateDocument(eventUnitsHttpModel);
-                    eventUnitsDocument.Order = 6;
+                    eventUnitsDocument.Order = 5;
 
                     var recordsUrl = $"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_DISCIPLINE_RECORDS_URL).Value}{discipline.Code}.json";
                     var recordsHttpModel = await this.HttpService.GetAsync(recordsUrl);
                     var recordsDocument = this.CreateDocument(recordsHttpModel);
-                    recordsDocument.Order = 7;
+                    recordsDocument.Order = 6;
 
                     var infoUrl = $"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_DISCIPLINE_INFO_URL).Value}{discipline.Code}.json";
                     var infoHttpModel = await this.HttpService.GetAsync(infoUrl);
                     var infoDocument = this.CreateDocument(infoHttpModel);
-                    infoDocument.Order = 8;
+                    infoDocument.Order = 7;
 
                     await this.ProcessGroupAsync(unitsHttpModel, new List<Document>
                     {
                         unitsDocument,
-                        imageDocument,
                         positionsDocument,
                         schedulesDocument,
                         eventsDocument,
@@ -86,6 +85,10 @@ public class DisciplineCrawler : BaseCrawler
                         recordsDocument,
                         infoDocument
                     });
+
+                    var imageUrl = $"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_DISCIPLINE_IMAGE_URL).Value}{discipline.Code}_big.svg";
+                    var imageBytes = await this.HttpService.DownloadBytesAsync(imageUrl);
+                    await File.WriteAllBytesAsync($"Images/Sports/{discipline.Code}.svg", imageBytes);
                 }
                 catch (Exception ex)
                 {
