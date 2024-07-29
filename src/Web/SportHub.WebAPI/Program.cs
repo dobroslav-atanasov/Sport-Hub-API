@@ -24,8 +24,6 @@ using SportHub.Data.Seeders.SportHubDb;
 using SportHub.Services;
 using SportHub.Services.Data.CrawlerStorageDb;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
-using SportHub.Services.Data.OlympicGamesDb;
-using SportHub.Services.Data.OlympicGamesDb.Interfaces;
 using SportHub.Services.Data.SportHubDb;
 using SportHub.Services.Data.SportHubDb.Interfaces;
 using SportHub.Services.Interfaces;
@@ -213,7 +211,5 @@ public class Program
         services.AddScoped<IGroupsService, GroupsService>();
         services.AddScoped<ILogsService, LogsService>();
         services.AddScoped<IUsersService, UsersService>();
-        services.AddScoped<IGamesService, GamesService>();
-        services.AddScoped<ISportsService, SportsService>();
     }
 }
