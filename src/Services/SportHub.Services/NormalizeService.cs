@@ -1,8 +1,10 @@
 ﻿namespace SportHub.Services;
 
+using System;
 using System.Text.RegularExpressions;
 
 using SportHub.Data.Models.Converters.OlympicGames;
+using SportHub.Data.Models.Converters.OlympicGames.Olympedia.Base;
 using SportHub.Data.Models.Enumerations.OlympicGames;
 using SportHub.Services.Interfaces;
 
@@ -311,7 +313,7 @@ public class NormalizeService : INormalizeService
         };
     }
 
-    public string NormalizeEventName(ConverterModel model)
+    public string NormalizeEventName(OlympediaDocumentModel model)
     {
         var name = model.EventInfo.OriginalName;
         name = Regex.Replace(name, @"(\d+)\s+(\d+)", me =>
@@ -1078,5 +1080,134 @@ public class NormalizeService : INormalizeService
         }
 
         return country;
+    }
+
+    public Tuple<string, string> MapDisciplineToSport(string discipline)
+    {
+        Tuple<string, string> sport = null;
+        sport = new Tuple<string, string>("", "");
+        switch (discipline)
+        {
+            case "Archery": sport = new Tuple<string, string>("Archery", "ARC"); break;
+            case "Athletics": sport = new Tuple<string, string>("Athletics", "ATH"); break;
+            case "Badminton": sport = new Tuple<string, string>("Badminton", "BDM"); break;
+            case "3x3 Basketball":
+            case "Basketball":
+                sport = new Tuple<string, string>("Basketball", "BSK");
+                break;
+            case "Breaking": sport = new Tuple<string, string>("Breaking", "BKG"); break;
+            case "Cycling BMX Freestyle":
+            case "Cycling Road":
+            case "Cycling Track":
+            case "Cycling BMX Racing":
+            case "Cycling Mountain Bike":
+                sport = new Tuple<string, string>("Cycling", "CYC");
+                break;
+            case "Boxing": sport = new Tuple<string, string>("Boxing", "BOX"); break;
+            case "Sport Climbing": sport = new Tuple<string, string>("Sport Climbing", "CLB"); break;
+            case "Canoe Slalom":
+            case "Canoe Sprint":
+                sport = new Tuple<string, string>("Canoe", "CAS");
+                break;
+            case "Diving":
+            case "Marathon Swimming":
+            case "Artistic Swimming":
+            case "Water Polo":
+            case "Swimming":
+                sport = new Tuple<string, string>("Aquatics", "AQU");
+                break;
+            case "Equestrian": sport = new Tuple<string, string>("Equestrian", "EQU"); break;
+            case "Football": sport = new Tuple<string, string>("Football", "FBL"); break;
+            case "Fencing": sport = new Tuple<string, string>("Fencing", "FEN"); break;
+            case "Artistic Gymnastics":
+            case "Rhythmic Gymnastics":
+            case "Trampoline Gymnastics":
+                sport = new Tuple<string, string>("Gymnastics", "GYM");
+                break;
+            case "Golf": sport = new Tuple<string, string>("Golf", "GLF"); break;
+            case "Handball": sport = new Tuple<string, string>("Handball", "HBL"); break;
+            case "Hockey": sport = new Tuple<string, string>("Hockey", "HOC"); break;
+            case "Judo": sport = new Tuple<string, string>("Judo", "JUD"); break;
+            case "Modern Pentathlon": sport = new Tuple<string, string>("Modern Pentathlon", "MPN"); break;
+            case "Rowing": sport = new Tuple<string, string>("Rowing", "ROW"); break;
+            case "Rugby":
+            case "Rugby Sevens":
+                sport = new Tuple<string, string>("Rugby", "RUG");
+                break;
+            case "Sailing": sport = new Tuple<string, string>("Sailing", "SAL"); break;
+            case "Shooting": sport = new Tuple<string, string>("Shooting", "SHO"); break;
+            case "Skateboarding": sport = new Tuple<string, string>("Skateboarding", "SKB"); break;
+            case "Surfing": sport = new Tuple<string, string>("Surfing", "SRF"); break;
+            case "Tennis": sport = new Tuple<string, string>("Tennis", "TEN"); break;
+            case "Taekwondo": sport = new Tuple<string, string>("Taekwondo", "TKW"); break;
+            case "Triathlon": sport = new Tuple<string, string>("Triathlon", "TRI"); break;
+            case "Table Tennis": sport = new Tuple<string, string>("Table Tennis", "TTE"); break;
+            case "Beach Volleyball":
+            case "Volleyball":
+                sport = new Tuple<string, string>("Volleyball", "VOL");
+                break;
+            case "Weightlifting": sport = new Tuple<string, string>("Weightlifting", "WLF"); break;
+            case "Wrestling": sport = new Tuple<string, string>("Wrestling", "WRE"); break;
+            case "Alpine Skiing":
+            case "Cross Country Skiing":
+            case "Nordic Combined":
+            case "Ski Jumping":
+            case "Snowboarding":
+            case "Freestyle Skiing":
+                sport = new Tuple<string, string>("Skiing", "SKI");
+                break;
+            case "Baseball":
+            case "Softball":
+                sport = new Tuple<string, string>("Baseball and Softball", "BAS");
+                break;
+            case "Basque pelota": sport = new Tuple<string, string>("Basque pelota", "PEL"); break;
+            case "Biathlon": sport = new Tuple<string, string>("Biathlon", "BTH"); break;
+            case "Bobsleigh":
+            case "Skeleton":
+                sport = new Tuple<string, string>("Bobsleigh", "BOB");
+                break;
+            case "Cricket": sport = new Tuple<string, string>("Cricket", "CKT"); break;
+            case "Croquet": sport = new Tuple<string, string>("Croquet", "CQT"); break;
+            case "Curling": sport = new Tuple<string, string>("Curling", "CUR"); break;
+            case "Figure Skating":
+            case "Short Track Speed Skating":
+            case "Speed Skating":
+                sport = new Tuple<string, string>("Skating", "SKA");
+                break;
+            case "Ice Hockey": sport = new Tuple<string, string>("Ice Hockey", "IHO"); break;
+            case "Jeu De Paume": sport = new Tuple<string, string>("Jeu De Paume", "JDP"); break;
+            case "Karate": sport = new Tuple<string, string>("Karate", "KTE"); break;
+            case "Lacrosse": sport = new Tuple<string, string>("Lacrosse", "LAX"); break;
+            case "Luge": sport = new Tuple<string, string>("Luge", "LUG"); break;
+            case "Military Ski Patrol": sport = new Tuple<string, string>("Military Ski Patrol", "MPT"); break;
+            case "Motorboating": sport = new Tuple<string, string>("Motorboating", "PBT"); break;
+            case "Polo": sport = new Tuple<string, string>("Polo", "POL"); break;
+            case "Racquets": sport = new Tuple<string, string>("Racquets", "RQT"); break;
+            case "Roque": sport = new Tuple<string, string>("Roque", "RQE"); break;
+            case "Tug-Of-War": sport = new Tuple<string, string>("Tug-Of-War", "TOW"); break;
+        }
+
+        return sport;
+    }
+
+    public string NormalizeDisciplineName(string name)
+    {
+        switch (name)
+        {
+            case "Canoe Marathon":
+                name = "Canoe Sprint"; break;
+            case "Equestrian Dressage":
+            case "Equestrian Driving":
+            case "Equestrian Eventing":
+            case "Equestrian Jumping":
+            case "Equestrian Vaulting":
+                name = "Equestrian"; break;
+            case "Trampolining":
+                name = "Trampoline Gymnastics"; break;
+            case "Tug-Of-War":
+                name = "Tug-Of-War"; break;
+        }
+
+        return name;
     }
 }

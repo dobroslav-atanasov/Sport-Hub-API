@@ -1,6 +1,7 @@
 ﻿namespace SportHub.Services.Interfaces;
 
 using SportHub.Data.Models.Converters.OlympicGames;
+using SportHub.Data.Models.Converters.OlympicGames.Olympedia.Base;
 using SportHub.Data.Models.Enumerations.OlympicGames;
 
 public interface INormalizeService
@@ -9,7 +10,7 @@ public interface INormalizeService
 
     string NormalizeHostCityName(string hostCity);
 
-    string NormalizeEventName(ConverterModel model);
+    string NormalizeEventName(OlympediaDocumentModel model);
 
     string ReplaceNonEnglishLetters(string name);
 
@@ -22,4 +23,8 @@ public interface INormalizeService
     RoundEnum MapAdditionalRound(string name);
 
     string MapCityToCountry(string city);
+
+    Tuple<string, string> MapDisciplineToSport(string discipline);
+
+    string NormalizeDisciplineName(string name);
 }
