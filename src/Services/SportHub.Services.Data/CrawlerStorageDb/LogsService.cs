@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 using SportHub.Data.Factories.Interfaces;
 using SportHub.Data.Models.DbEntities.Crawlers;
+using SportHub.Data.Models.DbEntities.Crawlers.Enumerations;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
 
 public class LogsService : ILogsService
@@ -33,7 +34,7 @@ public class LogsService : ILogsService
 
         var identifiers = await context
             .Logs
-            .Where(l => l.CrawlerId == crawlerId)
+            .Where(l => l.CrawlerId == crawlerId && l.Operation != (int)OperationType.Delete)
             .Select(l => l.Identifier)
             .ToListAsync();
 
