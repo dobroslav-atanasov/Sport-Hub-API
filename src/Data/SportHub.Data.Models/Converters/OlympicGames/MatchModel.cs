@@ -1,7 +1,7 @@
 ﻿namespace SportHub.Data.Models.Converters.OlympicGames;
 
-using SportHub.Data.Models.Entities.Enumerations;
-using SportHub.Data.Models.Entities.OlympicGames.Enumerations;
+using SportHub.Data.Models.DbEntities.Enumerations;
+using SportHub.Data.Models.Enumerations.OlympicGames;
 
 public class MatchModel
 {
@@ -11,11 +11,11 @@ public class MatchModel
 
     public string Location { get; set; }
 
-    public DecisionType Decision { get; set; } = DecisionType.None;
+    public DecisionEnum Decision { get; set; }
 
     public int ResultId { get; set; }
 
-    public MedalTypeEnum Medal { get; set; }
+    public MedalEnum Medal { get; set; }
 
     public string Info { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿namespace SportHub.Data.Models.Converters.OlympicGames.Base;
 
-using SportHub.Data.Models.Entities.OlympicGames.Enumerations;
+using SportHub.Data.Models.Enumerations.OlympicGames;
 
 public abstract class BaseMatch
 {
@@ -12,13 +12,13 @@ public abstract class BaseMatch
 
     public DateTime? Date { get; set; }
 
-    public MedalTypeEnum Medal { get; set; }
+    public MedalEnum Medal { get; set; }
 
     public string Info { get; set; }
 
     public int ResultId { get; set; }
 
-    public DecisionType Decision { get; set; }
+    public DecisionEnum Decision { get; set; }
 
     public TimeSpan? MatchTime { get; set; }
 

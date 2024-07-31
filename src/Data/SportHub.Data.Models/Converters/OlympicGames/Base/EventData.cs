@@ -1,7 +1,5 @@
 ﻿namespace SportHub.Data.Models.Converters.OlympicGames.Base;
 
-using SportHub.Data.Models.Entities.OlympicGames.Enumerations;
-
 public class EventData
 {
     public Guid Id { get; set; }
@@ -14,5 +12,5 @@ public class EventData
 
     public bool IsTeamEvent { get; set; }
 
-    public EventGenderTypeEnum EventGenderType { get; set; }
+    public int Gender { get; set; }
 }

@@ -1,7 +1,7 @@
 ﻿namespace SportHub.Data.Models.Converters.OlympicGames.Disciplines;
 
 using SportHub.Data.Models.Converters.OlympicGames.Base;
-using SportHub.Data.Models.Entities.OlympicGames.Enumerations;
+using SportHub.Data.Models.Enumerations.OlympicGames;
 
 public class Athletics : BaseModel
 {
@@ -86,7 +86,7 @@ public class AthleticsAttempt
 
     public double? Measurement { get; set; }
 
-    public RecordType Record { get; set; }
+    public RoundEnum Record { get; set; }
 
     public AthleticsTry Try1 { get; set; }
 

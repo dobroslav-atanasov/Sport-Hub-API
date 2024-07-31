@@ -1,6 +1,6 @@
 ﻿namespace SportHub.Data.Models.Converters.OlympicGames.Base;
 
-using SportHub.Data.Models.Entities.OlympicGames.Enumerations;
+using SportHub.Data.Models.Enumerations.OlympicGames;
 
 public abstract class BaseRanking
 {
@@ -10,5 +10,5 @@ public abstract class BaseRanking
 
     public string NOC { get; set; }
 
-    public MedalTypeEnum Medal { get; set; }
+    public MedalEnum Medal { get; set; }
 }

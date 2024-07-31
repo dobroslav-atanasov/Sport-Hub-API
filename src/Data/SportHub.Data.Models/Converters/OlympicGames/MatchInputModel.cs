@@ -1,6 +1,6 @@
 ﻿namespace SportHub.Data.Models.Converters.OlympicGames;
 
-using SportHub.Data.Models.Entities.OlympicGames.Enumerations;
+using SportHub.Data.Models.Enumerations.OlympicGames;
 
 public class MatchInputModel
 {
@@ -32,7 +32,7 @@ public class MatchInputModel
 
     public bool AnyParts { get; set; }
 
-    public RoundTypeEnum RoundType { get; set; }
+    public RoundEnum RoundType { get; set; }
 
-    public RoundTypeEnum RoundSubType { get; set; }
+    public RoundEnum RoundSubType { get; set; }
 }

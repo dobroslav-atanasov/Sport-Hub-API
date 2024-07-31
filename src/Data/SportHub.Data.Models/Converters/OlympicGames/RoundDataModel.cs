@@ -2,7 +2,7 @@
 
 using HtmlAgilityPack;
 
-using SportHub.Data.Models.Entities.OlympicGames.Enumerations;
+using SportHub.Data.Models.Enumerations.OlympicGames;
 
 public class RoundDataModel
 {
@@ -10,9 +10,9 @@ public class RoundDataModel
 
     public string NameHtml { get; set; }
 
-    public RoundTypeEnum Type { get; set; }
+    public RoundEnum Type { get; set; }
 
-    public RoundTypeEnum SubType { get; set; }
+    public RoundEnum SubType { get; set; }
 
     public int Number { get; set; }
 

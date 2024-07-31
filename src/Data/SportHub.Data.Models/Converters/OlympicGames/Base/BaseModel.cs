@@ -1,7 +1,7 @@
 ﻿namespace SportHub.Data.Models.Converters.OlympicGames.Base;
 
-using SportHub.Data.Models.Entities.Enumerations;
-using SportHub.Data.Models.Entities.OlympicGames.Enumerations;
+using SportHub.Data.Models.DbEntities.Enumerations;
+using SportHub.Data.Models.Enumerations.OlympicGames;
 
 public abstract class BaseModel
 {
@@ -19,13 +19,13 @@ public abstract class BaseModel
 
     public int? Order { get; set; }
 
-    public FinishTypeEnum FinishStatus { get; set; }
+    public FinishStatusEnum FinishStatus { get; set; }
 
-    public QualificationType Qualification { get; set; }
+    public bool IsQualified { get; set; }
 
     public int GroupNumber { get; set; }
 
-    public RecordType Record { get; set; }
+    public RecordEnum Record { get; set; }
 
     public MatchResultType MatchResult { get; set; }
 }
