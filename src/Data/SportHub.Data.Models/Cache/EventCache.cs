@@ -1,9 +1,5 @@
 ﻿namespace SportHub.Data.Models.Cache;
-
-using SportHub.Data.Models.DbEntities.OlympicGames;
-using SportHub.Services.Mapper.Interfaces;
-
-public class EventCache : IMapFrom<Event>
+public class EventCache /*: IMapFrom<Event>*/
 {
     public Guid Id { get; set; }
 

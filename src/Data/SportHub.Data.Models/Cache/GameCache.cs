@@ -1,10 +1,8 @@
 ﻿namespace SportHub.Data.Models.Cache;
 
-using SportHub.Data.Models.DbEntities.OlympicGames;
 using SportHub.Data.Models.Enumerations.OlympicGames;
-using SportHub.Services.Mapper.Interfaces;
 
-public class GameCache : IMapFrom<Game>
+public class GameCache /*: IMapFrom<Game>*/
 {
     public int Id { get; set; }
 
