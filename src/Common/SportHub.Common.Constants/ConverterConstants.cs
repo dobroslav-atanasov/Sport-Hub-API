@@ -3,12 +3,34 @@
 public static class ConverterConstants
 {
     public const string COUNTRY_CONVERTER = "SportHub.Crawlers.Countries.CountryDataCrawler";
-    public const string OLYMPEDIA_NOC_CONVERTER = "SportHub.Crawlers.Olympedia.NOCCrawler";
-    public const string OLYMPEDIA_GAME_CONVERTER = "SportHub.Crawlers.Olympedia.GameCrawler";
-    public const string OLYMPEDIA_SPORT_DISCIPLINE_CONVERTER = "SportHub.Crawlers.Olympedia.SportDisciplineCrawler";
-    public const string OLYMPEDIA_VENUE_CONVERTER = "SportHub.Crawlers.Olympedia.VenueCrawler";
-    public const string OLYMPEDIA_RESULT_CONVERTER = "SportHub.Crawlers.Olympedia.ResultCrawler";
-    public const string OLYMPEDIA_ATHELETE_CONVERTER = "SportHub.Crawlers.Olympedia.AthleteCrawler";
+    public const string OLYMPEDIA_NOC_CONVERTER = "SportHub.Crawlers.OlympicGames.Olympedia.NOCCrawler";
+    public const string OLYMPEDIA_GAME_CONVERTER = "SportHub.Crawlers.OlympicGames.Olympedia.GameCrawler";
+    public const string OLYMPEDIA_SPORT_DISCIPLINE_CONVERTER = "SportHub.Crawlers.OlympicGames.Olympedia.SportDisciplineCrawler";
+    public const string OLYMPEDIA_VENUE_CONVERTER = "SportHub.Crawlers.OlympicGames.Olympedia.VenueCrawler";
+    public const string OLYMPEDIA_RESULT_CONVERTER = "SportHub.Crawlers.OlympicGames.Olympedia.ResultCrawler";
+    public const string OLYMPEDIA_ATHELETE_CONVERTER = "SportHub.Crawlers.OlympicGames.Olympedia.AthleteCrawler";
+    public const string PARIS_2024_LABELS_CONVERTER = "SportHub.Crawlers.OlympicGames.Paris2024.LabelsCrawler";
+    public const string PARIS_2024_NOCS_CONVERTER = "SportHub.Crawlers.OlympicGames.Paris2024.NOCsCrawler";
+    public const string PARIS_2024_NOC_CONVERTER = "SportHub.Crawlers.OlympicGames.Paris2024.NOCCrawler";
+    public const string PARIS_2024_LINKS_CONVERTER = "SportHub.Crawlers.OlympicGames.Paris2024.LinksCrawler";
+    public const string PARIS_2024_SPORT_CODES_CONVERTER = "SportHub.Crawlers.OlympicGames.Paris2024.SportCodesCrawler";
+    public const string PARIS_2024_EVENT_CODES_CONVERTER = "SportHub.Crawlers.OlympicGames.Paris2024.EventCodesCrawler";
+    public const string PARIS_2024_DISCIPLINES_CONVERTER = "SportHub.Crawlers.OlympicGames.Paris2024.DisciplinesCrawler";
+    public const string PARIS_2024_TEAMS_CONVERTER = "SportHub.Crawlers.OlympicGames.Paris2024.TeamsCrawler";
+    public const string PARIS_2024_HORSES_CONVERTER = "SportHub.Crawlers.OlympicGames.Paris2024.HorsesCrawler";
+    public const string PARIS_2024_PARTICIPATIONS_CONVERTER = "SportHub.Crawlers.OlympicGames.Paris2024.ParticipationsCrawler";
+    public const string PARIS_2024_ATHLETES_CONVERTER = "SportHub.Crawlers.OlympicGames.Paris2024.AthletesCrawler";
+    public const string PARIS_2024_COACHES_CONVERTER = "SportHub.Crawlers.OlympicGames.Paris2024.CoachesCrawler";
+    public const string PARIS_2024_JUDGES_CONVERTER = "SportHub.Crawlers.OlympicGames.Paris2024.JudgesCrawler";
+    public const string PARIS_2024_ATHLETE_CONVERTER = "SportHub.Crawlers.OlympicGames.Paris2024.AthleteCrawler";
+    public const string PARIS_2024_COACH_CONVERTER = "SportHub.Crawlers.OlympicGames.Paris2024.CoachCrawler";
+    public const string PARIS_2024_JUDGE_CONVERTER = "SportHub.Crawlers.OlympicGames.Paris2024.JudgeCrawler";
+    public const string PARIS_2024_HORSE_CONVERTER = "SportHub.Crawlers.OlympicGames.Paris2024.HorseCrawler";
+    public const string PARIS_2024_TEAM_CONVERTER = "SportHub.Crawlers.OlympicGames.Paris2024.TeamCrawler";
+    public const string PARIS_2024_SCHEDULE_CONVERTER = "SportHub.Crawlers.OlympicGames.Paris2024.ScheduleCrawler";
+    public const string PARIS_2024_DISCIPLINE_CONVERTER = "SportHub.Crawlers.OlympicGames.Paris2024.DisciplineCrawler";
+    public const string PARIS_2024_EVENT_CONVERTER = "SportHub.Crawlers.OlympicGames.Paris2024.EventCrawler";
+    public const string PARIS_2024_RESULT_CONVERTER = "SportHub.Crawlers.OlympicGames.Paris2024.ResultCrawler";
 
     //public const string INDEX_POSITION = "position";
     //public const string INDEX_NOC = "noc";

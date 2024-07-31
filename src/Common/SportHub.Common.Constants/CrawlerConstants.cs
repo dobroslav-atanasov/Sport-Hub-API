@@ -11,6 +11,8 @@ public static class CrawlerConstants
     public const string OLYMPEDIA_GAMES_URL = "CrawlerSites:Olympedia:GamesUrl";
     public const string OLYMPEDIA_SPORTS_URL = "CrawlerSites:Olympedia:SportsUrl";
     public const string OLYMPEDIA_VENUES_ULR = "CrawlerSites:Olympedia:VenuesUrl";
+    public const string OLYMPEDIA_FLAG_BEARERS_URL = "CrawlerSites:Olympedia:FlagBearersUrl";
+    public const string OLYMPEDIA_NOC_PARTICIPATIONS_URL = "CrawlerSites:Olympedia:NOCParticipationsUrl";
 
     public const string PARIS_2024_LABELS_URL = "CrawlerSites:Paris2024:LabelsUrl";
     public const string PARIS_2024_NOCS_URL = "CrawlerSites:Paris2024:NOCsUrl";
@@ -43,8 +45,11 @@ public static class CrawlerConstants
     public const string PARIS_2024_EVENT_SCHEDULE_URL = "CrawlerSites:Paris2024:EventScheduleUrl";
     public const string PARIS_2024_EVENT_RANKING_URL = "CrawlerSites:Paris2024:EventRankingUrl";
     public const string PARIS_2024_EVENT_PHASES_URL = "CrawlerSites:Paris2024:EventPhasesUrl";
+    public const string PARIS_2024_EVENT_BRACKETS_URL = "CrawlerSites:Paris2024:EventBracketsUrl";
+    public const string PARIS_2024_EVENT_POOL_STANDINGS_URL = "CrawlerSites:Paris2024:EventPoolStandingsUrl";
     public const string PARIS_2024_RESULT_URL = "CrawlerSites:Paris2024:ResultUrl";
     public const string PARIS_2024_PDFS_URL = "CrawlerSites:Paris2024:PDFsUrl";
     public const string PARIS_2024_PDF_URL = "CrawlerSites:Paris2024:PDFUrl";
+    public const string PARIS_2024_MEDALS_URL = "CrawlerSites:Paris2024:MedalsUrl";
 
 }
