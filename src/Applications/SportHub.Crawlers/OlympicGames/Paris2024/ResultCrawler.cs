@@ -35,7 +35,7 @@ public class ResultCrawler : BaseCrawler
         {
             days.Add($"{counter.Year}-{counter.Month:D2}-{counter.Day:D2}");
         }
-
+        var count = 0;
         try
         {
             foreach (var day in days)
@@ -49,6 +49,7 @@ public class ResultCrawler : BaseCrawler
 
                     foreach (var unit in model.Units)
                     {
+                        await Console.Out.WriteLineAsync($"{count++}");
                         var discipline = unit.DisciplineCode;
                         var id = unit.Id;
 

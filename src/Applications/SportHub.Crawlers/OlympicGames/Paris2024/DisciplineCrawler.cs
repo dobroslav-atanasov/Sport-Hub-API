@@ -86,9 +86,9 @@ public class DisciplineCrawler : BaseCrawler
                         infoDocument
                     });
 
-                    var imageUrl = $"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_DISCIPLINE_IMAGE_URL).Value}{discipline.Code}_big.svg";
-                    var imageBytes = await this.HttpService.DownloadBytesAsync(imageUrl);
-                    await File.WriteAllBytesAsync($"Images/Sports/{discipline.Code}.svg", imageBytes);
+                    //var imageUrl = $"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_DISCIPLINE_IMAGE_URL).Value}{discipline.Code}_big.svg";
+                    //var imageBytes = await this.HttpService.DownloadBytesAsync(imageUrl);
+                    //await File.WriteAllBytesAsync($"Images/Sports/{discipline.Code}.svg", imageBytes);
                 }
                 catch (Exception ex)
                 {

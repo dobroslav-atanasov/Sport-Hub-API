@@ -59,22 +59,30 @@ public class EventCrawler : BaseCrawler
                                 var scheduleHttpModel = await this.HttpService.GetAsync(scheduleUrl);
                                 var scheduleDocument = this.CreateDocument(scheduleHttpModel);
 
+                                var documents = new List<Document> { scheduleDocument };
+
                                 var rankingUrl = $"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_EVENT_RANKING_URL).Value}{shortId}.json";
                                 var rankingHttpModel = await this.HttpService.GetAsync(rankingUrl);
                                 var rankingDocument = this.CreateDocument(rankingHttpModel);
                                 rankingDocument.Order = 2;
+                                documents.Add(rankingDocument);
 
                                 var phasesUrl = $"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_EVENT_PHASES_URL).Value}{shortId}.json";
                                 var phasesHttpModel = await this.HttpService.GetAsync(phasesUrl);
                                 var phasesDocument = this.CreateDocument(phasesHttpModel);
                                 phasesDocument.Order = 3;
+                                documents.Add(phasesDocument);
 
-                                await this.ProcessGroupAsync(scheduleHttpModel, new List<Document>
+                                var bracketsUrl = $"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_EVENT_BRACKETS_URL).Value}{id}.json";
+                                var bracketsHttpModel = await this.HttpService.GetAsync(bracketsUrl);
+                                if (bracketsHttpModel.Content.Length > 10)
                                 {
-                                    scheduleDocument,
-                                    rankingDocument,
-                                    phasesDocument
-                                });
+                                    var bracketsDocument = this.CreateDocument(bracketsHttpModel);
+                                    bracketsDocument.Order = 4;
+                                    documents.Add(bracketsDocument);
+                                }
+
+                                await this.ProcessGroupAsync(scheduleHttpModel, documents);
                             }
                             catch (Exception ex)
                             {
