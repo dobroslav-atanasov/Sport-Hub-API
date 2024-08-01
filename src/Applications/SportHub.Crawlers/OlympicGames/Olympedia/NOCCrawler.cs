@@ -1,5 +1,6 @@
 ﻿namespace SportHub.Crawlers.OlympicGames.Olympedia;
 
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -35,25 +36,39 @@ public class NOCCrawler : BaseOlympediaCrawler
                 try
                 {
                     var countryHttpModel = await this.HttpService.GetAsync(url, true);
-                    var nocUrl = this.ExtractNocUrl(countryHttpModel);
-                    if (nocUrl == null)
+                    var documents = new List<Document>
                     {
-                        await this.ProcessGroupAsync(countryHttpModel);
-                    }
-                    else
+                        this.CreateDocument(countryHttpModel)
+                    };
+
+                    var nocUrl = this.ExtractNocUrl(countryHttpModel);
+                    if (nocUrl != null)
                     {
                         var nocHttpModel = await this.HttpService.GetAsync(nocUrl, true);
-                        var documents = new List<Document>
-                            {
-                                this.CreateDocument(countryHttpModel),
-                                this.CreateDocument(nocHttpModel)
-                            };
-
-                        documents[0].Order = 1;
-                        documents[1].Order = 2;
-
-                        await this.ProcessGroupAsync(countryHttpModel, documents);
+                        var nocDocument = this.CreateDocument(nocHttpModel);
+                        nocDocument.Order = 2;
+                        documents.Add(nocDocument);
                     }
+
+                    var flagBearersUrl = $"{this.Configuration.GetSection(CrawlerConstants.OLYMPEDIA_FLAG_BEARERS_URL).Value}{countryHttpModel.Uri.Segments.Last()}";
+                    var flagBearersHttpModel = await this.HttpService.GetAsync(flagBearersUrl, true);
+                    if (flagBearersHttpModel.StatusCode == HttpStatusCode.OK)
+                    {
+                        var flagBearersDocument = this.CreateDocument(flagBearersHttpModel);
+                        flagBearersDocument.Order = 3;
+                        documents.Add(flagBearersDocument);
+                    }
+
+                    var participationsUrl = $"{this.Configuration.GetSection(CrawlerConstants.OLYMPEDIA_NOC_PARTICIPATIONS_URL).Value}{countryHttpModel.Uri.Segments.Last()}";
+                    var participationsHttpModel = await this.HttpService.GetAsync(participationsUrl, true);
+                    if (participationsHttpModel.StatusCode == HttpStatusCode.OK)
+                    {
+                        var participationsDocument = this.CreateDocument(participationsHttpModel);
+                        participationsDocument.Order = 4;
+                        documents.Add(participationsDocument);
+                    }
+
+                    await this.ProcessGroupAsync(countryHttpModel, documents);
                 }
                 catch (Exception ex)
                 {
