@@ -13,9 +13,7 @@ public class OlympicGamesDbContext : DbContext
     {
     }
 
-    public virtual DbSet<Athlete> Athletes { get; set; }
-
-    public virtual DbSet<City> Cities { get; set; }
+    //public virtual DbSet<FlagBearer> FlagBearers { get; set; }
 
     public virtual DbSet<Discipline> Disciplines { get; set; }
 
@@ -23,21 +21,20 @@ public class OlympicGamesDbContext : DbContext
 
     public virtual DbSet<Game> Games { get; set; }
 
-    public virtual DbSet<NationalOlympicCommittee> NationalOlympicCommittees { get; set; }
+    public virtual DbSet<NOC> NOCs { get; set; }
 
-    public virtual DbSet<Participation> Participations { get; set; }
+    public virtual DbSet<Phase> Phases { get; set; }
 
-    public virtual DbSet<President> Presidents { get; set; }
 
-    public virtual DbSet<Result> Results { get; set; }
+    //public virtual DbSet<NOCAdministration> NOCAdministrations { get; set; }
 
-    public virtual DbSet<Sport> Sports { get; set; }
-
-    public virtual DbSet<Team> Teams { get; set; }
-
-    public virtual DbSet<Venue> Venues { get; set; }
+    //public virtual DbSet<ProtocolOrder> ProtocolOrders { get; set; }
 
     // Enumerations
+    public virtual DbSet<Administration> Administrations { get; set; }
+
+    public virtual DbSet<Ceremony> Ceremonies { get; set; }
+
     public virtual DbSet<Decision> Decisions { get; set; }
 
     public virtual DbSet<EventGender> EventGenders { get; set; }
@@ -102,52 +99,52 @@ public class OlympicGamesDbContext : DbContext
     {
         base.OnModelCreating(builder);
 
-        builder.Entity<Game>()
-            .HasMany(x => x.Cities)
-            .WithMany(x => x.Games)
-            .UsingEntity("Hosts",
-                x => x.HasOne(typeof(City))
-                    .WithMany()
-                    .HasForeignKey("CitiesId")
-                    .HasPrincipalKey(nameof(City.Id))
-                    .OnDelete(DeleteBehavior.Restrict),
-                x => x.HasOne(typeof(Game))
-                    .WithMany()
-                    .HasForeignKey("GamesId")
-                    .HasPrincipalKey(nameof(Game.Id))
-                    .OnDelete(DeleteBehavior.Restrict),
-                x => x.HasKey("CitiesId", "GamesId"));
+        //builder.Entity<Game>()
+        //    .HasMany(x => x.Cities)
+        //    .WithMany(x => x.Games)
+        //    .UsingEntity("Hosts",
+        //        x => x.HasOne(typeof(City))
+        //            .WithMany()
+        //            .HasForeignKey("CitiesId")
+        //            .HasPrincipalKey(nameof(City.Id))
+        //            .OnDelete(DeleteBehavior.Restrict),
+        //        x => x.HasOne(typeof(Game))
+        //            .WithMany()
+        //            .HasForeignKey("GamesId")
+        //            .HasPrincipalKey(nameof(Game.Id))
+        //            .OnDelete(DeleteBehavior.Restrict),
+        //        x => x.HasKey("CitiesId", "GamesId"));
 
-        builder.Entity<Game>()
-            .HasMany(x => x.NationalOlympicCommittees)
-            .WithMany(x => x.Games)
-            .UsingEntity("GamesNOCs",
-                x => x.HasOne(typeof(NationalOlympicCommittee))
-                    .WithMany()
-                    .HasForeignKey("NOCsId")
-                    .HasPrincipalKey(nameof(NationalOlympicCommittee.Id))
-                    .OnDelete(DeleteBehavior.Restrict),
-                x => x.HasOne(typeof(Game))
-                    .WithMany()
-                    .HasForeignKey("GamesId")
-                    .HasPrincipalKey(nameof(Game.Id))
-                    .OnDelete(DeleteBehavior.Restrict),
-                x => x.HasKey("NOCsId", "GamesId"));
+        //builder.Entity<Game>()
+        //    .HasMany(x => x.NOCs)
+        //    .WithMany(x => x.Games)
+        //    .UsingEntity("GamesNOCs",
+        //        x => x.HasOne(typeof(NOC))
+        //            .WithMany()
+        //            .HasForeignKey("NOCsId")
+        //            .HasPrincipalKey(nameof(NOC.Id))
+        //            .OnDelete(DeleteBehavior.Restrict),
+        //        x => x.HasOne(typeof(Game))
+        //            .WithMany()
+        //            .HasForeignKey("GamesId")
+        //            .HasPrincipalKey(nameof(Game.Id))
+        //            .OnDelete(DeleteBehavior.Restrict),
+        //        x => x.HasKey("NOCsId", "GamesId"));
 
-        builder.Entity<Participation>()
-           .HasMany(x => x.Teams)
-           .WithMany(x => x.Participations)
-           .UsingEntity("Squads",
-               x => x.HasOne(typeof(Team))
-                   .WithMany()
-                   .HasForeignKey("TeamsId")
-                   .HasPrincipalKey(nameof(Team.Id))
-                   .OnDelete(DeleteBehavior.Restrict),
-               x => x.HasOne(typeof(Participation))
-                   .WithMany()
-                   .HasForeignKey("ParticipationsId")
-                   .HasPrincipalKey(nameof(Participation.Id))
-                   .OnDelete(DeleteBehavior.Restrict),
-               x => x.HasKey("TeamsId", "ParticipationsId"));
+        //builder.Entity<Participation>()
+        //   .HasMany(x => x.Teams)
+        //   .WithMany(x => x.Participations)
+        //   .UsingEntity("Squads",
+        //       x => x.HasOne(typeof(Team))
+        //           .WithMany()
+        //           .HasForeignKey("TeamsId")
+        //           .HasPrincipalKey(nameof(Team.Id))
+        //           .OnDelete(DeleteBehavior.Restrict),
+        //       x => x.HasOne(typeof(Participation))
+        //           .WithMany()
+        //           .HasForeignKey("ParticipationsId")
+        //           .HasPrincipalKey(nameof(Participation.Id))
+        //           .OnDelete(DeleteBehavior.Restrict),
+        //       x => x.HasKey("TeamsId", "ParticipationsId"));
     }
 }
