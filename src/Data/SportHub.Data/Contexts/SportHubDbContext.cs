@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 using SportHub.Data.Common.Interfaces;
-using SportHub.Data.Models.Entities.SportHub;
+using SportHub.Data.Models.DbEntities.SportHub;
 
 public class SportHubDbContext : IdentityDbContext<User, Role, string>
 {
