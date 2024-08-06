@@ -1,10 +1,8 @@
 ﻿namespace SportHub.Data.ViewModels.OlympicGames.Games;
 
-using SportHub.Data.Models.DbEntities.OlympicGames;
 using SportHub.Data.ViewModels.OlympicGames.Sports;
-using SportHub.Services.Mapper.Interfaces;
 
-public class GameViewModel : IMapFrom<Game>
+public class GameViewModel
 {
     public int Id { get; set; }
 
