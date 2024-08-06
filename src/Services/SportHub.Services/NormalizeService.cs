@@ -326,8 +326,7 @@ public class NormalizeService : INormalizeService
             return $"{me.Groups[1].Value.Trim()}{me.Groups[2].Value.Trim()}";
         });
 
-        name = name.Replace(" x ", "x")
-            .Replace("82½", "82.5")
+        name = name.Replace("82½", "82.5")
             .Replace("67½", "67.5")
             .Replace("333⅓", "333 1/3")
             .Replace(" × ", "x")
