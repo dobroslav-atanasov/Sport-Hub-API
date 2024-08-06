@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 using SportHub.Common.Constants;
-using SportHub.Data.Models.Entities.SportHub;
+using SportHub.Data.Models.DbEntities.SportHub;
 using SportHub.Data.Seeders.Interfaces;
 
 public class RolesSeeder : ISeeder
