@@ -197,12 +197,9 @@ public class Program
     {
         // Services
         services.AddScoped<IZipService, ZipService>();
-        services.AddScoped<IRegExpService, RegExpService>();
         services.AddScoped<IHttpService, HttpService>();
         services.AddScoped<IMD5Hash, MD5Hash>();
         services.AddScoped<INormalizeService, NormalizeService>();
-        services.AddScoped<IOlympediaService, OlympediaService>();
-        services.AddScoped<IDateService, DateService>();
         services.AddScoped<IJwtService, JwtService>();
 
         // Data services
