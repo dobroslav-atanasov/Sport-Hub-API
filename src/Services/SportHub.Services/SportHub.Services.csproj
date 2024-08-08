@@ -18,6 +18,7 @@
     <ProjectReference Include="..\..\Common\SportHub.Common.Constants\SportHub.Common.Constants.csproj" />
     <ProjectReference Include="..\..\Common\SportHub.Common.Exceptions\SportHub.Common.Exceptions.csproj" />
     <ProjectReference Include="..\..\Common\SportHub.Common.Extensions\SportHub.Common.Extensions.csproj" />
+    <ProjectReference Include="..\..\Common\SportHub.Common.Helpers\SportHub.Common.Helpers.csproj" />
     <ProjectReference Include="..\..\Data\SportHub.Data.Models\SportHub.Data.Models.csproj" />
     <ProjectReference Include="..\..\Data\SportHub.Data.ViewModels\SportHub.Data.ViewModels.csproj" />
   </ItemGroup>
