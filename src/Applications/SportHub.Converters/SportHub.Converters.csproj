@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\SportHub.Common.Constants\SportHub.Common.Constants.csproj" />
+    <ProjectReference Include="..\..\Common\SportHub.Common.Helpers\SportHub.Common.Helpers.csproj" />
     <ProjectReference Include="..\..\Data\SportHub.Data.Seeders\SportHub.Data.Seeders.csproj" />
     <ProjectReference Include="..\..\Services\SportHub.Services.Data\SportHub.Services.Data.csproj" />
     <ProjectReference Include="..\..\Services\SportHub.Services\SportHub.Services.csproj" />
