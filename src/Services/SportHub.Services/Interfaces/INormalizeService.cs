@@ -27,4 +27,10 @@ public interface INormalizeService
     Tuple<string, string> MapDisciplineToSport(string discipline);
 
     string NormalizeDisciplineName(string name);
+
+    string GetShortEventName(string name);
+
+    string CreateSEOName(string text);
+
+    string MapPhase(string name);
 }
