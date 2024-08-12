@@ -8,7 +8,7 @@ public interface IDataCacheService
 
     ICollection<DisciplineCache> Disciplines { get; }
 
-    //ICollection<EventCache> Events { get; }
+    ICollection<EventCache> Events { get; }
 
     ICollection<NOCCache> NOCs { get; }
 }

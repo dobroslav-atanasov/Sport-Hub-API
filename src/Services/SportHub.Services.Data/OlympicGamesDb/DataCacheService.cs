@@ -12,25 +12,25 @@ public class DataCacheService : IDataCacheService
 {
     private readonly Lazy<ICollection<GameCache>> games;
     private readonly Lazy<ICollection<DisciplineCache>> disciplines;
-    //private readonly Lazy<ICollection<EventCache>> events;
+    private readonly Lazy<ICollection<EventCache>> events;
     private readonly Lazy<ICollection<NOCCache>> nocs;
 
     private readonly OlympicGamesRepository<Game> gameRepository;
     private readonly OlympicGamesRepository<Discipline> disciplineRepository;
-    //private readonly OlympicGamesRepository<Event> eventRepository;
+    private readonly OlympicGamesRepository<Event> eventRepository;
     private readonly OlympicGamesRepository<NOC> nocRepository;
 
     public DataCacheService(OlympicGamesRepository<Game> gameRepository, OlympicGamesRepository<Discipline> disciplineRepository,
-        /*OlympicGamesRepository<Event> eventRepository, */OlympicGamesRepository<NOC> nocRepository)
+        OlympicGamesRepository<Event> eventRepository, OlympicGamesRepository<NOC> nocRepository)
     {
         this.games = new Lazy<ICollection<GameCache>>(() => this.GetAllGames());
         this.disciplines = new Lazy<ICollection<DisciplineCache>>(() => this.GetAllDisciplines());
-        //this.events = new Lazy<ICollection<EventCache>>(() => this.GetAllEvents());
+        this.events = new Lazy<ICollection<EventCache>>(() => this.GetAllEvents());
         this.nocs = new Lazy<ICollection<NOCCache>>(() => this.GetAllNOCs());
 
         this.gameRepository = gameRepository;
         this.disciplineRepository = disciplineRepository;
-        //this.eventRepository = eventRepository;
+        this.eventRepository = eventRepository;
         this.nocRepository = nocRepository;
     }
 
@@ -42,13 +42,13 @@ public class DataCacheService : IDataCacheService
             .ToList();
     }
 
-    //private ICollection<EventCache> GetAllEvents()
-    //{
-    //    return this.eventRepository
-    //        .AllAsNoTracking()
-    //        .To<EventCache>()
-    //        .ToList();
-    //}
+    private ICollection<EventCache> GetAllEvents()
+    {
+        return this.eventRepository
+            .AllAsNoTracking()
+            .To<EventCache>()
+            .ToList();
+    }
 
     private ICollection<DisciplineCache> GetAllDisciplines()
     {
@@ -70,7 +70,7 @@ public class DataCacheService : IDataCacheService
 
     public ICollection<DisciplineCache> Disciplines => this.disciplines.Value;
 
-    //public ICollection<EventCache> Events => this.events.Value;
+    public ICollection<EventCache> Events => this.events.Value;
 
     public ICollection<NOCCache> NOCs => this.nocs.Value;
 }
