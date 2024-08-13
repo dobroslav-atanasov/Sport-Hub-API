@@ -25,6 +25,8 @@ public class OlympicGamesDbContext : DbContext
 
     public virtual DbSet<Phase> Phases { get; set; }
 
+    public virtual DbSet<Unit> Units { get; set; }
+
 
     //public virtual DbSet<NOCAdministration> NOCAdministrations { get; set; }
 
