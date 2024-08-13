@@ -2,7 +2,7 @@
 
 using Microsoft.EntityFrameworkCore;
 
-using SportHub.Data.Models.Entities.Crawlers;
+using SportHub.Data.Models.DbEntities.Crawlers;
 
 public class CrawlerStorageDbContext : DbContext
 {
