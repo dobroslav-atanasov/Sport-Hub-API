@@ -1,11 +1,9 @@
 ﻿namespace SportHub.Common.Helpers;
 
 using SportHub.Common.Constants;
-using SportHub.Data.Models.Converters;
+using SportHub.Data.Entities.Enumerations.OlympicGames;
 using SportHub.Data.Models.Converters.OlympicGames;
 using SportHub.Data.Models.Converters.OlympicGames.Base;
-using SportHub.Data.Models.DbEntities.Enumerations;
-using SportHub.Data.Models.Enumerations.OlympicGames;
 
 public static class OlympediaHelper
 {
@@ -212,21 +210,21 @@ public static class OlympediaHelper
 
     public static void SetWinAndLose(MatchModel match)
     {
-        if (match.Team1.Points > match.Team2.Points)
-        {
-            match.Team1.MatchResult = MatchResultType.Win;
-            match.Team2.MatchResult = MatchResultType.Lose;
-        }
-        else if (match.Team1.Points < match.Team2.Points)
-        {
-            match.Team1.MatchResult = MatchResultType.Lose;
-            match.Team2.MatchResult = MatchResultType.Win;
-        }
-        else if (match.Team1.Points == match.Team2.Points)
-        {
-            match.Team1.MatchResult = MatchResultType.Draw;
-            match.Team2.MatchResult = MatchResultType.Draw;
-        }
+        //if (match.Team1.Points > match.Team2.Points)
+        //{
+        //    match.Team1.MatchResult = MatchResultType.Win;
+        //    match.Team2.MatchResult = MatchResultType.Lose;
+        //}
+        //else if (match.Team1.Points < match.Team2.Points)
+        //{
+        //    match.Team1.MatchResult = MatchResultType.Lose;
+        //    match.Team2.MatchResult = MatchResultType.Win;
+        //}
+        //else if (match.Team1.Points == match.Team2.Points)
+        //{
+        //    match.Team1.MatchResult = MatchResultType.Draw;
+        //    match.Team2.MatchResult = MatchResultType.Draw;
+        //}
     }
 
     public static string FindLocation(string html)
