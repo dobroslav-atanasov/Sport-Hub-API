@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using SportHub.Common.Constants;
-using SportHub.Data.Models.DbEntities.SportHub;
+using SportHub.Data.Entities.SportHub;
 using SportHub.Data.ViewModels.Users;
 using SportHub.Services.Data.SportHubDb.Interfaces;
 

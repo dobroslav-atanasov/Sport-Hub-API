@@ -15,9 +15,9 @@ using Microsoft.IdentityModel.Tokens;
 
 using SportHub.Common.Constants;
 using SportHub.Data.Contexts;
+using SportHub.Data.Entities.SportHub;
 using SportHub.Data.Factories;
 using SportHub.Data.Factories.Interfaces;
-using SportHub.Data.Models.DbEntities.SportHub;
 using SportHub.Data.Options;
 using SportHub.Data.Repositories;
 using SportHub.Data.Seeders.SportHubDb;
