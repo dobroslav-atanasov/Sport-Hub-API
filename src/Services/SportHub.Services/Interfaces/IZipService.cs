@@ -1,6 +1,6 @@
 ﻿namespace SportHub.Services.Interfaces;
 
-using SportHub.Data.Models.DbEntities.Crawlers;
+using SportHub.Data.Entities.Crawlers;
 using SportHub.Data.Models.Zip;
 
 public interface IZipService
