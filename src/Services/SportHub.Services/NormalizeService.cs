@@ -3,9 +3,9 @@
 using System;
 using System.Text.RegularExpressions;
 
+using SportHub.Data.Entities.Enumerations.OlympicGames;
 using SportHub.Data.Models.Converters.OlympicGames;
 using SportHub.Data.Models.Converters.OlympicGames.Olympedia.Base;
-using SportHub.Data.Models.Enumerations.OlympicGames;
 using SportHub.Services.Interfaces;
 
 public class NormalizeService : INormalizeService

@@ -1,8 +1,8 @@
 ﻿namespace SportHub.Services.Interfaces;
 
+using SportHub.Data.Entities.Enumerations.OlympicGames;
 using SportHub.Data.Models.Converters.OlympicGames;
 using SportHub.Data.Models.Converters.OlympicGames.Olympedia.Base;
-using SportHub.Data.Models.Enumerations.OlympicGames;
 
 public interface INormalizeService
 {
