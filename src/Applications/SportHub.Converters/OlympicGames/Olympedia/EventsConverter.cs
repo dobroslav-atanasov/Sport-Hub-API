@@ -7,14 +7,15 @@ using HtmlAgilityPack;
 using Microsoft.Extensions.Logging;
 
 using SportHub.Common.Helpers;
-using SportHub.Data.Models.DbEntities.Crawlers;
-using SportHub.Data.Models.DbEntities.OlympicGames;
+using SportHub.Converters.OlympicGames.Olympedia.Base;
+using SportHub.Data.Entities.Crawlers;
+using SportHub.Data.Entities.OlympicGames;
 using SportHub.Data.Repositories;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
 using SportHub.Services.Data.OlympicGamesDb.Interfaces;
 using SportHub.Services.Interfaces;
 
-public class EventsConverter : BaseConverter
+public class EventsConverter : OlympediaConverter
 {
     private readonly OlympicGamesRepository<Event> eventRepository;
 
@@ -27,9 +28,10 @@ public class EventsConverter : BaseConverter
 
     protected override async Task ProcessGroupAsync(Group group)
     {
-        var model = this.Model.OlympediaDocuments.GetValueOrDefault(1);
+        var converterModel = this.PrepareConverterModel(group);
+        var model = converterModel.Documents.GetValueOrDefault(1);
 
-        if (model.IsValidEvent && !model.EventInfo.IsForbidden)
+        if (model != null && model.IsValidEvent && !model.EventInfo.IsForbidden)
         {
             var @event = new Event
             {
@@ -39,13 +41,13 @@ public class EventsConverter : BaseConverter
                 ShortName = this.NormalizeService.GetShortEventName(model.EventInfo.Name),
                 IsTeam = this.IsTeamEvent(model.HtmlDocument, model.EventInfo.FullName),
                 DisciplineId = model.Discipline.Id,
-                Description = model.EventInfo.Description,
+                //Description = model.EventInfo.Description,
                 Gender = this.GetGender(model.EventInfo.Gender)
             };
 
             var code = this.GenerateEventCode(model.Game.Type, model.Game.Year, model.Discipline.Code, @event.Gender, @event.ShortName);
             @event.Code = code;
-            @event.SEOName = this.NormalizeService.CreateSEOName(@event.Name);
+            //@event.SEOName = this.NormalizeService.CreateSEOName(@event.Name);
 
             var dbEvent = await this.eventRepository.GetAsync(x => x.Code == code);
             //if (dbEvent != null)

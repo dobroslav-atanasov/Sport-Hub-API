@@ -4,26 +4,30 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.Logging;
 
-using SportHub.Data.Models.DbEntities.Crawlers;
-using SportHub.Data.Models.DbEntities.OlympicGames;
+using SportHub.Common.Helpers;
+using SportHub.Converters.OlympicGames.Olympedia.Base;
+using SportHub.Data.Entities.Crawlers;
+using SportHub.Data.Entities.OlympicGames;
 using SportHub.Data.Repositories;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
+using SportHub.Services.Data.OlympicGamesDb.Interfaces;
 using SportHub.Services.Interfaces;
 
-public class DisciplinesConverter : BaseOlympediaConverter
+public class DisciplinesConverter : OlympediaConverter
 {
     private readonly OlympicGamesRepository<Discipline> repository;
 
     public DisciplinesConverter(ILogger<BaseConverter> logger, ICrawlersService crawlersService, ILogsService logsService, IGroupsService groupsService, IZipService zipService,
-        INormalizeService normalizeService, IRegExpService regExpService, IOlympediaService olympediaService, OlympicGamesRepository<Discipline> repository)
-        : base(logger, crawlersService, logsService, groupsService, zipService, normalizeService, regExpService, olympediaService)
+        INormalizeService normalizeService, IDataCacheService dataCacheService, OlympicGamesRepository<Discipline> repository)
+        : base(logger, crawlersService, logsService, groupsService, zipService, normalizeService, dataCacheService)
     {
         this.repository = repository;
     }
 
     protected override async Task ProcessGroupAsync(Group group)
     {
-        var lines = this.Model.OlympediaDocuments.GetValueOrDefault(1).HtmlDocument.DocumentNode.SelectNodes("//table[@class='table table-striped sortable']//tr");
+        var converterModel = this.PrepareConverterModel(group);
+        var lines = converterModel.Documents.GetValueOrDefault(1).HtmlDocument.DocumentNode.SelectNodes("//table[@class='table table-striped sortable']//tr");
 
         foreach (var line in lines)
         {
@@ -31,7 +35,7 @@ public class DisciplinesConverter : BaseOlympediaConverter
             {
                 var elements = line.Elements("td").ToList();
                 var sportName = elements[2].InnerText.Trim();
-                var sportCode = this.RegExpService.MatchFirstGroup(elements[2].OuterHtml, @"/sport_groups/(.*?)""");
+                var sportCode = RegExpHelper.MatchFirstGroup(elements[2].OuterHtml, @"/sport_groups/(.*?)""");
                 if (sportName is not "Air Sports" and not "Mountaineering and Climbing" and not "Art Competitions")
                 {
                     var disciplineName = elements[1].InnerText.Trim();
