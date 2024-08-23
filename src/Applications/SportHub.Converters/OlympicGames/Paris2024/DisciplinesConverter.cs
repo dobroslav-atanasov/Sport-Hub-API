@@ -5,28 +5,31 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.Logging;
 
+using SportHub.Converters.OlympicGames.Paris2024.Base;
+using SportHub.Data.Entities.Crawlers;
+using SportHub.Data.Entities.OlympicGames;
 using SportHub.Data.Models.Crawlers.Paris2024.Disciplines;
-using SportHub.Data.Models.DbEntities.Crawlers;
-using SportHub.Data.Models.DbEntities.OlympicGames;
-using SportHub.Data.Repositories;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
+using SportHub.Services.Data.OlympicGamesDb;
+using SportHub.Services.Data.OlympicGamesDb.Interfaces;
 using SportHub.Services.Interfaces;
 
-public class DisciplinesConverter : BaseConverter
+public class DisciplinesConverter : Paris2024Converter
 {
-    private readonly OlympicGamesRepository<Discipline> repository;
+    private readonly DataService<Discipline> disciplinesService;
 
     public DisciplinesConverter(ILogger<BaseConverter> logger, ICrawlersService crawlersService, ILogsService logsService, IGroupsService groupsService, IZipService zipService,
-        INormalizeService normalizeService, IRegExpService regExpService, OlympicGamesRepository<Discipline> repository)
-        : base(logger, crawlersService, logsService, groupsService, zipService, normalizeService, regExpService)
+        INormalizeService normalizeService, IDataCacheService dataCacheService, DataService<Discipline> disciplinesService)
+        : base(logger, crawlersService, logsService, groupsService, zipService, normalizeService, dataCacheService)
     {
-        this.repository = repository;
+        this.disciplinesService = disciplinesService;
     }
 
     protected override async Task ProcessGroupAsync(Group group)
     {
-        var json = JsonSerializer.Deserialize<DisciplinesList>(this.Model.Paris2024Documents.GetValueOrDefault(1).Json);
-        var disciplines = json.Disciplines.Where(x => x.IsSport == true && x.Scheduled == true).ToList();
+        var converterModel = this.PrepareConverterModel(group);
+        var model = JsonSerializer.Deserialize<DisciplinesList>(converterModel.Documents.GetValueOrDefault(1).Json);
+        var disciplines = model.Disciplines.Where(x => x.IsSport == true && x.Scheduled == true).ToList();
 
         foreach (var item in disciplines)
         {
@@ -41,20 +44,18 @@ public class DisciplinesConverter : BaseConverter
                 IsHistoric = false
             };
 
-            var dbDiscipline = await this.repository.GetAsync(x => x.Code == item.Code);
+            var dbDiscipline = await this.disciplinesService.GetAsync(x => x.Code == item.Code);
             if (dbDiscipline != null)
             {
                 var equals = discipline.Equals(dbDiscipline);
                 if (!equals)
                 {
-                    this.repository.Update(dbDiscipline);
-                    await this.repository.SaveChangesAsync();
+                    this.disciplinesService.Update(dbDiscipline);
                 }
             }
             else
             {
-                await this.repository.AddAsync(discipline);
-                await this.repository.SaveChangesAsync();
+                await this.disciplinesService.AddAsync(discipline);
             }
         }
     }

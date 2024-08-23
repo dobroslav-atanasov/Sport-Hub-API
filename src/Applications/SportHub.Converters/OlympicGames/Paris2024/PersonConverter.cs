@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.Logging;
 
+using SportHub.Converters.OlympicGames.Paris2024.Base;
 using SportHub.Data.Entities.Crawlers;
 using SportHub.Data.Entities.OlympicGames;
 using SportHub.Data.Models.Crawlers.Paris2024.Person;
@@ -13,7 +14,7 @@ using SportHub.Services.Data.OlympicGamesDb;
 using SportHub.Services.Data.OlympicGamesDb.Interfaces;
 using SportHub.Services.Interfaces;
 
-public class PersonConverter : BaseConverter
+public class PersonConverter : Paris2024Converter
 {
     private readonly IDataService<Person> personsService;
 
@@ -26,8 +27,8 @@ public class PersonConverter : BaseConverter
 
     protected override async Task ProcessGroupAsync(Group group)
     {
-        var converterModel = this.PrepareParis2024ConverterModel(group);
-        var model = JsonSerializer.Deserialize<PersonCrawlerModel>(converterModel.Paris2024Documents.GetValueOrDefault(1).Json);
+        var converterModel = this.PrepareConverterModel(group);
+        var model = JsonSerializer.Deserialize<PersonCrawlerModel>(converterModel.Documents.GetValueOrDefault(1).Json);
 
         var dbPerson = await this.personsService.GetAsync(x => x.Code == model.Person.Code);
         dbPerson.FirstName = model.Person.GivenName;

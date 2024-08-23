@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.Logging;
 
+using SportHub.Converters.OlympicGames.Paris2024.Base;
 using SportHub.Data.Entities.Crawlers;
 using SportHub.Data.Models.Crawlers.Paris2024;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
 using SportHub.Services.Data.OlympicGamesDb.Interfaces;
 using SportHub.Services.Interfaces;
 
-public class ResultConverter : BaseConverter
+public class ResultConverter : Paris2024Converter
 {
     public ResultConverter(ILogger<BaseConverter> logger, ICrawlersService crawlersService, ILogsService logsService, IGroupsService groupsService, IZipService zipService,
         INormalizeService normalizeService, IDataCacheService dataCacheService)
@@ -21,7 +22,8 @@ public class ResultConverter : BaseConverter
 
     protected override async Task ProcessGroupAsync(Group group)
     {
-        var json = JsonSerializer.Deserialize<ResultCrawlerModel>(this.Model.Paris2024Documents.GetValueOrDefault(1).Json);
+        var converterModel = this.PrepareConverterModel(group);
+        var json = JsonSerializer.Deserialize<ResultCrawlerModel>(converterModel.Documents.GetValueOrDefault(1).Json);
 
         var list = File.ReadAllLines("aresult.txt").ToList();
         if (json.Result == null)

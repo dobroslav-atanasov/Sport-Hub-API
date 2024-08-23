@@ -1,37 +1,35 @@
 ﻿namespace SportHub.Converters.OlympicGames.Paris2024;
 
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.Logging;
 
-using SportHub.Data.Models.DbEntities.Crawlers;
-using SportHub.Data.Models.DbEntities.OlympicGames;
-using SportHub.Data.Repositories;
+using SportHub.Converters.OlympicGames.Paris2024.Base;
+using SportHub.Data.Entities.Crawlers;
+using SportHub.Data.Entities.OlympicGames;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
+using SportHub.Services.Data.OlympicGamesDb;
+using SportHub.Services.Data.OlympicGamesDb.Interfaces;
 using SportHub.Services.Interfaces;
 
-public class NOCsConverter : BaseConverter
+public class NOCsConverter : Paris2024Converter
 {
-    private readonly OlympicGamesRepository<NOC> repository;
+    private readonly DataService<NOC> nocsService;
 
     public NOCsConverter(ILogger<BaseConverter> logger, ICrawlersService crawlersService, ILogsService logsService, IGroupsService groupsService, IZipService zipService,
-        OlympicGamesRepository<NOC> repository)
-        : base(logger, crawlersService, logsService, groupsService, zipService)
+        INormalizeService normalizeService, IDataCacheService dataCacheService, DataService<NOC> nocsService)
+        : base(logger, crawlersService, logsService, groupsService, zipService, normalizeService, dataCacheService)
     {
-        this.repository = repository;
+        this.nocsService = nocsService;
     }
 
     protected override async Task ProcessGroupAsync(Group group)
     {
-        var document = group.Documents.FirstOrDefault();
-        var bytes = document.Content;
-        var encoding = Encoding.GetEncoding(document.Encoding);
-        var json = encoding.GetString(bytes);
-        var model = JsonSerializer.Deserialize<Data.Models.Crawlers.Paris2024.NOCs.NOCList>(json);
+        var converterModel = this.PrepareConverterModel(group);
+        var json = JsonSerializer.Deserialize<Data.Models.Crawlers.Paris2024.NOCs.NOCList>(converterModel.Documents.GetValueOrDefault(1).Json);
 
-        foreach (var nocItem in model.NOCs)
+        foreach (var nocItem in json.NOCs)
         {
             var noc = new NOC
             {
@@ -43,20 +41,18 @@ public class NOCsConverter : BaseConverter
                 IsHistoric = nocItem.Note == "H",
             };
 
-            var dbNOC = await this.repository.GetAsync(x => x.Code == noc.Code);
+            var dbNOC = await this.nocsService.GetAsync(x => x.Code == noc.Code);
             if (dbNOC != null)
             {
                 var equals = noc.Equals(dbNOC);
                 if (!equals)
                 {
-                    this.repository.Update(dbNOC);
-                    await this.repository.SaveChangesAsync();
+                    this.nocsService.Update(dbNOC);
                 }
             }
             else
             {
-                await this.repository.AddAsync(noc);
-                await this.repository.SaveChangesAsync();
+                await this.nocsService.AddAsync(noc);
             }
         }
     }

@@ -1,68 +1,64 @@
 ﻿namespace SportHub.Converters.OlympicGames.Paris2024;
 
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.Logging;
 
-using SportHub.Data.Models.DbEntities.Crawlers;
-using SportHub.Data.Models.DbEntities.OlympicGames;
-using SportHub.Data.Repositories;
+using SportHub.Common.Helpers;
+using SportHub.Converters.OlympicGames.Paris2024.Base;
+using SportHub.Data.Entities.Crawlers;
+using SportHub.Data.Entities.OlympicGames;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
+using SportHub.Services.Data.OlympicGamesDb;
+using SportHub.Services.Data.OlympicGamesDb.Interfaces;
 using SportHub.Services.Interfaces;
 
-public class NOCConverter : BaseConverter
+public class NOCConverter : Paris2024Converter
 {
-    private readonly OlympicGamesRepository<NOC> repository;
-    private readonly IRegExpService regExpService;
+    private readonly DataService<NOC> nocsService;
 
     public NOCConverter(ILogger<BaseConverter> logger, ICrawlersService crawlersService, ILogsService logsService, IGroupsService groupsService, IZipService zipService,
-        OlympicGamesRepository<NOC> repository, IRegExpService regExpService)
-        : base(logger, crawlersService, logsService, groupsService, zipService)
+        INormalizeService normalizeService, IDataCacheService dataCacheService, DataService<NOC> nocsService)
+        : base(logger, crawlersService, logsService, groupsService, zipService, normalizeService, dataCacheService)
     {
-        this.repository = repository;
-        this.regExpService = regExpService;
+        this.nocsService = nocsService;
     }
 
     protected override async Task ProcessGroupAsync(Group group)
     {
-        var document = group.Documents.FirstOrDefault();
-        var bytes = document.Content;
-        var encoding = Encoding.GetEncoding(document.Encoding);
-        var json = encoding.GetString(bytes);
-        var model = JsonSerializer.Deserialize<Data.Models.Crawlers.Paris2024.NOCs.NOCInfo>(json);
+        var converterModel = this.PrepareConverterModel(group);
+        var model = JsonSerializer.Deserialize<Data.Models.Crawlers.Paris2024.NOCs.NOCInfo>(converterModel.Documents.GetValueOrDefault(1).Json);
 
         if (model.NocBio != null)
         {
-            var noc = await this.repository.GetAsync(x => x.Code == model.NocBio.OrganisationId);
+            var noc = await this.nocsService.GetAsync(x => x.Code == model.NocBio.OrganisationId);
             noc.Highlights = model.NocBio.Interest.Highlights;
             noc.Information = model.NocBio.Interest.AddInformation;
             noc.Summary = model.NocBio.Participation.Summary;
 
-            if (int.TryParse(model.NocBio.Membership.FoundingDate, out var foundingDate))
+            if (int.TryParse(model.NocBio.Membership?.FoundingDate, out var foundingDate))
             {
                 noc.FoundingDate = foundingDate;
             }
 
-            if (int.TryParse(model.NocBio.Membership.DateIOCRecognition, out var recognitionDate))
+            if (int.TryParse(model.NocBio.Membership?.DateIOCRecognition, out var recognitionDate))
             {
                 noc.IOCRecognitionDate = recognitionDate;
             }
 
-            if (int.TryParse(model.NocBio.Participation.FirstOGAppearance, out var firstAppearance))
+            if (int.TryParse(model.NocBio.Participation?.FirstOGAppearance, out var firstAppearance))
             {
                 noc.FirstAppearence = firstAppearance;
             }
 
-            var appearanceMatch = this.regExpService.Match(model.NocBio.Participation.NumOGAppearance, @"^(\d+)");
+            var appearanceMatch = RegExpHelper.Match(model.NocBio.Participation.NumOGAppearance, @"^(\d+)");
             if (appearanceMatch != null && int.TryParse(appearanceMatch.Groups[1].Value, out var appearance))
             {
                 noc.Appearance = appearance;
             }
 
-            this.repository.Update(noc);
-            await this.repository.SaveChangesAsync();
+            this.nocsService.Update(noc);
         }
     }
 }

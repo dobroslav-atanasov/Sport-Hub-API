@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.Logging;
 
+using SportHub.Converters.OlympicGames.Paris2024.Base;
 using SportHub.Data.Entities.Crawlers;
-using SportHub.Data.Entities.Enumerations.OlympicGames;
 using SportHub.Data.Entities.OlympicGames;
 using SportHub.Data.Models.Crawlers.Paris2024.Person;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
@@ -14,7 +14,7 @@ using SportHub.Services.Data.OlympicGamesDb;
 using SportHub.Services.Data.OlympicGamesDb.Interfaces;
 using SportHub.Services.Interfaces;
 
-public class ParticipantConverter : BaseConverter
+public class ParticipantConverter : Paris2024Converter
 {
     private readonly IDataService<Participation> participationsService;
     private readonly IDataService<Person> personsService;
@@ -29,8 +29,8 @@ public class ParticipantConverter : BaseConverter
 
     protected override async Task ProcessGroupAsync(Group group)
     {
-        var converterModel = this.PrepareParis2024ConverterModel(group);
-        var model = JsonSerializer.Deserialize<PersonCrawlerModel>(converterModel.Paris2024Documents.GetValueOrDefault(1).Json);
+        var converterModel = this.PrepareConverterModel(group);
+        var model = JsonSerializer.Deserialize<PersonCrawlerModel>(converterModel.Documents.GetValueOrDefault(1).Json);
         var personJson = model.Person;
 
         var medals = new Dictionary<string, int>();
@@ -38,7 +38,7 @@ public class ParticipantConverter : BaseConverter
         {
             foreach (var medal in personJson.Medals)
             {
-                var eventCode = this.GenerateCode(GameTypeEnum.Summer, 2024, medal.EventCode);
+                var eventCode = this.GenerateCode("Summer", 2024, medal.EventCode);
 
                 if (!medals.ContainsKey(eventCode))
                 {
@@ -54,7 +54,7 @@ public class ParticipantConverter : BaseConverter
 
         foreach (var regEvent in personJson.RegisteredEvents)
         {
-            var eventCode = this.GenerateCode(GameTypeEnum.Summer, 2024, regEvent.Event.Code);
+            var eventCode = this.GenerateCode("Summer", 2024, regEvent.Event.Code);
             var @event = this.DataCacheService.Events.FirstOrDefault(x => x.Code == eventCode);
 
             if (@event != null)
