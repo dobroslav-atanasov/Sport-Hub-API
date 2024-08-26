@@ -1,6 +1,6 @@
 ﻿namespace SportHub.Data.Models.Cache;
 
-using SportHub.Data.Models.DbEntities.OlympicGames;
+using SportHub.Data.Entities.OlympicGames;
 using SportHub.Services.Mapper.Interfaces;
 
 public class DisciplineCache : IMapFrom<Discipline>
