@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Data\SportHub.Data.Entities\SportHub.Data.Entities.csproj" />
     <ProjectReference Include="..\..\Data\SportHub.Data.ViewModels\SportHub.Data.ViewModels.csproj" />
     <ProjectReference Include="..\..\Data\SportHub.Data\SportHub.Data.csproj" />
     <ProjectReference Include="..\SportHub.Services.Mapper\SportHub.Services.Mapper.csproj" />
