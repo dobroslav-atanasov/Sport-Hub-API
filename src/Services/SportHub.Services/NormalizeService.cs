@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 using SportHub.Data.Entities.Enumerations.OlympicGames;
 using SportHub.Data.Models.Converters.OlympicGames;
-using SportHub.Data.Models.Converters.OlympicGames.Olympedia.Base;
+using SportHub.Data.Models.Converters.OlympicGames.Olympedia;
 using SportHub.Services.Interfaces;
 
 public class NormalizeService : INormalizeService
@@ -313,7 +313,7 @@ public class NormalizeService : INormalizeService
         };
     }
 
-    public string NormalizeEventName(OlympediaDocumentModel model)
+    public string NormalizeEventName(DocumentConverterModel model)
     {
         var name = model.EventInfo.OriginalName;
         name = Regex.Replace(name, @"(\d+)\s+(\d+)", me =>

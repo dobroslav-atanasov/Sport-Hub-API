@@ -2,7 +2,7 @@
 
 using SportHub.Data.Entities.Enumerations.OlympicGames;
 using SportHub.Data.Models.Converters.OlympicGames;
-using SportHub.Data.Models.Converters.OlympicGames.Olympedia.Base;
+using SportHub.Data.Models.Converters.OlympicGames.Olympedia;
 
 public interface INormalizeService
 {
@@ -10,7 +10,7 @@ public interface INormalizeService
 
     string NormalizeHostCityName(string hostCity);
 
-    string NormalizeEventName(OlympediaDocumentModel model);
+    string NormalizeEventName(DocumentConverterModel model);
 
     string ReplaceNonEnglishLetters(string name);
 
