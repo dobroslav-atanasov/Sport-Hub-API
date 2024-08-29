@@ -1,6 +1,6 @@
 ﻿namespace SportHub.Services.Data.CrawlerStorageDb.Interfaces;
 
-using SportHub.Data.Models.DbEntities.Crawlers;
+using SportHub.Data.Entities.Crawlers;
 
 public interface IGroupsService
 {

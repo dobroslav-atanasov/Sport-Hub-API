@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 
+using SportHub.Data.Entities.Crawlers;
+using SportHub.Data.Entities.Crawlers.Enumerations;
 using SportHub.Data.Factories.Interfaces;
-using SportHub.Data.Models.DbEntities.Crawlers;
-using SportHub.Data.Models.DbEntities.Crawlers.Enumerations;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
 using SportHub.Services.Interfaces;
 
