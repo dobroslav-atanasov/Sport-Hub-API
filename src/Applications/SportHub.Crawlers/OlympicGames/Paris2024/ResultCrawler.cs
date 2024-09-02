@@ -9,51 +9,44 @@ using Microsoft.Extensions.Logging;
 
 using SportHub.Common.Constants;
 using SportHub.Data.Models.Crawlers.Paris2024.Disciplines;
+using SportHub.Data.Models.Crawlers.Paris2024.EventUnit;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
 using SportHub.Services.Interfaces;
 
 public class ResultCrawler : BaseCrawler
 {
-    private readonly IRegExpService regExpService;
-
-    public ResultCrawler(ILogger<BaseCrawler> logger, IConfiguration configuration, IHttpService httpService, ICrawlersService crawlersService, IGroupsService groupsService,
-        IRegExpService regExpService)
+    public ResultCrawler(ILogger<BaseCrawler> logger, IConfiguration configuration, IHttpService httpService, ICrawlersService crawlersService, IGroupsService groupsService)
         : base(logger, configuration, httpService, crawlersService, groupsService)
     {
-        this.regExpService = regExpService;
     }
 
     public override async Task StartAsync()
     {
         this.Logger.LogInformation($"{this.GetType().FullName} Start!");
 
-        var days = new List<string>();
-
-        var start = DateTime.ParseExact("24.07.2024", "dd.MM.yyyy", null);
-        var end = DateTime.Now.AddDays(-1);
-        for (var counter = start; counter <= end; counter = counter.AddDays(1))
-        {
-            days.Add($"{counter.Year}-{counter.Month:D2}-{counter.Day:D2}");
-        }
-        var count = 0;
         try
         {
-            foreach (var day in days)
+            var httpModel = await this.HttpService.GetAsync(this.Configuration.GetSection(CrawlerConstants.PARIS_2024_DISCIPLINES_URL).Value);
+            var json = Encoding.UTF8.GetString(httpModel.Bytes);
+
+            var model = JsonSerializer.Deserialize<DisciplinesCrawlerModel>(json);
+            var disciplines = model.Disciplines.Where(x => x.IsSport && x.Scheduled);
+
+            foreach (var discipline in disciplines)
             {
-                var url = $"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_SCHEDULE_URL).Value}{day}";
+                var url = $"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_DISCIPLINE_UNITS_URL).Value}{discipline.Code}";
                 try
                 {
-                    var httpModel = await this.HttpService.GetAsync(url);
-                    var json = Encoding.UTF8.GetString(httpModel.Bytes);
-                    var model = JsonSerializer.Deserialize<DisciplineSchedule>(json);
+                    var eventUnitsUrl = $"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_DISCIPLINE_EVENT_UNITS_URL).Value}{discipline.Code}.json";
+                    var eventUnitsHttpModel = await this.HttpService.GetAsync(eventUnitsUrl);
+                    var eventUnitsJson = Encoding.UTF8.GetString(eventUnitsHttpModel.Bytes);
 
-                    foreach (var unit in model.Units)
+                    var eventUnits = JsonSerializer.Deserialize<EventUnitCrawlerModel>(eventUnitsJson);
+                    var eventUnitsList = eventUnits.EventUnits.Where(x => x.Type != "NONE");
+
+                    foreach (var eventUnit in eventUnitsList)
                     {
-                        await Console.Out.WriteLineAsync($"{count++}");
-                        var discipline = unit.DisciplineCode;
-                        var id = unit.Id;
-
-                        var resultUrl = $"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_RESULT_URL).Value}{discipline}~rscResult={id}.json";
+                        var resultUrl = $"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_RESULT_URL).Value}{discipline.Code}~rscResult={eventUnit.Code}.json";
 
                         try
                         {
@@ -70,11 +63,13 @@ public class ResultCrawler : BaseCrawler
                 {
                     this.Logger.LogError(ex, $"Failed to process url: {url};");
                 }
+
+                await Console.Out.WriteLineAsync(discipline.Description);
             }
         }
         catch (Exception ex)
         {
-            this.Logger.LogError(ex, $"Failed to process url: {this.Configuration.GetSection(CrawlerConstants.PARIS_2024_TEAMS_URL).Value};");
+            this.Logger.LogError(ex, $"Failed to process url: {this.Configuration.GetSection(CrawlerConstants.PARIS_2024_DISCIPLINES_URL).Value};");
         }
 
         this.Logger.LogInformation($"{this.GetType().FullName} End!");

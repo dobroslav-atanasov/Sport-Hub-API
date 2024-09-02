@@ -25,7 +25,7 @@ public class NOCCrawler : BaseCrawler
         try
         {
             var httpModel = await this.HttpService.GetAsync(this.Configuration.GetSection(CrawlerConstants.PARIS_2024_NOCS_URL).Value);
-            var model = JsonSerializer.Deserialize<NOCList>(httpModel.Content);
+            var model = JsonSerializer.Deserialize<NOCsCrawlerModel>(httpModel.Content);
 
             foreach (var noc in model.NOCs)
             {

@@ -28,7 +28,7 @@ public class TeamCrawler : BaseCrawler
             var httpModel = await this.HttpService.GetAsync(this.Configuration.GetSection(CrawlerConstants.PARIS_2024_TEAMS_URL).Value);
             var json = Encoding.UTF8.GetString(httpModel.Bytes);
 
-            var model = JsonSerializer.Deserialize<TeamsList>(json);
+            var model = JsonSerializer.Deserialize<TeamsCrawlerModel>(json);
 
             var count = 0;
             foreach (var team in model.Teams)

@@ -8,8 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 using SportHub.Common.Constants;
+using SportHub.Data.Entities.Crawlers;
 using SportHub.Data.Models.Crawlers.Paris2024.Disciplines;
-using SportHub.Data.Models.DbEntities.Crawlers;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
 using SportHub.Services.Interfaces;
 
@@ -29,7 +29,7 @@ public class DisciplineCrawler : BaseCrawler
             var httpModel = await this.HttpService.GetAsync(this.Configuration.GetSection(CrawlerConstants.PARIS_2024_DISCIPLINES_URL).Value);
             var json = Encoding.UTF8.GetString(httpModel.Bytes);
 
-            var model = JsonSerializer.Deserialize<DisciplinesList>(json);
+            var model = JsonSerializer.Deserialize<DisciplinesCrawlerModel>(json);
             var disciplines = model.Disciplines.Where(x => x.IsSport && x.Scheduled);
 
             foreach (var discipline in disciplines)
@@ -39,11 +39,6 @@ public class DisciplineCrawler : BaseCrawler
                 {
                     var unitsHttpModel = await this.HttpService.GetAsync(url);
                     var unitsDocument = this.CreateDocument(unitsHttpModel);
-
-                    //var imageUrl = $"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_DISCIPLINE_IMAGE_URL).Value}{discipline.Code}_big.svg";
-                    //var imageHttpModel = await this.HttpService.GetAsync(imageUrl);
-                    //var imageDocument = this.CreateDocument(imageHttpModel);
-                    //imageDocument.Order = 2;
 
                     var positionsUrl = $"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_DISCIPLINE_POSITIONS_URL).Value}{discipline.Code}.json";
                     var positionsHttpModel = await this.HttpService.GetAsync(positionsUrl);

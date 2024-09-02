@@ -8,19 +8,17 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 using SportHub.Common.Constants;
+using SportHub.Common.Helpers;
 using SportHub.Data.Models.Crawlers.Paris2024.Disciplines;
+using SportHub.Data.Models.Crawlers.Paris2024.UnitGroup;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
 using SportHub.Services.Interfaces;
 
 public class PoolStandingCrawler : BaseCrawler
 {
-    private readonly IRegExpService regExpService;
-
-    public PoolStandingCrawler(ILogger<BaseCrawler> logger, IConfiguration configuration, IHttpService httpService, ICrawlersService crawlersService, IGroupsService groupsService,
-        IRegExpService regExpService)
+    public PoolStandingCrawler(ILogger<BaseCrawler> logger, IConfiguration configuration, IHttpService httpService, ICrawlersService crawlersService, IGroupsService groupsService)
         : base(logger, configuration, httpService, crawlersService, groupsService)
     {
-        this.regExpService = regExpService;
     }
 
     public override async Task StartAsync()
@@ -32,7 +30,7 @@ public class PoolStandingCrawler : BaseCrawler
             var httpModel = await this.HttpService.GetAsync(this.Configuration.GetSection(CrawlerConstants.PARIS_2024_DISCIPLINES_URL).Value);
             var json = Encoding.UTF8.GetString(httpModel.Bytes);
 
-            var model = JsonSerializer.Deserialize<DisciplinesList>(json);
+            var model = JsonSerializer.Deserialize<DisciplinesCrawlerModel>(json);
             var disciplines = model.Disciplines.Where(x => x.IsSport && x.Scheduled);
 
             foreach (var discipline in disciplines)
@@ -43,12 +41,12 @@ public class PoolStandingCrawler : BaseCrawler
                 {
                     var disciplineHttpModel = await this.HttpService.GetAsync(unitsUrl);
                     var disciplineJson = Encoding.UTF8.GetString(disciplineHttpModel.Bytes);
-                    var units = JsonSerializer.Deserialize<DisciplineSchedule>(disciplineJson);
+                    var units = JsonSerializer.Deserialize<UnitGroupCrawlerModel>(disciplineJson);
                     var phases = units.Units.Select(x => x.PhaseId).Distinct().ToList();
 
                     foreach (var id in phases)
                     {
-                        if (this.regExpService.Match(id, @"[A-Z^0-9]{5,}") != null)
+                        if (RegExpHelper.Match(id, @"[A-Z^0-9]{5,}") != null)
                         {
                             var poolStandingUrl = $"{this.Configuration.GetSection(CrawlerConstants.PARIS_2024_EVENT_POOL_STANDINGS_URL).Value}{id}.json";
 

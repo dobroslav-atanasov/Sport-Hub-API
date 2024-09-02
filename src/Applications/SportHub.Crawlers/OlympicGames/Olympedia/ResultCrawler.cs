@@ -6,19 +6,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 using SportHub.Common.Constants;
-using SportHub.Data.Models.DbEntities.Crawlers;
+using SportHub.Common.Helpers;
+using SportHub.Data.Entities.Crawlers;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
 using SportHub.Services.Interfaces;
 
 public class ResultCrawler : BaseOlympediaCrawler
 {
-    private readonly IOlympediaService olympediaService;
-
-    public ResultCrawler(ILogger<BaseCrawler> logger, IConfiguration configuration, IHttpService httpService, ICrawlersService crawlersService, IGroupsService groupsService,
-        IOlympediaService olympediaService)
+    public ResultCrawler(ILogger<BaseCrawler> logger, IConfiguration configuration, IHttpService httpService, ICrawlersService crawlersService, IGroupsService groupsService)
         : base(logger, configuration, httpService, crawlersService, groupsService)
     {
-        this.olympediaService = olympediaService;
     }
 
     public override async Task StartAsync()
@@ -51,7 +48,7 @@ public class ResultCrawler : BaseOlympediaCrawler
                                     {
                                         var mainResultHttpModel = await this.HttpService.GetAsync(medalDisciplineUrl);
                                         var resultUrls = this.ExtractResultUrls(mainResultHttpModel);
-                                        var athletes = this.olympediaService.FindAthletes(mainResultHttpModel.Content);
+                                        var athletes = OlympediaHelper.FindAthletes(mainResultHttpModel.Content);
                                         foreach (var athlete in athletes)
                                         {
                                             list.Add(athlete.Code);
@@ -68,7 +65,7 @@ public class ResultCrawler : BaseOlympediaCrawler
                                             try
                                             {
                                                 var resultHttpModel = await this.HttpService.GetAsync(resultUrl);
-                                                athletes = this.olympediaService.FindAthletes(resultHttpModel.Content);
+                                                athletes = OlympediaHelper.FindAthletes(resultHttpModel.Content);
                                                 foreach (var athlete in athletes)
                                                 {
                                                     list.Add(athlete.Code);

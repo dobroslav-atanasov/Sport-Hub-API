@@ -9,9 +9,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 using SportHub.Common.Constants;
+using SportHub.Data.Entities.Crawlers;
 using SportHub.Data.Models.Crawlers.Paris2024.Disciplines;
 using SportHub.Data.Models.Crawlers.Paris2024.PDFs;
-using SportHub.Data.Models.DbEntities.Crawlers;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
 using SportHub.Services.Interfaces;
 
@@ -31,7 +31,7 @@ public class PDFsCrawler : BaseCrawler
             var httpModel = await this.HttpService.GetAsync(this.Configuration.GetSection(CrawlerConstants.PARIS_2024_DISCIPLINES_URL).Value);
             var json = Encoding.UTF8.GetString(httpModel.Bytes);
 
-            var model = JsonSerializer.Deserialize<DisciplinesList>(json);
+            var model = JsonSerializer.Deserialize<DisciplinesCrawlerModel>(json);
             var disciplines = model.Disciplines.Where(x => x.IsSport && x.Scheduled);
 
             foreach (var discipline in disciplines)
@@ -42,7 +42,7 @@ public class PDFsCrawler : BaseCrawler
                 {
                     var pdfsHttpModel = await this.HttpService.GetAsync(pdfsUrl);
                     var pdfJson = Encoding.UTF8.GetString(pdfsHttpModel.Bytes);
-                    var pdfModel = JsonSerializer.Deserialize<PDFList>(pdfJson);
+                    var pdfModel = JsonSerializer.Deserialize<PDFCrawlerModel>(pdfJson);
 
                     var paths = pdfModel.Pdfs.Select(x => x.FullPath).Distinct().ToList();
 

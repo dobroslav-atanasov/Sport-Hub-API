@@ -6,19 +6,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 using SportHub.Common.Constants;
+using SportHub.Common.Helpers;
 using SportHub.Data.Models.Http;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
 using SportHub.Services.Interfaces;
 
 public class VenueCrawler : BaseOlympediaCrawler
 {
-    private readonly IRegExpService regExpService;
-
-    public VenueCrawler(ILogger<BaseCrawler> logger, IConfiguration configuration, IHttpService httpService, ICrawlersService crawlersService, IGroupsService groupsService,
-        IRegExpService regExpSevice)
+    public VenueCrawler(ILogger<BaseCrawler> logger, IConfiguration configuration, IHttpService httpService, ICrawlersService crawlersService, IGroupsService groupsService)
         : base(logger, configuration, httpService, crawlersService, groupsService)
     {
-        this.regExpService = regExpSevice;
     }
 
     public override async Task StartAsync()
@@ -34,7 +31,7 @@ public class VenueCrawler : BaseOlympediaCrawler
             {
                 try
                 {
-                    var editionNumberMatch = this.regExpService.Match(url, @"\/(\d+)");
+                    var editionNumberMatch = RegExpHelper.Match(url, @"\/(\d+)");
                     if (editionNumberMatch != null)
                     {
                         var gameVenuesHttpModel = await this.HttpService.GetAsync($"{this.Configuration.GetSection(CrawlerConstants.OLYMPEDIA_VENUES_ULR).Value}" +
@@ -76,7 +73,7 @@ public class VenueCrawler : BaseOlympediaCrawler
             .DocumentNode
             .SelectNodes("//table//a")
             .Select(x => x.Attributes["href"]?.Value.Trim())
-            .Where(x => this.regExpService.Match(x, @"\/venues\/(\d+)") != null)
+            .Where(x => RegExpHelper.Match(x, @"\/venues\/(\d+)") != null)
             .Select(x => this.CreateUrl(x, this.Configuration.GetSection(CrawlerConstants.OLYMPEDIA_MAIN_URL).Value))
             .Distinct()
             .ToList();

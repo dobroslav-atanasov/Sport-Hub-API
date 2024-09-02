@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 using SportHub.Common.Constants;
-using SportHub.Data.Models.Crawlers.Paris2024.Horses;
+using SportHub.Data.Models.Crawlers.Paris2024.Horse;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
 using SportHub.Services.Interfaces;
 
@@ -28,7 +28,7 @@ public class HorseCrawler : BaseCrawler
             var httpModel = await this.HttpService.GetAsync(this.Configuration.GetSection(CrawlerConstants.PARIS_2024_HORSES_URL).Value);
             var json = Encoding.UTF8.GetString(httpModel.Bytes);
 
-            var model = JsonSerializer.Deserialize<HorsesList>(json);
+            var model = JsonSerializer.Deserialize<HorseCrawlerModel>(json);
 
             var count = 0;
             foreach (var horse in model.Horses)
