@@ -13,7 +13,6 @@ using SportHub.Data.Contexts;
 using SportHub.Data.Factories;
 using SportHub.Data.Factories.Interfaces;
 using SportHub.Data.Repositories;
-using SportHub.Data.Seeders.OlympicGamesDb;
 using SportHub.Services;
 using SportHub.Services.Data.CrawlerStorageDb;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
@@ -85,12 +84,9 @@ services.AddScoped(typeof(OlympicGamesRepository<>));
 services.AddScoped(typeof(DataService<>));
 
 services.AddScoped<IZipService, ZipService>();
-services.AddScoped<IRegExpService, RegExpService>();
 services.AddScoped<IHttpService, HttpService>();
 services.AddScoped<IMD5Hash, MD5Hash>();
 services.AddScoped<INormalizeService, NormalizeService>();
-services.AddScoped<IOlympediaService, OlympediaService>();
-services.AddScoped<IDateService, DateService>();
 
 services.AddScoped<ICrawlersService, CrawlersService>();
 services.AddScoped<IGroupsService, GroupsService>();
@@ -102,6 +98,7 @@ services.AddScoped<IDataCacheService, DataCacheService>();
 services.AddScoped<SportHub.Converters.OlympicGames.Olympedia.NOCConverter>();
 services.AddScoped<GameConverter>();
 services.AddScoped<SportHub.Converters.OlympicGames.Olympedia.DisciplinesConverter>();
+services.AddScoped<SportHub.Converters.OlympicGames.Olympedia.EventsConverter>();
 
 //services.AddScoped<SportDisciplineConverter>();
 //services.AddScoped<VenueConverter>();
@@ -134,12 +131,20 @@ services.AddScoped<SportHub.Converters.OlympicGames.Olympedia.DisciplinesConvert
 services.AddScoped<NOCsConverter>();
 services.AddScoped<SportHub.Converters.OlympicGames.Paris2024.NOCConverter>();
 services.AddScoped<SportHub.Converters.OlympicGames.Paris2024.DisciplinesConverter>();
+services.AddScoped<SportHub.Converters.OlympicGames.Paris2024.EventsConverter>();
+services.AddScoped<SportHub.Converters.OlympicGames.Paris2024.ResultConverter>();
+services.AddScoped<SportHub.Converters.OlympicGames.Paris2024.PersonsConverter>();
+services.AddScoped<SportHub.Converters.OlympicGames.Paris2024.PersonConverter>();
+services.AddScoped<SportHub.Converters.OlympicGames.Paris2024.ParticipantConverter>();
+services.AddScoped<SportHub.Converters.OlympicGames.Paris2024.TeamsConverter>();
+services.AddScoped<SportHub.Converters.OlympicGames.Paris2024.TeamConverter>();
+services.AddScoped<SportHub.Converters.OlympicGames.Paris2024.ScheduleConverter>();
+services.AddScoped<SportHub.Converters.OlympicGames.Paris2024.RecordsConverter>();
 
 var serviceProvider = services.BuildServiceProvider();
 
 var dbContext = serviceProvider.GetRequiredService<OlympicGamesDbContext>();
 dbContext.Database.Migrate();
-new OlympicGamesDbSeeder().SeedAsync(serviceProvider).GetAwaiter().GetResult();
 
 //await serviceProvider.GetService<EventConverter>().ConvertAsync(ConverterConstants.OLYMPEDIA_RESULT_CONVERTER);
 //await serviceProvider.GetService<VenueConverter>().ConvertAsync(ConverterConstants.OLYMPEDIA_VENUE_CONVERTER);
@@ -151,7 +156,17 @@ new OlympicGamesDbSeeder().SeedAsync(serviceProvider).GetAwaiter().GetResult();
 
 //await serviceProvider.GetService<NOCsConverter>().ConvertAsync(ConverterConstants.PARIS_2024_NOCS_CONVERTER);
 //await serviceProvider.GetService<SportHub.Converters.OlympicGames.Paris2024.NOCConverter>().ConvertAsync(ConverterConstants.PARIS_2024_NOC_CONVERTER);
-//await serviceProvider.GetService<SportHub.Converters.OlympicGames.Olympedia.NOCConverter>().ConvertAsync(ConverterConstants.OLYMPEDIA_NOC_CONVERTER);
 //await serviceProvider.GetService<GameConverter>().ConvertAsync(ConverterConstants.OLYMPEDIA_GAME_CONVERTER);
 //await serviceProvider.GetService<SportHub.Converters.OlympicGames.Paris2024.DisciplinesConverter>().ConvertAsync(ConverterConstants.PARIS_2024_DISCIPLINES_CONVERTER);
-//await serviceProvider.GetService<SportHub.Converters.OlympicGames.Olympedia.DisciplinesConverter>().ConvertAsync(ConverterConstants.OLYMPEDIA_SPORT_DISCIPLINE_CONVERTER);
+//await serviceProvider.GetService<SportHub.Converters.OlympicGames.Paris2024.EventsConverter>().ConvertAsync(ConverterConstants.PARIS_2024_EVENT_CONVERTER);
+//await serviceProvider.GetService<SportHub.Converters.OlympicGames.Paris2024.PersonsConverter>().ConvertAsync(ConverterConstants.PARIS_2024_ATHLETES_CONVERTER);   // ONLY 1
+//await serviceProvider.GetService<SportHub.Converters.OlympicGames.Paris2024.PersonsConverter>().ConvertAsync(ConverterConstants.PARIS_2024_COACHES_CONVERTER);    // ONLY 1
+//await serviceProvider.GetService<SportHub.Converters.OlympicGames.Paris2024.PersonsConverter>().ConvertAsync(ConverterConstants.PARIS_2024_JUDGES_CONVERTER);     // ONLY 1
+//await serviceProvider.GetService<SportHub.Converters.OlympicGames.Paris2024.PersonConverter>().ConvertAsync(ConverterConstants.PARIS_2024_ATHLETE_CONVERTER);
+//await serviceProvider.GetService<SportHub.Converters.OlympicGames.Paris2024.PersonConverter>().ConvertAsync(ConverterConstants.PARIS_2024_COACH_CONVERTER);
+//await serviceProvider.GetService<SportHub.Converters.OlympicGames.Paris2024.PersonConverter>().ConvertAsync(ConverterConstants.PARIS_2024_JUDGE_CONVERTER);
+//await serviceProvider.GetService<SportHub.Converters.OlympicGames.Paris2024.ParticipantConverter>().ConvertAsync(ConverterConstants.PARIS_2024_ATHLETE_CONVERTER);
+//await serviceProvider.GetService<SportHub.Converters.OlympicGames.Paris2024.TeamsConverter>().ConvertAsync(ConverterConstants.PARIS_2024_TEAMS_CONVERTER);        // ONLY 1
+//await serviceProvider.GetService<SportHub.Converters.OlympicGames.Paris2024.TeamConverter>().ConvertAsync(ConverterConstants.PARIS_2024_TEAM_CONVERTER);
+//await serviceProvider.GetService<SportHub.Converters.OlympicGames.Paris2024.ScheduleConverter>().ConvertAsync(ConverterConstants.PARIS_2024_EVENT_CONVERTER);
+await serviceProvider.GetService<SportHub.Converters.OlympicGames.Paris2024.RecordsConverter>().ConvertAsync(ConverterConstants.PARIS_2024_DISCIPLINE_CONVERTER);
