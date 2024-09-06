@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using SportHub.Converters.OlympicGames.Paris2024.Base;
 using SportHub.Data.Entities.Crawlers;
 using SportHub.Data.Entities.OlympicGames;
-using SportHub.Data.Models.Crawlers.Paris2024;
+using SportHub.Data.Models.Crawlers.Paris2024.Persons;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
 using SportHub.Services.Data.OlympicGamesDb;
 using SportHub.Services.Data.OlympicGamesDb.Interfaces;
@@ -16,13 +16,13 @@ using SportHub.Services.Interfaces;
 
 public class PersonsConverter : Paris2024Converter
 {
-    private readonly IDataService<Person> dataService;
+    private readonly IDataService<Person> personsService;
 
     public PersonsConverter(ILogger<BaseConverter> logger, ICrawlersService crawlersService, ILogsService logsService, IGroupsService groupsService, IZipService zipService,
-        INormalizeService normalizeService, IDataCacheService dataCacheService, DataService<Person> dataService)
+        INormalizeService normalizeService, IDataCacheService dataCacheService, DataService<Person> personsService)
         : base(logger, crawlersService, logsService, groupsService, zipService, normalizeService, dataCacheService)
     {
-        this.dataService = dataService;
+        this.personsService = personsService;
     }
 
     protected override async Task ProcessGroupAsync(Group group)
@@ -51,6 +51,6 @@ public class PersonsConverter : Paris2024Converter
             persons.Add(person);
         }
 
-        await this.dataService.AddRangeAsync(persons);
+        await this.personsService.AddRangeAsync(persons);
     }
 }

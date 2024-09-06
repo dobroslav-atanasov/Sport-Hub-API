@@ -17,12 +17,17 @@ using SportHub.Services.Interfaces;
 public class TeamsConverter : Paris2024Converter
 {
     private readonly DataService<Team> teamsService;
+    private readonly DataService<Participation> participationsService;
+    private readonly DataService<Person> personsService;
 
     public TeamsConverter(ILogger<BaseConverter> logger, ICrawlersService crawlersService, ILogsService logsService, IGroupsService groupsService, IZipService zipService,
-        INormalizeService normalizeService, IDataCacheService dataCacheService, DataService<Team> teamsService)
+        INormalizeService normalizeService, IDataCacheService dataCacheService, DataService<Team> teamsService, DataService<Participation> participationsService,
+        DataService<Person> personsService)
         : base(logger, crawlersService, logsService, groupsService, zipService, normalizeService, dataCacheService)
     {
         this.teamsService = teamsService;
+        this.participationsService = participationsService;
+        this.personsService = personsService;
     }
 
     protected override async Task ProcessGroupAsync(Group group)
@@ -33,11 +38,11 @@ public class TeamsConverter : Paris2024Converter
         var teams = new List<Team>();
         foreach (var item in model.Teams.Where(x => x.Current))
         {
-            // TODO Generate team code.
+            var code = this.GenerateCode("Summer", 2024, item.Code, true);
 
             var team = new Team
             {
-                Code = "1",
+                Code = code,
                 OriginalCode = item.Code,
                 Name = item.Name,
                 ShortName = item.ShortName,
@@ -46,7 +51,6 @@ public class TeamsConverter : Paris2024Converter
                 Type = item.TeamType,
                 Organisation = item.Organisation.Code
             };
-
 
             teams.Add(team);
         }

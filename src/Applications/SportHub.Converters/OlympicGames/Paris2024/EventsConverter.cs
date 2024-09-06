@@ -9,7 +9,7 @@ using SportHub.Common.Helpers;
 using SportHub.Converters.OlympicGames.Paris2024.Base;
 using SportHub.Data.Entities.Crawlers;
 using SportHub.Data.Entities.OlympicGames;
-using SportHub.Data.Models.Crawlers.Paris2024.Events;
+using SportHub.Data.Models.Crawlers.Paris2024.Event;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
 using SportHub.Services.Data.OlympicGamesDb;
 using SportHub.Services.Data.OlympicGamesDb.Interfaces;
@@ -17,14 +17,12 @@ using SportHub.Services.Interfaces;
 
 public class EventsConverter : Paris2024Converter
 {
-    private readonly IDataCacheService dataCacheService;
     private readonly DataService<Event> eventsService;
 
     public EventsConverter(ILogger<BaseConverter> logger, ICrawlersService crawlersService, ILogsService logsService, IGroupsService groupsService, IZipService zipService,
         INormalizeService normalizeService, IDataCacheService dataCacheService, DataService<Event> eventsService)
         : base(logger, crawlersService, logsService, groupsService, zipService, normalizeService, dataCacheService)
     {
-        this.dataCacheService = dataCacheService;
         this.eventsService = eventsService;
     }
 
@@ -35,9 +33,10 @@ public class EventsConverter : Paris2024Converter
         var eventCrawlerModel = json.Event;
 
         var disciplineCode = eventCrawlerModel.Code.Substring(0, 3);
-        var discipline = this.dataCacheService.Disciplines.FirstOrDefault(x => x.Code == disciplineCode);
+        var discipline = this.DataCacheService.Disciplines.FirstOrDefault(x => x.Code == disciplineCode);
         var code = this.GenerateCode("Summer", 2024, eventCrawlerModel.Code);
         var codeInfo = this.ExtractCodeInfo(code);
+        var game = this.DataCacheService.Games.FirstOrDefault(x => x.Year == 2024);
 
         var @event = new Event
         {
@@ -48,7 +47,8 @@ public class EventsConverter : Paris2024Converter
             LongName = eventCrawlerModel.LongDescription,
             DisciplineId = discipline.Id,
             OriginalCode = eventCrawlerModel.Code,
-            ShortName = codeInfo.Event
+            ShortName = codeInfo.Event,
+            GameId = game.Id
         };
 
         foreach (var phaseEvent in eventCrawlerModel.Phases.Where(x => x.Units != null))
@@ -80,7 +80,7 @@ public class EventsConverter : Paris2024Converter
                     StartDate = unitEvent.Schedule.StartDate,
                     EndDate = unitEvent.Schedule.EndDate,
                     OriginalCode = unitEvent.Code,
-                    IsMedal = unitEvent.Schedule.Medal == 1,
+                    HasMedal = unitEvent.Schedule.Medal == 1,
                     Status = unitEvent.Schedule.Status.Code
                 };
 

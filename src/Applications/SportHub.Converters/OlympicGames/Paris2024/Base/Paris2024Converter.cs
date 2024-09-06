@@ -65,40 +65,67 @@ public abstract class Paris2024Converter : BaseConverter
         return null;
     }
 
-    protected string GenerateCode(string type, int year, string oldCode)
+    protected string GenerateCode(string type, int year, string oldCode, bool isTeam = false)
     {
         var code = $"{type.Substring(0, 1)}-{year}-";
-        var match = RegExpHelper.Match(oldCode, @"^([\w]{3})(M|W|X|O)([\w\-]{18})([\w\-]{4})([\w\-]{8})");
-        if (match != null)
-        {
-            var @eventStr = match.Groups[3].Value.Replace("SCULL2-L-", "SCULL2LW-").Replace("-", string.Empty);
-            code = $"{code}{match.Groups[1].Value}-{match.Groups[2].Value}-{@eventStr}";
-            code = code.PadRight(26, '-');
-            var unitStr = match.Groups[5].Value.Replace("-", string.Empty);
-            code = $"{code}{match.Groups[4].Value}-{unitStr}";
-            code = code.PadRight(39, '0');
 
-            return code;
+        if (!isTeam)
+        {
+            var match = RegExpHelper.Match(oldCode, @"^([\w]{3})(M|W|X|O)([\w\-]{18})([\w\-]{4})([\w\-]{8})");
+            if (match != null)
+            {
+                var @eventStr = match.Groups[3].Value.Replace("SCULL2-L-", "SCULL2LW-").Replace("-", string.Empty);
+                code = $"{code}{match.Groups[1].Value}-{match.Groups[2].Value}-{@eventStr}";
+                code = code.PadRight(26, '-');
+                var unitStr = match.Groups[5].Value.Replace("-", string.Empty);
+                code = $"{code}{match.Groups[4].Value}-{unitStr}";
+                code = code.PadRight(39, '0');
+
+                return code;
+            }
+
+            match = RegExpHelper.Match(oldCode, @"^([\w]{3})(M|W|X|O)([\w\-]{18})([\w\-]{4})");
+            if (match != null)
+            {
+                var @eventStr = match.Groups[3].Value.Replace("SCULL2-L-", "SCULL2LW-").Replace("-", string.Empty);
+                code = $"{code}{match.Groups[1].Value}-{match.Groups[2].Value}-{@eventStr}";
+                code = code.PadRight(26, '-');
+                code = $"{code}{match.Groups[4].Value}";
+                code = code.PadRight(39, '-');
+                return code;
+            }
+
+            match = RegExpHelper.Match(oldCode, @"^([\w]{3})(M|W|O|X)([\w\-]{8})");
+            if (match != null)
+            {
+                var @eventStr = match.Groups[3].Value.Replace("SCULL2-L-", "SCULL2LW-").Replace("-", string.Empty);
+                code = $"{code}{match.Groups[1].Value}-{match.Groups[2].Value}-{@eventStr}";
+                code = code.PadRight(39, '-');
+                return code;
+            }
         }
-
-        match = RegExpHelper.Match(oldCode, @"^([\w]{3})(M|W|X|O)([\w\-]{18})([\w\-]{4})");
-        if (match != null)
+        else
         {
-            var @eventStr = match.Groups[3].Value.Replace("SCULL2-L-", "SCULL2LW-").Replace("-", string.Empty);
-            code = $"{code}{match.Groups[1].Value}-{match.Groups[2].Value}-{@eventStr}";
-            code = code.PadRight(26, '-');
-            code = $"{code}{match.Groups[4].Value}";
-            code = code.PadRight(39, '-');
-            return code;
-        }
+            var match = RegExpHelper.Match(oldCode, @"^([\w]{3})(M|W|X|O)([\w\-]{8})([\w]{3})([\d]{2})");
+            if (match != null)
+            {
+                var discipline = match.Groups[1].Value;
+                var gender = match.Groups[2].Value;
+                var @event = match.Groups[3].Value.Replace("SCULL2-L-", "SCULL2LW-").Replace("-", string.Empty);
+                var country = match.Groups[4].Value;
+                var number = match.Groups[5].Value;
 
-        match = RegExpHelper.Match(oldCode, @"^([\w]{3})(M|W|O|X)([\w\-]{8})");
-        if (match != null)
-        {
-            var @eventStr = match.Groups[3].Value.Replace("SCULL2-L-", "SCULL2LW-").Replace("-", string.Empty);
-            code = $"{code}{match.Groups[1].Value}-{match.Groups[2].Value}-{@eventStr}";
-            code = code.PadRight(39, '-');
-            return code;
+                if (discipline == "SWA" && @event == "TEAM8")
+                {
+                    gender = "O";
+                }
+
+                code = $"{code}{discipline}-{gender}-{@event}";
+                code = code.PadRight(26, '-');
+                code = $"{code}{country}-{number}";
+
+                return code;
+            }
         }
 
         return null;

@@ -9,6 +9,7 @@ using SportHub.Common.Helpers;
 using SportHub.Converters.OlympicGames.Paris2024.Base;
 using SportHub.Data.Entities.Crawlers;
 using SportHub.Data.Entities.OlympicGames;
+using SportHub.Data.Models.Crawlers.Paris2024.NOC;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
 using SportHub.Services.Data.OlympicGamesDb;
 using SportHub.Services.Data.OlympicGamesDb.Interfaces;
@@ -28,7 +29,7 @@ public class NOCConverter : Paris2024Converter
     protected override async Task ProcessGroupAsync(Group group)
     {
         var converterModel = this.PrepareConverterModel(group);
-        var model = JsonSerializer.Deserialize<Data.Models.Crawlers.Paris2024.NOCs.NOCInfo>(converterModel.Documents.GetValueOrDefault(1).Json);
+        var model = JsonSerializer.Deserialize<NOCInfo>(converterModel.Documents.GetValueOrDefault(1).Json);
 
         if (model.NocBio != null)
         {

@@ -28,7 +28,7 @@ public class DisciplinesConverter : Paris2024Converter
     protected override async Task ProcessGroupAsync(Group group)
     {
         var converterModel = this.PrepareConverterModel(group);
-        var model = JsonSerializer.Deserialize<DisciplinesList>(converterModel.Documents.GetValueOrDefault(1).Json);
+        var model = JsonSerializer.Deserialize<DisciplinesCrawlerModel>(converterModel.Documents.GetValueOrDefault(1).Json);
         var disciplines = model.Disciplines.Where(x => x.IsSport == true && x.Scheduled == true).ToList();
 
         foreach (var item in disciplines)

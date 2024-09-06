@@ -31,11 +31,12 @@ public class HorsesConverter : Paris2024Converter
         var model = JsonSerializer.Deserialize<HorsesCrawlerModel>(converterModel.Documents.GetValueOrDefault(1).Json);
 
         var horses = new List<Horse>();
+        var count = 1;
         foreach (var item in model.Horses)
         {
             var horse = new Horse
             {
-                Code = "H",
+                Code = $"H" + $"{count++}".PadLeft(6, '0'),
                 OriginalCode = item.Code,
                 Current = item.Current,
                 Discipline = item.Discipline?.Code,

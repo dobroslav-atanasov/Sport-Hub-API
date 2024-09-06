@@ -50,43 +50,46 @@ public class ParticipantConverter : Paris2024Converter
         var person = await this.personsService.GetAsync(x => x.Code == personJson.Code);
         var noc = this.DataCacheService.NOCs.FirstOrDefault(x => x.Code == personJson.Organisation.Code);
         var game = this.DataCacheService.Games.FirstOrDefault(x => x.Year == 2024);
-        var age = this.CalculateAge(game.OpeningCeremony ?? game.StartCompetitionDate.Value, person.BirthDate.Value);
+        var age = this.CalculateAge(game.OpeningCeremony ?? game.StartCompetitionDate.Value, person.BirthDate);
 
-        foreach (var regEvent in personJson.RegisteredEvents)
+        if (personJson.RegisteredEvents != null)
         {
-            var eventCode = this.GenerateCode("Summer", 2024, regEvent.Event.Code);
-            var @event = this.DataCacheService.Events.FirstOrDefault(x => x.Code == eventCode);
-
-            if (@event != null)
+            foreach (var regEvent in personJson.RegisteredEvents)
             {
-                var participation = new Participation
-                {
-                    Code = personJson.Code,
-                    PersonId = person.Id,
-                    NOCId = noc.Id,
-                    EventId = @event.Id,
-                    AgeYears = age.Item1,
-                    AgeDays = age.Item2,
-                    Medal = medals.GetValueOrDefault(eventCode),
-                    Rank = regEvent.Event.Rankings?.FirstOrDefault(x => x.AthleteCode == person.Code)?.RkRank,
-                    RkRankEqual = regEvent.Event.Rankings?.FirstOrDefault(x => x.AthleteCode == person.Code)?.RkRankEqual,
-                    RkResultType = regEvent.Event.Rankings?.FirstOrDefault(x => x.AthleteCode == person.Code)?.RkResultType,
-                    RkType = regEvent.Event.Rankings?.FirstOrDefault(x => x.AthleteCode == person.Code)?.RkType,
-                };
+                var eventCode = this.GenerateCode("Summer", 2024, regEvent.Event.Code);
+                var @event = this.DataCacheService.Events.FirstOrDefault(x => x.Code == eventCode);
 
-                var dbParticipation = await this.participationsService
-                    .GetAsync(x => x.PersonId == participation.PersonId && x.EventId == participation.EventId && x.NOCId == participation.NOCId);
-                if (dbParticipation != null)
+                if (@event != null)
                 {
-                    var equals = participation.Equals(dbParticipation);
-                    if (!equals)
+                    var participation = new Participation
                     {
-                        this.participationsService.Update(dbParticipation);
+                        Code = personJson.Code,
+                        PersonId = person.Id,
+                        NOCId = noc.Id,
+                        EventId = @event.Id,
+                        AgeYears = age.Item1,
+                        AgeDays = age.Item2,
+                        Medal = medals.GetValueOrDefault(eventCode),
+                        Rank = regEvent.Event.Rankings?.FirstOrDefault(x => x.AthleteCode == person.Code)?.RkRank,
+                        RankEqual = regEvent.Event.Rankings?.FirstOrDefault(x => x.AthleteCode == person.Code)?.RkRankEqual == "Y",
+                        RankResultType = regEvent.Event.Rankings?.FirstOrDefault(x => x.AthleteCode == person.Code)?.RkResultType,
+                        RankType = regEvent.Event.Rankings?.FirstOrDefault(x => x.AthleteCode == person.Code)?.RkType,
+                    };
+
+                    var dbParticipation = await this.participationsService
+                        .GetAsync(x => x.PersonId == participation.PersonId && x.EventId == participation.EventId && x.NOCId == participation.NOCId);
+                    if (dbParticipation != null)
+                    {
+                        var equals = participation.Equals(dbParticipation);
+                        if (!equals)
+                        {
+                            this.participationsService.Update(dbParticipation);
+                        }
                     }
-                }
-                else
-                {
-                    await this.participationsService.AddAsync(participation);
+                    else
+                    {
+                        await this.participationsService.AddAsync(participation);
+                    }
                 }
             }
         }

@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 using SportHub.Converters.OlympicGames.Paris2024.Base;
 using SportHub.Data.Entities.Crawlers;
-using SportHub.Data.Models.Crawlers.Paris2024;
+using SportHub.Data.Models.Crawlers.Paris2024.Result;
 using SportHub.Services.Data.CrawlerStorageDb.Interfaces;
 using SportHub.Services.Data.OlympicGamesDb.Interfaces;
 using SportHub.Services.Interfaces;
