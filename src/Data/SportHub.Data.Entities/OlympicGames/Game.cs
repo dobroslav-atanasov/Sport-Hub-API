@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 using global::SportHub.Data.Common.Models;
-using global::SportHub.Data.Entities.Enumerations.OlympicGames;
 
 [Table("Games", Schema = "dbo")]
 public class Game : BaseDeletableEntity<int>, IEquatable<Game>
@@ -16,7 +15,7 @@ public class Game : BaseDeletableEntity<int>, IEquatable<Game>
     public string Number { get; set; }
 
     [Required]
-    public GameTypeEnum Type { get; set; }
+    public string Type { get; set; }
 
     [Required]
     [MaxLength(100)]
@@ -71,6 +70,8 @@ public class Game : BaseDeletableEntity<int>, IEquatable<Game>
 
     [MaxLength(10000)]
     public string BidProcess { get; set; }
+
+    public virtual ICollection<Event> Events { get; set; } = new HashSet<Event>();
 
     public bool Equals(Game other)
     {

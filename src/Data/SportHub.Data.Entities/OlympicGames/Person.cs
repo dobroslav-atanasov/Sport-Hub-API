@@ -14,10 +14,6 @@ public class Person : BaseDeletableEntity<Guid>, IEquatable<Person>
 
     [Required]
     [MaxLength(200)]
-    public string OriginalCode { get; set; }
-
-    [Required]
-    [MaxLength(200)]
     public string Name { get; set; }
 
     [Required]
@@ -27,19 +23,132 @@ public class Person : BaseDeletableEntity<Guid>, IEquatable<Person>
     [MaxLength(200)]
     public string ShortName { get; set; }
 
+    [MaxLength(200)]
+    public string FirstName { get; set; }
+
+    [MaxLength(200)]
+    public string LastName { get; set; }
+
     [Required]
     [MaxLength(10)]
     public string Gender { get; set; }
 
-    [DataType("datetime2")]
+    [DataType("DATETIME2")]
     public DateTime? BirthDate { get; set; }
+
+    /// <summary>
+    /// Status
+    /// </summary>
+    public string Status { get; set; }
+
+    /// <summary>
+    /// Organisation model
+    /// </summary>
+    [MaxLength(10)]
+    public string Organisation { get; set; }
+
+    /// <summary>
+    /// Nationality model
+    /// </summary>
+    [MaxLength(10)]
+    public string Nationality { get; set; }
 
     public int Height { get; set; }
 
     public int Weight { get; set; }
 
-    [MaxLength(50)]
-    public string Category { get; set; }
+    /// <summary>
+    /// MainFunction
+    /// </summary>
+    [Required]
+    [MaxLength(5)]
+    public string CategoryGroup { get; set; }
+
+    [MaxLength(100)]
+    public string CategoryName { get; set; }
+
+    [MaxLength(20)]
+    public string CategoryCode { get; set; }
+
+    /// <summary>
+    /// Bio
+    /// </summary>
+    [MaxLength(100)]
+    public string PlaceOfBirth { get; set; }
+
+    [MaxLength(100)]
+    public string CountryOfBirth { get; set; }
+
+    [MaxLength(100)]
+    public string Residence { get; set; }
+
+    [MaxLength(100)]
+    public string CountryOfResidence { get; set; }
+
+    /// <summary>
+    /// Highlights
+    /// </summary>
+    [MaxLength(100)]
+    public string HighlightsType { get; set; }
+
+    [MaxLength(10000)]
+    public string Highlights { get; set; }
+
+    /// <summary>
+    /// Interest
+    /// </summary>
+    [MaxLength(2000)]
+    public string Nickname { get; set; }
+
+    [MaxLength(2000)]
+    public string Hobbies { get; set; }
+
+    [MaxLength(2000)]
+    public string Occupation { get; set; }
+
+    [MaxLength(2000)]
+    public string Education { get; set; }
+
+    [MaxLength(2000)]
+    public string Family { get; set; }
+
+    [MaxLength(2000)]
+    public string LanguagesSpoken { get; set; }
+
+    [MaxLength(2000)]
+    public string Coach { get; set; }
+
+    [MaxLength(2000)]
+    public string Debut { get; set; }
+
+    [MaxLength(2000)]
+    public string Start { get; set; }
+
+    [MaxLength(2000)]
+    public string Reason { get; set; }
+
+    [MaxLength(10000)]
+    public string Ambition { get; set; }
+
+    [MaxLength(10000)]
+    public string Milestones { get; set; }
+
+    [MaxLength(2000)]
+    public string Hero { get; set; }
+
+    [MaxLength(2000)]
+    public string Influence { get; set; }
+
+    [MaxLength(2000)]
+    public string Philosophy { get; set; }
+
+    [MaxLength(10000)]
+    public string Award { get; set; }
+
+    [MaxLength(10000)]
+    public string AddInformation { get; set; }
+
+    public virtual ICollection<Participation> Participations { get; set; } = new HashSet<Participation>();
 
     public bool Equals(Person other)
     {
@@ -87,9 +196,51 @@ public class Person : BaseDeletableEntity<Guid>, IEquatable<Person>
             equals = false;
         }
 
-        if (this.Category != other.Category)
+        if (this.FirstName != other.FirstName)
         {
-            other.Category = this.Category;
+            other.FirstName = this.FirstName;
+            equals = false;
+        }
+
+        if (this.LastName != other.LastName)
+        {
+            other.LastName = this.LastName;
+            equals = false;
+        }
+
+        if (this.Organisation != other.Organisation)
+        {
+            other.Organisation = this.Organisation;
+            equals = false;
+        }
+
+        if (this.Nationality != other.Nationality)
+        {
+            other.Nationality = this.Nationality;
+            equals = false;
+        }
+
+        if (this.PlaceOfBirth != other.PlaceOfBirth)
+        {
+            other.PlaceOfBirth = this.PlaceOfBirth;
+            equals = false;
+        }
+
+        if (this.CountryOfBirth != other.CountryOfBirth)
+        {
+            other.CountryOfBirth = this.CountryOfBirth;
+            equals = false;
+        }
+
+        if (this.Residence != other.Residence)
+        {
+            other.Residence = this.Residence;
+            equals = false;
+        }
+
+        if (this.CountryOfResidence != other.CountryOfResidence)
+        {
+            other.CountryOfResidence = this.CountryOfResidence;
             equals = false;
         }
 

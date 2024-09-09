@@ -12,38 +12,21 @@ public class Phase : BaseDeletableEntity<Guid>, IEquatable<Phase>
     [MaxLength(50)]
     public string Code { get; set; }
 
-    /// <summary>
-    /// description
-    /// </summary>
     [Required]
     [MaxLength(200)]
     public string Name { get; set; }
 
-    /// <summary>
-    /// long description
-    /// </summary>
     [Required]
     [MaxLength(200)]
     public string LongName { get; set; }
 
-    /// <summary>
-    /// short description
-    /// </summary>
-    [Required]
     [MaxLength(200)]
     public string ShortName { get; set; }
 
-    /// <summary>
-    /// code
-    /// </summary>
     [MaxLength(50)]
     public string OriginalCode { get; set; }
 
-    /// <summary>
-    /// order
-    /// </summary>
-    [Required]
-    public int Order { get; set; }
+    public string Order { get; set; }
 
     [Required]
     public Guid EventId { get; set; }

@@ -2,7 +2,7 @@
 
 public class RecordMeta
 {
-    public List<DataMeta> Data { get; set; } = [];
+    public List<RecordDataMeta> Data { get; set; } = [];
 
     public CompetitorMeta Competitor { get; set; }
 }
@@ -55,7 +55,7 @@ public class ParticipantMeta
     public string Organisation { get; set; }
 }
 
-public class DataMeta
+public class RecordDataMeta
 {
     public string Key { get; set; }
 
