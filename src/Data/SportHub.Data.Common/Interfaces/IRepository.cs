@@ -7,6 +7,8 @@ public interface IRepository<TEntity> : IDisposable
 {
     Task AddAsync(TEntity entity);
 
+    Task AddRangeAsync(IEnumerable<TEntity> entities);
+
     IQueryable<TEntity> All();
 
     IQueryable<TEntity> AllAsNoTracking();
