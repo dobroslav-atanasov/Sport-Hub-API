@@ -1,6 +1,6 @@
 ﻿namespace SportHub.Data.Models.Converters.OlympicGames.Base;
 
-using SportHub.Data.Models.Enumerations.OlympicGames;
+using SportHub.Data.Entities.Enumerations.OlympicGames;
 
 public abstract class BaseMatch
 {

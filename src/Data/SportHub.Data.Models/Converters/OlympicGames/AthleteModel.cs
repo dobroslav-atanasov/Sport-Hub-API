@@ -1,4 +1,4 @@
-﻿namespace SportHub.Data.Models.Converters;
+﻿namespace SportHub.Data.Models.Converters.OlympicGames;
 
 public class AthleteModel
 {
