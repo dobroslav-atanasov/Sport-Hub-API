@@ -62,6 +62,12 @@ public class Phase : BaseDeletableEntity<Guid>, IEquatable<Phase>
             equal = false;
         }
 
+        if (this.Units.Count != other.Units.Count)
+        {
+            other.Units = this.Units;
+            equal = false;
+        }
+
         return equal;
     }
 

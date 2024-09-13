@@ -118,7 +118,7 @@ public class NOC : BaseDeletableEntity<int>, IEquatable<NOC>
     [MaxLength(10000)]
     public string Description { get; set; }
 
-    public virtual ICollection<Participation> Participations { get; set; } = new HashSet<Participation>();
+    public virtual ICollection<Participant> Participations { get; set; } = new HashSet<Participant>();
 
     //public virtual ICollection<NOCAdministration> Administrations { get; set; } = new HashSet<NOCAdministration>();
 

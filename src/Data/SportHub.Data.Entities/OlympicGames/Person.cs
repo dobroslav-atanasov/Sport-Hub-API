@@ -148,7 +148,7 @@ public class Person : BaseDeletableEntity<Guid>, IEquatable<Person>
     [MaxLength(10000)]
     public string AddInformation { get; set; }
 
-    public virtual ICollection<Participation> Participations { get; set; } = new HashSet<Participation>();
+    public virtual ICollection<Participant> Participations { get; set; } = new HashSet<Participant>();
 
     public bool Equals(Person other)
     {

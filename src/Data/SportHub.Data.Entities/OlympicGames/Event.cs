@@ -45,7 +45,7 @@ public class Event : BaseDeletableEntity<Guid>, IEquatable<Event>
 
     public virtual ICollection<Phase> Phases { get; set; } = new HashSet<Phase>();
 
-    public virtual ICollection<Participation> Participations { get; set; } = new HashSet<Participation>();
+    public virtual ICollection<Participant> Participations { get; set; } = new HashSet<Participant>();
 
     public virtual ICollection<Record> Records { get; set; } = new HashSet<Record>();
 

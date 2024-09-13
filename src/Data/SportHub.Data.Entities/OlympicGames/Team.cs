@@ -38,9 +38,6 @@ public class Team : BaseDeletableEntity<Guid>, IEquatable<Team>
 
     public int Medal { get; set; }
 
-    /// <summary>
-    /// Highlights
-    /// </summary>
     [MaxLength(100)]
     public string HighlightsType { get; set; }
 
@@ -50,7 +47,39 @@ public class Team : BaseDeletableEntity<Guid>, IEquatable<Team>
     [MaxLength(10000)]
     public string AddInformation { get; set; }
 
-    public virtual ICollection<Participation> Athletes { get; set; } = new HashSet<Participation>();
+    [MaxLength(100)]
+    public string Rank { get; set; }
+
+    [MaxLength(100)]
+    public string Played { get; set; }
+
+    [MaxLength(100)]
+    public string Wins { get; set; }
+
+    [MaxLength(100)]
+    public string Losses { get; set; }
+
+    [MaxLength(100)]
+    public string Irm { get; set; }
+
+    public int RankOrder { get; set; }
+
+    [MaxLength(100)]
+    public string RankType { get; set; }
+
+    [MaxLength(100)]
+    public string RankEqual { get; set; }
+
+    [MaxLength(100)]
+    public string ResultType { get; set; }
+
+    [MaxLength(100)]
+    public string RankResult { get; set; }
+
+    [MaxLength(100)]
+    public string Draws { get; set; }
+
+    public virtual ICollection<Participant> Athletes { get; set; } = new HashSet<Participant>();
 
     public virtual ICollection<Coach> Coaches { get; set; } = new HashSet<Coach>();
 
@@ -91,6 +120,72 @@ public class Team : BaseDeletableEntity<Guid>, IEquatable<Team>
         if (this.Organisation != other.Organisation)
         {
             other.Organisation = this.Organisation;
+            equals = false;
+        }
+
+        if (this.Rank != other.Rank)
+        {
+            other.Rank = this.Rank;
+            equals = false;
+        }
+
+        if (this.Played != other.Played)
+        {
+            other.Played = this.Played;
+            equals = false;
+        }
+
+        if (this.Wins != other.Wins)
+        {
+            other.Wins = this.Wins;
+            equals = false;
+        }
+
+        if (this.Losses != other.Losses)
+        {
+            other.Losses = this.Losses;
+            equals = false;
+        }
+
+        if (this.Irm != other.Irm)
+        {
+            other.Irm = this.Irm;
+            equals = false;
+        }
+
+        if (this.RankOrder != other.RankOrder)
+        {
+            other.RankOrder = this.RankOrder;
+            equals = false;
+        }
+
+        if (this.RankType != other.RankType)
+        {
+            other.RankType = this.RankType;
+            equals = false;
+        }
+
+        if (this.RankEqual != other.RankEqual)
+        {
+            other.RankEqual = this.RankEqual;
+            equals = false;
+        }
+
+        if (this.ResultType != other.ResultType)
+        {
+            other.ResultType = this.ResultType;
+            equals = false;
+        }
+
+        if (this.RankResult != other.RankResult)
+        {
+            other.RankResult = this.RankResult;
+            equals = false;
+        }
+
+        if (this.Draws != other.Draws)
+        {
+            other.Draws = this.Draws;
             equals = false;
         }
 
